@@ -16,66 +16,329 @@
             --text-sub: #94a3b8;
             --border-color: #26334d;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--bg-main); color: var(--text-main); max-width: 480px; margin: 0 auto; padding: 12px; padding-bottom: 30px; }
-        
-        #nameModal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(5, 8, 15, 0.95); display: flex; align-items: center; justify-content: center; z-index: 1000; }
-        .modal-card { background: var(--bg-card); border: 1px solid var(--border-color); padding: 28px 20px; border-radius: 20px; width: 88%; max-width: 340px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
-        .modal-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 6px; color: #60a5fa; }
-        .modal-sub { color: var(--text-sub); font-size: 0.85rem; margin-bottom: 20px; }
-        .modal-input { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-input); color: #fff; font-size: 1rem; text-align: center; margin-bottom: 16px; outline: none; }
-        .modal-btn { width: 100%; padding: 14px; border-radius: 12px; border: none; background: var(--accent-blue); color: white; font-size: 1rem; font-weight: bold; cursor: pointer; }
 
-        .nav-container { display: flex; background: var(--bg-card); border-radius: 14px; padding: 4px; margin-bottom: 12px; border: 1px solid var(--border-color); }
-        .nav-btn { flex: 1; padding: 10px 0; border: none; background: transparent; color: var(--text-sub); font-size: 0.9rem; font-weight: bold; border-radius: 10px; cursor: pointer; }
-        .nav-btn.active { background: var(--accent-blue); color: white; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-        .profile-bar { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 12px;
+            padding-bottom: 30px;
+        }
+
+        /* 닉네임 입력 모달 */
+        #nameModal {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(5, 8, 15, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .modal-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 28px 20px;
+            border-radius: 20px;
+            width: 88%;
+            max-width: 340px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        }
+        .modal-title {
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 6px;
+            color: #60a5fa;
+        }
+        .modal-sub {
+            color: var(--text-sub);
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+        }
+        .modal-input {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-input);
+            color: #fff;
+            font-size: 1rem;
+            text-align: center;
+            margin-bottom: 16px;
+            outline: none;
+        }
+        .modal-btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            background: var(--accent-blue);
+            color: white;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* 탭 네비게이션 */
+        .nav-container {
+            display: flex;
+            background: var(--bg-card);
+            border-radius: 14px;
+            padding: 4px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border-color);
+        }
+        .nav-btn {
+            flex: 1;
+            padding: 10px 0;
+            border: none;
+            background: transparent;
+            color: var(--text-sub);
+            font-size: 0.9rem;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        .nav-btn.active {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        /* 프로필 및 자산 바 */
+        .profile-bar {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
         .user-name { font-weight: bold; font-size: 0.95rem; }
-        .user-tier { font-size: 0.75rem; font-weight: bold; padding: 3px 8px; border-radius: 6px; background: #1e293b; margin-left: 6px; color: #94a3b8; }
+        .user-tier {
+            font-size: 0.75rem;
+            font-weight: bold;
+            padding: 3px 8px;
+            border-radius: 6px;
+            background: #1e293b;
+            margin-left: 6px;
+            color: #94a3b8;
+        }
         .gold-info { font-size: 1.1rem; font-weight: 800; color: var(--accent-gold); }
-        .ad-recharge-btn { background: rgba(16, 185, 129, 0.15); color: var(--accent-green); border: 1px solid var(--accent-green); padding: 5px 9px; border-radius: 8px; font-size: 0.75rem; font-weight: bold; margin-left: 8px; cursor: pointer; }
+        .ad-recharge-btn {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-green);
+            border: 1px solid var(--accent-green);
+            padding: 5px 9px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-left: 8px;
+            cursor: pointer;
+        }
 
         .tab-panel { display: none; }
         .tab-panel.active { display: block; }
 
-        .track-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 14px 12px; margin-bottom: 12px; }
-        .lane-row { display: flex; align-items: center; background: var(--bg-input); border-radius: 10px; padding: 6px 10px; margin-bottom: 8px; height: 40px; position: relative; }
+        /* 경마 트랙 */
+        .track-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 14px 12px;
+            margin-bottom: 12px;
+        }
+        .lane-row {
+            display: flex;
+            align-items: center;
+            background: var(--bg-input);
+            border-radius: 10px;
+            padding: 6px 10px;
+            margin-bottom: 8px;
+            height: 40px;
+            position: relative;
+        }
         .lane-row:last-child { margin-bottom: 0; }
         .suit-icon { width: 24px; font-size: 1.1rem; font-weight: bold; text-align: center; }
-        .spade-color { color: #38bdf8; } .diamond-color { color: #f87171; } .heart-color { color: #f43f5e; } .club-color { color: #4ade80; }
+        .spade-color { color: #38bdf8; }
+        .diamond-color { color: #f87171; }
+        .heart-color { color: #f43f5e; }
+        .club-color { color: #4ade80; }
 
-        .horse-field { flex: 1; position: relative; height: 100%; margin: 0 10px; display: flex; align-items: center; }
-        .horse-runner { position: absolute; left: 0%; transition: left 0.3s cubic-bezier(0.25, 1, 0.5, 1); font-size: 1.3rem; }
-        .goal-line { width: 2px; height: 100%; background: #ef4444; position: absolute; right: 0; }
+        .horse-field {
+            flex: 1;
+            position: relative;
+            height: 100%;
+            margin: 0 10px;
+            display: flex;
+            align-items: center;
+        }
+        .horse-runner {
+            position: absolute;
+            left: 0%;
+            transition: left 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            font-size: 1.3rem;
+        }
+        .goal-line {
+            width: 2px;
+            height: 100%;
+            background: #ef4444;
+            position: absolute;
+            right: 0;
+        }
 
-        .card-status-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+        /* 카드 상태 */
+        .card-status-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
         .card-status-text { font-size: 0.9rem; font-weight: bold; color: var(--text-main); margin-top: 4px; }
-        .card-display-box { width: 48px; height: 64px; background: #ffffff; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 800; color: #000; }
+        .card-display-box {
+            width: 48px;
+            height: 64px;
+            background: #ffffff;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #000;
+        }
 
-        .bet-container { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 14px; }
+        /* 베팅 영역 */
+        .bet-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 14px;
+        }
         .sub-header { font-size: 0.8rem; color: var(--text-sub); margin-bottom: 8px; }
-        .horse-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 12px; }
-        .horse-select-card { background: var(--bg-input); border: 2px solid transparent; border-radius: 12px; padding: 10px 4px; text-align: center; cursor: pointer; }
-        .horse-select-card.active { border-color: var(--accent-blue); background: rgba(59, 130, 246, 0.15); }
+        .horse-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .horse-select-card {
+            background: var(--bg-input);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            padding: 10px 4px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .horse-select-card.active {
+            border-color: var(--accent-blue);
+            background: rgba(59, 130, 246, 0.15);
+        }
         .horse-select-card span { display: block; font-size: 0.75rem; color: var(--text-sub); margin-top: 2px; }
 
-        .input-row { display: flex; align-items: center; background: var(--bg-input); border-radius: 10px; padding: 8px 14px; margin-bottom: 8px; }
-        .input-row input { background: transparent; border: none; color: #fff; font-size: 1.1rem; font-weight: bold; width: 100%; text-align: right; outline: none; padding-right: 6px; }
+        .input-row {
+            display: flex;
+            align-items: center;
+            background: var(--bg-input);
+            border-radius: 10px;
+            padding: 8px 14px;
+            margin-bottom: 8px;
+        }
+        .input-row input {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: bold;
+            width: 100%;
+            text-align: right;
+            outline: none;
+            padding-right: 6px;
+        }
 
-        .chip-flex { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin-bottom: 12px; }
-        .chip-btn { background: #26334d; border: none; color: #fff; padding: 9px 0; border-radius: 8px; font-size: 0.75rem; font-weight: bold; cursor: pointer; }
+        .chip-flex {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 4px;
+            margin-bottom: 12px;
+        }
+        .chip-btn {
+            background: #26334d;
+            border: none;
+            color: #fff;
+            padding: 9px 0;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
         .chip-btn.reset-btn { background: #dc2626; }
 
-        .start-race-btn { width: 100%; padding: 15px; background: #10b981; border: none; border-radius: 12px; color: white; font-size: 1.1rem; font-weight: bold; cursor: pointer; }
+        .start-race-btn {
+            width: 100%;
+            padding: 15px;
+            background: #10b981;
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
         .start-race-btn:disabled { background: #334155; cursor: not-allowed; }
 
-        .rank-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px 16px; display: flex; justify-content: space-between; margin-bottom: 8px; }
-        .rule-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 18px; font-size: 0.88rem; line-height: 1.6; color: var(--text-sub); }
+        .rank-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        .rule-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 18px;
+            font-size: 0.88rem;
+            line-height: 1.6;
+            color: var(--text-sub);
+        }
         .rule-card h3 { color: var(--accent-gold); margin: 12px 0 6px 0; font-size: 1rem; }
 
-        #adModal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 2000; }
-        .ad-box { background: var(--bg-card); border: 1px solid var(--border-color); padding: 28px; border-radius: 20px; text-align: center; }
+        #adModal {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+        .ad-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 28px;
+            border-radius: 20px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -85,7 +348,7 @@
             <div class="modal-title">♠️ 포커 경마 ♠️</div>
             <div class="modal-sub">플레이에 사용할 닉네임을 입력하세요</div>
             <input type="text" id="usernameInput" class="modal-input" placeholder="닉네임 (최대 8자)" maxlength="8">
-            <button class="modal-btn" onclick="confirmNickname()">게임 입장하기</button>
+            <button class="modal-btn" onclick="startGameWithNickname()">게임 입장하기</button>
         </div>
     </div>
 
@@ -106,4 +369,261 @@
         </div>
     </div>
 
-    <div id="
+    <div id="gameTab" class="tab-panel active">
+        <div class="track-box">
+            <div class="lane-row">
+                <span class="suit-icon spade-color">♠</span>
+                <div class="horse-field"><div id="horse-spade" class="horse-runner">🏇</div><div class="goal-line"></div></div>
+            </div>
+            <div class="lane-row">
+                <span class="suit-icon diamond-color">◆</span>
+                <div class="horse-field"><div id="horse-diamond" class="horse-runner">🏇</div><div class="goal-line"></div></div>
+            </div>
+            <div class="lane-row">
+                <span class="suit-icon heart-color">♥</span>
+                <div class="horse-field"><div id="horse-heart" class="horse-runner">🏇</div><div class="goal-line"></div></div>
+            </div>
+            <div class="lane-row">
+                <span class="suit-icon club-color">♣</span>
+                <div class="horse-field"><div id="horse-club" class="horse-runner">🏇</div><div class="goal-line"></div></div>
+            </div>
+        </div>
+
+        <div class="card-status-card">
+            <div>
+                <div style="font-size: 0.75rem; color: var(--text-sub);">최근 뽑힌 카드</div>
+                <div id="cardStatusText" class="card-status-text">베팅 후 경기를 시작하세요</div>
+            </div>
+            <div id="drawnCardDisplay" class="card-display-box">?</div>
+        </div>
+
+        <div class="bet-container">
+            <div class="sub-header">1. 우승 말 선택 (배당률 3배)</div>
+            <div class="horse-grid">
+                <div class="horse-select-card" onclick="selectHorse('spade', this)">
+                    <div class="spade-color" style="font-size:1.3rem;">♠</div>
+                    <span>스페이드</span>
+                </div>
+                <div class="horse-select-card" onclick="selectHorse('diamond', this)">
+                    <div class="diamond-color" style="font-size:1.3rem;">◆</div>
+                    <span>다이아몬드</span>
+                </div>
+                <div class="horse-select-card" onclick="selectHorse('heart', this)">
+                    <div class="heart-color" style="font-size:1.3rem;">♥</div>
+                    <span>하트</span>
+                </div>
+                <div class="horse-select-card" onclick="selectHorse('club', this)">
+                    <div class="club-color" style="font-size:1.3rem;">♣</div>
+                    <span>클로버</span>
+                </div>
+            </div>
+
+            <div class="sub-header">2. 베팅 금액 설정</div>
+            <div class="input-row">
+                <input type="number" id="betAmountInput" value="0" min="0" oninput="validateBetInput()">
+                <span style="color:var(--accent-gold); font-weight:bold;">G</span>
+            </div>
+
+            <div class="chip-flex">
+                <button class="chip-btn" onclick="addBet(1000)">+1K</button>
+                <button class="chip-btn" onclick="addBet(5000)">+5K</button>
+                <button class="chip-btn" onclick="addBet(10000)">+10K</button>
+                <button class="chip-btn" onclick="addBet(50000)">+50K</button>
+                <button class="chip-btn" onclick="addBetAll()">ALL</button>
+                <button class="chip-btn reset-btn" onclick="resetBet()">리셋</button>
+            </div>
+
+            <button id="raceStartBtn" class="start-race-btn" onclick="startRace()">경기 시작</button>
+        </div>
+    </div>
+
+    <div id="rankTab" class="tab-panel">
+        <h3 style="margin-bottom: 12px; font-size: 1rem; color: var(--text-main);">🏆 실시간 랭킹</h3>
+        <div id="rankList"></div>
+    </div>
+
+    <div id="ruleTab" class="tab-panel">
+        <div class="rule-card">
+            <h3 style="margin-top:0;">📖 게임 규칙</h3>
+            <ul>
+                <li>총 4마리의 말(♠, ◆, ♥, ♣)이 10칸 트랙에서 경주합니다.</li>
+                <li>카드를 뽑아 해당 문양의 말이 전진합니다.</li>
+                <li><b>2 ~ K 카드:</b> 1칸 전진</li>
+                <li><b>Ace (A) 카드:</b> 2칸 전진</li>
+            </ul>
+            <h3>💰 배당 및 티어</h3>
+            <ul>
+                <li>우승 말에 베팅 성공 시 <b>3배의 배당</b>을 획득합니다.</li>
+                <li>자산 보유량에 따라 5단계 티어가 부여됩니다.</li>
+            </ul>
+            <h3>🎬 보상 충전</h3>
+            <ul>
+                <li>상단 광고 버튼 클릭 시 5초 후 <b>1,000 Gold</b>가 지급됩니다.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="adModal">
+        <div class="ad-box">
+            <h3>📺 광고 시청 중...</h3>
+            <p style="color: var(--text-sub); margin-top: 8px;">잠시만 기다려 주세요</p>
+            <div id="adTimer" style="font-size: 2.2rem; font-weight: bold; color: var(--accent-green); margin-top: 10px;">5</div>
+        </div>
+    </div>
+
+    <script>
+        let gameState = { username: '', gold: 1000, selectedHorse: null, betAmount: 0, isRacing: false, horsePositions: { spade: 0, diamond: 0, heart: 0, club: 0 } };
+        const suits = ['spade', 'diamond', 'heart', 'club'];
+        const suitSymbols = { spade: '♠', diamond: '◆', heart: '♥', club: '♣' };
+
+        function startGameWithNickname() {
+            const val = document.getElementById('usernameInput').value.trim();
+            if(!val) { alert('닉네임을 입력하세요!'); return; }
+            gameState.username = val;
+            document.getElementById('displayUsername').innerText = val;
+            document.getElementById('nameModal').style.display = 'none';
+            updateUI();
+        }
+
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.tab-panel').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            btn.classList.add('active');
+            if(tabId === 'rankTab') renderRanking();
+        }
+
+        function selectHorse(horse, el) {
+            if(gameState.isRacing) return;
+            gameState.selectedHorse = horse;
+            document.querySelectorAll('.horse-select-card').forEach(card => card.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        function addBet(amt) {
+            if(gameState.isRacing) return;
+            if(gameState.betAmount + amt <= gameState.gold) gameState.betAmount += amt;
+            else gameState.betAmount = gameState.gold;
+            document.getElementById('betAmountInput').value = gameState.betAmount;
+        }
+
+        function addBetAll() {
+            if(gameState.isRacing) return;
+            gameState.betAmount = gameState.gold;
+            document.getElementById('betAmountInput').value = gameState.betAmount;
+        }
+
+        function resetBet() {
+            if(gameState.isRacing) return;
+            gameState.betAmount = 0;
+            document.getElementById('betAmountInput').value = 0;
+        }
+
+        function validateBetInput() {
+            let val = parseInt(document.getElementById('betAmountInput').value) || 0;
+            if(val < 0) val = 0;
+            if(val > gameState.gold) val = gameState.gold;
+            gameState.betAmount = val;
+            document.getElementById('betAmountInput').value = val;
+        }
+
+        function updateUI() {
+            document.getElementById('userGold').innerText = gameState.gold.toLocaleString();
+            let tier = 'BRONZE', color = '#94a3b8';
+            if (gameState.gold >= 1000000) { tier = 'DIAMOND'; color = '#38bdf8'; }
+            else if (gameState.gold >= 300000) { tier = 'PLATINUM'; color = '#2dd4bf'; }
+            else if (gameState.gold >= 100000) { tier = 'GOLD'; color = '#fbbf24'; }
+            else if (gameState.gold >= 30000) { tier = 'SILVER'; color = '#cbd5e1'; }
+            const tierEl = document.getElementById('userTier');
+            tierEl.innerText = tier;
+            tierEl.style.color = color;
+        }
+
+        function startRace() {
+            if (!gameState.selectedHorse) return alert('우승할 말을 선택하세요!');
+            if (gameState.betAmount <= 0) return alert('베팅 금액을 입력하세요!');
+            if (gameState.betAmount > gameState.gold) return alert('골드가 부족합니다!');
+
+            gameState.isRacing = true;
+            gameState.gold -= gameState.betAmount;
+            updateUI();
+            document.getElementById('raceStartBtn').disabled = true;
+
+            gameState.horsePositions = { spade: 0, diamond: 0, heart: 0, club: 0 };
+            suits.forEach(s => document.getElementById(`horse-${s}`).style.left = '0%');
+
+            const interval = setInterval(() => {
+                const randomSuit = suits[Math.floor(Math.random() * suits.length)];
+                const isAce = Math.random() < 0.15;
+                const step = isAce ? 2 : 1;
+
+                gameState.horsePositions[randomSuit] += step;
+                if(gameState.horsePositions[randomSuit] > 10) gameState.horsePositions[randomSuit] = 10;
+
+                const pct = (gameState.horsePositions[randomSuit] / 10) * 88;
+                document.getElementById(`horse-${randomSuit}`).style.left = `${pct}%`;
+
+                const cardDisplay = document.getElementById('drawnCardDisplay');
+                cardDisplay.innerText = isAce ? `A${suitSymbols[randomSuit]}` : suitSymbols[randomSuit];
+                cardDisplay.style.color = (randomSuit === 'diamond' || randomSuit === 'heart') ? '#ef4444' : '#000000';
+                document.getElementById('cardStatusText').innerText = `${suitSymbols[randomSuit]} 말 ${step}칸 전진!`;
+
+                if (gameState.horsePositions[randomSuit] >= 10) {
+                    clearInterval(interval);
+                    setTimeout(() => finishRace(randomSuit), 300);
+                }
+            }, 550);
+        }
+
+        function finishRace(winner) {
+            gameState.isRacing = false;
+            document.getElementById('raceStartBtn').disabled = false;
+            if (gameState.selectedHorse === winner) {
+                const prize = gameState.betAmount * 3;
+                gameState.gold += prize;
+                alert(`🎉 축하합니다! ${suitSymbols[winner]} 말이 우승했습니다!\n+${prize.toLocaleString()} G 획득!`);
+            } else {
+                alert(`아쉽네요! ${suitSymbols[winner]} 말이 우승했습니다.`);
+            }
+            gameState.betAmount = 0;
+            document.getElementById('betAmountInput').value = 0;
+            updateUI();
+        }
+
+        function watchAd() {
+            const modal = document.getElementById('adModal');
+            const timerEl = document.getElementById('adTimer');
+            let cnt = 5;
+            modal.style.display = 'flex';
+            timerEl.innerText = cnt;
+            const t = setInterval(() => {
+                cnt--;
+                timerEl.innerText = cnt;
+                if(cnt <= 0) {
+                    clearInterval(t);
+                    modal.style.display = 'none';
+                    gameState.gold += 1000;
+                    updateUI();
+                    alert('🎬 +1,000 Gold 지급 완료!');
+                }
+            }, 1000);
+        }
+
+        function renderRanking() {
+            const list = document.getElementById('rankList');
+            const mock = [
+                { name: '경마왕', gold: 5400000 },
+                { name: '타짜', gold: 1200000 },
+                { name: gameState.username || '나', gold: gameState.gold },
+                { name: '초보자', gold: 1000 }
+            ].sort((a,b) => b.gold - a.gold);
+            list.innerHTML = mock.map((item, i) => `
+                <div class="rank-card">
+                    <span><b>${i + 1}위</b> ${item.name}</span>
+                    <span style="color:var(--accent-gold); font-weight:bold;">${item.gold.toLocaleString()} G</span>
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html>
