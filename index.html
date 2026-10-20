@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>바카라 포커 경마</title>
-    <!-- 구글 애드센스 코드 위치 -->
+    <title>골드 카지노 - 실시간 랭킹 & 로그인</title>
+    <!-- Firebase SDK 로드 -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
     <style>
         :root {
             --bg-main: #0a080d;
@@ -14,7 +16,6 @@
             --accent-green: #10b981;
             --accent-gold: #f59e0b;
             --accent-gold-light: #fef08a;
-            --accent-gold-glow: #d97706;
             --accent-red: #ef4444;
             --text-main: #f8fafc;
             --text-sub: #a1a1aa;
@@ -23,13 +24,7 @@
             --gold-btn-grad: linear-gradient(180deg, #f59e0b, #d97706);
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -41,15 +36,15 @@
             padding-bottom: 50px;
         }
 
-        /* 닉네임 입력 모달 */
-        #nameModal {
+        /* 로그인 / 회원가입 모달 */
+        #authModal {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(5, 4, 8, 0.96);
+            background: rgba(5, 4, 8, 0.98);
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 1000;
+            z-index: 2000;
         }
         .modal-card {
             background: var(--bg-card);
@@ -62,13 +57,14 @@
             box-shadow: 0 0 25px rgba(245, 158, 11, 0.25);
         }
         .modal-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 6px; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .modal-sub { color: var(--text-sub); font-size: 0.85rem; margin-bottom: 20px; }
-        .modal-input { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-input); color: #fff; font-size: 1rem; text-align: center; margin-bottom: 16px; outline: none; }
-        .modal-btn { width: 100%; padding: 14px; border-radius: 12px; border: none; background: var(--gold-btn-grad); color: #000; font-size: 1rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4); }
+        .modal-sub { color: var(--text-sub); font-size: 0.85rem; margin-bottom: 16px; }
+        .modal-input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--bg-input); color: #fff; font-size: 0.95rem; text-align: center; margin-bottom: 10px; outline: none; }
+        .modal-btn { width: 100%; padding: 13px; border-radius: 10px; border: none; background: var(--gold-btn-grad); color: #000; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 6px; box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4); }
+        .auth-toggle { margin-top: 12px; font-size: 0.8rem; color: var(--accent-gold-light); cursor: pointer; text-decoration: underline; }
 
-        /* 탭 네비게이션 */
+        /* 네비게이션 탭 */
         .nav-container { display: flex; background: var(--bg-card); border-radius: 14px; padding: 4px; margin-bottom: 12px; border: 1px solid var(--border-color); }
-        .nav-btn { flex: 1; padding: 10px 0; border: none; background: transparent; color: var(--text-sub); font-size: 0.75rem; font-weight: bold; border-radius: 10px; cursor: pointer; }
+        .nav-btn { flex: 1; padding: 10px 0; border: none; background: transparent; color: var(--text-sub); font-size: 0.7rem; font-weight: bold; border-radius: 10px; cursor: pointer; }
         .nav-btn.active { background: var(--gold-btn-grad); color: #000; font-weight: 800; }
 
         /* 프로필 바 */
@@ -122,15 +118,8 @@
         .start-race-btn { width: 100%; padding: 15px; background: var(--gold-btn-grad); border: none; border-radius: 12px; color: #000; font-size: 1.1rem; font-weight: 800; cursor: pointer; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3); }
         .start-race-btn:disabled { background: #334155; color: #94a3b8; cursor: not-allowed; box-shadow: none; }
 
-        /* 바카라 테이블 디자인 */
-        .baccarat-board {
-            background: radial-gradient(circle, #0e5a38 0%, #042e1b 100%);
-            border: 3px solid var(--accent-gold);
-            border-radius: 20px;
-            padding: 16px 12px;
-            margin-bottom: 12px;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 0 15px rgba(245, 158, 11, 0.2);
-        }
+        /* 바카라 테이블 */
+        .baccarat-board { background: radial-gradient(circle, #0e5a38 0%, #042e1b 100%); border: 3px solid var(--accent-gold); border-radius: 20px; padding: 16px 12px; margin-bottom: 12px; box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 0 15px rgba(245, 158, 11, 0.2); }
         .baccarat-cards-container { display: flex; justify-content: space-between; margin-bottom: 12px; }
         .baccarat-side { width: 48%; background: rgba(0,0,0,0.45); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 12px; padding: 10px 4px; text-align: center; }
         .baccarat-side-title { font-size: 0.9rem; font-weight: 800; margin-bottom: 8px; letter-spacing: 1px; }
@@ -138,7 +127,7 @@
         .side-banker { color: #f87171; text-shadow: 0 0 6px rgba(248, 113, 113, 0.5); }
         .cards-row { display: flex; justify-content: center; gap: 6px; min-height: 56px; perspective: 1000px; }
 
-        /* 3D 카드 플립 효과 */
+        /* 3D 카드 플립 */
         .card-flip-container { width: 38px; height: 54px; perspective: 1000px; display: inline-block; }
         .card-flip-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; }
         .card-flip-container.flipped .card-flip-inner { transform: rotateY(180deg); }
@@ -146,14 +135,12 @@
         .card-back { background: linear-gradient(135deg, #7f1d1d 25%, #991b1b 50%, #7f1d1d 75%); border: 2px solid var(--accent-gold); color: var(--accent-gold); font-size: 0.8rem; }
         .card-front { background: #ffffff; color: #000; transform: rotateY(180deg); font-size: 0.95rem; border: 1px solid #ccc; }
 
-        /* 하이로우 큰 카드 */
         .hilo-card-flip-container { width: 90px; height: 130px; margin: 0 auto 12px auto; perspective: 1000px; }
         .hilo-card-flip-container .card-back { font-size: 2rem; border-width: 3px; }
         .hilo-card-flip-container .card-front { font-size: 2.2rem; border-radius: 12px; }
         .hilo-card-flip-container .card-front.gold-card { background: var(--gold-gradient); border: 3px solid #fff; box-shadow: 0 0 20px var(--accent-gold); }
 
         .bac-score { margin-top: 6px; font-size: 0.85rem; font-weight: bold; color: var(--accent-gold-light); }
-
         .bac-bet-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 8px; }
         .bac-bet-grid-sub { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-bottom: 12px; }
         .bac-bet-card { background: var(--bg-input); border: 2px solid transparent; border-radius: 10px; padding: 8px 4px; text-align: center; cursor: pointer; }
@@ -162,7 +149,7 @@
         .bac-bet-card .odds { font-size: 0.7rem; color: var(--accent-gold); margin-top: 2px; }
         .bac-bet-card .amount { font-size: 0.7rem; color: var(--accent-green); font-weight: bold; margin-top: 2px; }
 
-        /* 하이로우 디자인 */
+        /* 하이로우 */
         .hilo-board { background: var(--bg-card); border: 2px solid var(--accent-gold); border-radius: 20px; padding: 20px; text-align: center; margin-bottom: 12px; }
         .gold-badge { position: absolute; top: -10px; right: -10px; background: #ef4444; color: #fff; font-size: 0.7rem; padding: 2px 6px; border-radius: 10px; font-weight: bold; box-shadow: 0 2px 6px rgba(0,0,0,0.4); z-index: 10; }
         .hilo-btn-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 10px; }
@@ -171,35 +158,10 @@
         .btn-low { background: #f87171; }
         .btn-cashout { width: 100%; padding: 14px; background: #10b981; border: none; border-radius: 12px; color: white; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 6px; }
 
-        /* 슬롯머신 디자인 */
-        .slot-board {
-            background: var(--bg-card);
-            border: 3px solid var(--accent-gold);
-            border-radius: 20px;
-            padding: 20px 12px;
-            text-align: center;
-            margin-bottom: 12px;
-            box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
-        }
-        .slot-reels-container {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 14px;
-        }
-        .slot-reel {
-            width: 76px;
-            height: 90px;
-            background: #fff;
-            border: 3px solid var(--accent-gold);
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.8rem;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
-            transition: transform 0.1s ease;
-        }
+        /* 슬롯 */
+        .slot-board { background: var(--bg-card); border: 3px solid var(--accent-gold); border-radius: 20px; padding: 20px 12px; text-align: center; margin-bottom: 12px; box-shadow: 0 0 20px rgba(245, 158, 11, 0.2); }
+        .slot-reels-container { display: flex; justify-content: center; gap: 10px; margin-bottom: 14px; }
+        .slot-reel { width: 76px; height: 90px; background: #fff; border: 3px solid var(--accent-gold); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 2.8rem; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
 
         .rank-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px 16px; display: flex; justify-content: space-between; margin-bottom: 8px; }
         .rule-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 18px; font-size: 0.88rem; line-height: 1.6; color: var(--text-sub); }
@@ -217,12 +179,15 @@
 </head>
 <body>
 
-    <div id="nameModal">
+    <!-- 로그인 / 회원가입 모달 -->
+    <div id="authModal">
         <div class="modal-card">
             <div class="modal-title">👑 골드 카지노 👑</div>
-            <div class="modal-sub">닉네임을 입력하고 게임을 시작하세요</div>
-            <input type="text" id="usernameInput" class="modal-input" placeholder="닉네임 (최대 8자)" maxlength="8">
-            <button class="modal-btn" onclick="startGameWithNickname()">게임 입장하기</button>
+            <div id="authSub" class="modal-sub">아이디와 비밀번호로 로그인하세요</div>
+            <input type="text" id="authId" class="modal-input" placeholder="아이디" maxlength="12">
+            <input type="password" id="authPw" class="modal-input" placeholder="비밀번호" maxlength="16">
+            <button id="authSubmitBtn" class="modal-btn" onclick="handleLogin()">로그인</button>
+            <div id="authToggleText" class="auth-toggle" onclick="toggleAuthMode()">계정이 없으신가요? 회원가입</div>
         </div>
     </div>
 
@@ -474,8 +439,8 @@
 
     <!-- 5. 랭킹 탭 -->
     <div id="rankTab" class="tab-panel">
-        <h3 style="margin-bottom: 12px; font-size: 1rem; color: var(--text-main);">🏆 실시간 리얼 랭킹</h3>
-        <div id="rankList"></div>
+        <h3 style="margin-bottom: 12px; font-size: 1rem; color: var(--text-main);">🏆 실시간 서버 랭킹</h3>
+        <div id="rankList">데이터를 불러오는 중...</div>
     </div>
 
     <!-- 6. 규칙 탭 -->
@@ -495,24 +460,18 @@
                 <li><b>동일 그림 3개 (트리플):</b> 베팅금의 <b>15배</b></li>
                 <li><b>동일 그림 2개 (더블):</b> 베팅금의 <b>2배</b></li>
             </ul>
-            <h3>📈 하이로우 룰</h3>
-            <ul>
-                <li>다음 카드가 높은지(HIGH) 낮은지(LOW) 예측하며, <b>숫자가 같을 경우 무조건 성공(적중)</b> 처리됩니다!</li>
-            </ul>
         </div>
     </div>
 
     <footer>
-        <p>© Gold Casino - Baccarat & Poker Racing & Hi-Lo & Slot. All rights reserved.</p>
+        <p>© Gold Casino - Realtime Multiplayer. All rights reserved.</p>
         <p><a onclick="openPrivacy()">개인정보처리방침 (Privacy Policy)</a></p>
     </footer>
 
-    <div id="privacyModal">
+    <div id="privacyModal" style="position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.85); display:none; align-items:center; justify-content:center; z-index:3000;">
         <div class="privacy-box">
             <h3 style="color:#fff; margin-bottom:10px;">개인정보처리방침</h3>
-            <p>본 웹사이트는 이용자의 개인정보를 중요시하며, 구글 애드센스 등 타사 광고 네트워크를 통해 광고를 제공할 수 있습니다.</p><br>
-            <p><b>1. 쿠키 사용</b><br>구글을 포함한 타사 판매자는 쿠키를 사용하여 이용자의 이전 방문 기록을 바탕으로 맞춤형 광고를 제공합니다.</p><br>
-            <p><b>2. 사용자 데이터</b><br>이용자는 구글 광고 설정을 방문하여 맞춤형 광고를 거부할 수 있습니다.</p><br>
+            <p>본 웹사이트는 이용자의 계정 골드 데이터 저장을 위해 Firebase Realtime Database를 사용합니다.</p><br>
             <button class="modal-btn" style="margin-top:15px;" onclick="closePrivacy()">닫기</button>
         </div>
     </div>
@@ -526,6 +485,22 @@
     </div>
 
     <script>
+        // 사용자가 보여주신 Firebase 설정 데이터 연동 완료
+        const firebaseConfig = {
+            apiKey: "AIzaSyDqyhJ0KUej2LHCDDOu0W1",
+            authDomain: "gold-poker-d6dd0.firebaseapp.com",
+            projectId: "gold-poker-d6dd0",
+            storageBucket: "gold-poker-d6dd0.appspot.com",
+            messagingSenderId: "130430532601",
+            appId: "1:130430532601:web:010a55ed2",
+            measurementId: "G-T3T49TVP26"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        let currentUserKey = null;
+        let isSignUpMode = false;
+
         let gameState = {
             username: '',
             gold: 1000,
@@ -544,7 +519,6 @@
             hiloAccumulatedPrize: 0,
             hiloStreak: 0,
             isHiloPlaying: false,
-            // 슬롯 상태
             slotBet: 0,
             isSlotSpinning: false
         };
@@ -554,14 +528,93 @@
         const suitNames = { spade: '스페이드', diamond: '다이아몬드', heart: '하트', club: '클로버' };
         const slotSymbols = ['7️⃣', '💎', '👑', '🪙', '🍒', '🍇', '🔔'];
 
-        function startGameWithNickname() {
-            const val = document.getElementById('usernameInput').value.trim();
-            if(!val) { alert('닉네임을 입력하세요!'); return; }
-            gameState.username = val;
-            document.getElementById('displayUsername').innerText = val;
-            document.getElementById('nameModal').style.display = 'none';
-            saveRealRanking();
-            updateUI();
+        function toggleAuthMode() {
+            isSignUpMode = !isSignUpMode;
+            document.getElementById('authSub').innerText = isSignUpMode ? '새로운 계정을 생성하세요' : '아이디와 비밀번호로 로그인하세요';
+            document.getElementById('authSubmitBtn').innerText = isSignUpMode ? '회원가입' : '로그인';
+            document.getElementById('authToggleText').innerText = isSignUpMode ? '이미 계정이 있으신가요? 로그인' : '계정이 없으신가요? 회원가입';
+        }
+
+        function handleLogin() {
+            const id = document.getElementById('authId').value.trim();
+            const pw = document.getElementById('authPw').value.trim();
+            if(!id || !pw) return alert('아이디와 비밀번호를 모두 입력하세요!');
+
+            const safeId = id.replace(/[.#$\/\[\]]/g, '_');
+            const userRef = db.ref('users/' + safeId);
+
+            userRef.once('value', snapshot => {
+                const data = snapshot.val();
+                if(isSignUpMode) {
+                    if(data) {
+                        alert('이미 존재하는 아이디입니다!');
+                    } else {
+                        const initialData = { username: id, password: pw, gold: 1000 };
+                        userRef.set(initialData).then(() => {
+                            currentUserKey = safeId;
+                            gameState.username = id;
+                            gameState.gold = 1000;
+                            document.getElementById('displayUsername').innerText = id;
+                            document.getElementById('authModal').style.display = 'none';
+                            startRealtimeSync();
+                            updateUI();
+                            alert('회원가입 및 로그인 성공!');
+                        });
+                    }
+                } else {
+                    if(!data) {
+                        alert('존재하지 않는 아이디입니다. 회원가입을 먼저 해주세요!');
+                    } else if(data.password !== pw) {
+                        alert('비밀번호가 일치하지 않습니다!');
+                    } else {
+                        currentUserKey = safeId;
+                        gameState.username = data.username;
+                        gameState.gold = data.gold !== undefined ? data.gold : 1000;
+                        document.getElementById('displayUsername').innerText = data.username;
+                        document.getElementById('authModal').style.display = 'none';
+                        startRealtimeSync();
+                        updateUI();
+                        alert('로그인 성공!');
+                    }
+                }
+            });
+        }
+
+        function startRealtimeSync() {
+            if(!currentUserKey) return;
+            // 내 골드 서버 동기화
+            db.ref('users/' + currentUserKey + '/gold').on('value', snapshot => {
+                const val = snapshot.val();
+                if(val !== null && val !== gameState.gold) {
+                    gameState.gold = val;
+                    updateUIOnly();
+                }
+            });
+
+            // 실시간 전체 랭킹 동기화
+            db.ref('users').on('value', snapshot => {
+                const users = snapshot.val();
+                if(!users) return;
+                const listEl = document.getElementById('rankList');
+                let rankArr = [];
+                for(let key in users) {
+                    if(users[key].username && users[key].gold !== undefined) {
+                        rankArr.push({ name: users[key].username, gold: users[key].gold });
+                    }
+                }
+                rankArr.sort((a,b) => b.gold - a.gold);
+                listEl.innerHTML = rankArr.map((item, i) => `
+                    <div class="rank-card">
+                        <span><b>${i + 1}위</b> ${item.name}</span>
+                        <span style="color:var(--accent-gold-light); font-weight:bold;">${item.gold.toLocaleString()} G</span>
+                    </div>
+                `).join('');
+            });
+        }
+
+        function syncGoldToServer() {
+            if(!currentUserKey) return;
+            db.ref('users/' + currentUserKey).update({ gold: gameState.gold });
         }
 
         function switchTab(tabId, btn) {
@@ -569,10 +622,9 @@
             document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             btn.classList.add('active');
-            if(tabId === 'rankTab') renderRanking();
         }
 
-        function updateUI() {
+        function updateUIOnly() {
             document.getElementById('userGold').innerText = gameState.gold.toLocaleString();
             let tier = 'BRONZE', color = '#94a3b8';
             if (gameState.gold >= 1000000) { tier = 'DIAMOND'; color = '#38bdf8'; }
@@ -582,46 +634,15 @@
             const tierEl = document.getElementById('userTier');
             tierEl.innerText = tier;
             tierEl.style.color = color;
+        }
 
+        function updateUI() {
+            updateUIOnly();
+            syncGoldToServer();
             for(let key in gameState.bacBets) {
                 const el = document.getElementById(`amt-${key}`);
                 if(el) el.innerText = `${gameState.bacBets[key].toLocaleString()} G`;
             }
-
-            if(gameState.username) saveRealRanking();
-        }
-
-        function saveRealRanking() {
-            if(!gameState.username) return;
-            let ranks = JSON.parse(localStorage.getItem('real_ranks') || '[]');
-            let found = ranks.find(r => r.name === gameState.username);
-            if(found) {
-                if(gameState.gold > found.gold) found.gold = gameState.gold;
-            } else {
-                ranks.push({ name: gameState.username, gold: gameState.gold });
-            }
-            localStorage.setItem('real_ranks', JSON.stringify(ranks));
-        }
-
-        function renderRanking() {
-            const list = document.getElementById('rankList');
-            let ranks = JSON.parse(localStorage.getItem('real_ranks') || '[]');
-            if(ranks.length === 0 && gameState.username) {
-                ranks = [{ name: gameState.username, gold: gameState.gold }];
-            }
-            ranks.sort((a,b) => b.gold - a.gold);
-
-            if(ranks.length === 0) {
-                list.innerHTML = `<div style="text-align:center; color:var(--text-sub); padding:20px;">등록된 플레이어가 없습니다.</div>`;
-                return;
-            }
-
-            list.innerHTML = ranks.map((item, i) => `
-                <div class="rank-card">
-                    <span><b>${i + 1}위</b> ${item.name}</span>
-                    <span style="color:var(--accent-gold-light); font-weight:bold;">${item.gold.toLocaleString()} G</span>
-                </div>
-            `).join('');
         }
 
         /* ---------------- 경마 로직 ---------------- */
@@ -630,15 +651,9 @@
             gameState.raceMode = mode;
             document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(`mode-${mode}`).classList.add('active');
-            
             gameState.selectedHorse1 = null;
             gameState.selectedHorse2 = null;
             renderHorseSelectionUI();
-
-            const guide = document.getElementById('horseSelectGuide');
-            if(mode === 'win') guide.innerText = '말 선택 (1위 우승 말)';
-            else if(mode === 'quinella') guide.innerText = '말 2개 선택 (순서 상관없이 1,2위)';
-            else if(mode === 'exacta') guide.innerText = '말 2개 선택 (1위 ➔ 2위 순서 지정)';
         }
 
         function selectHorse(horse) {
@@ -726,9 +741,7 @@
                 gameState.horsePositions[randomSuit] += step;
                 if(gameState.horsePositions[randomSuit] >= 10) {
                     gameState.horsePositions[randomSuit] = 10;
-                    if(!gameState.finishOrder.includes(randomSuit)) {
-                        gameState.finishOrder.push(randomSuit);
-                    }
+                    if(!gameState.finishOrder.includes(randomSuit)) gameState.finishOrder.push(randomSuit);
                 }
 
                 const pct = (gameState.horsePositions[randomSuit] / 10) * 88;
@@ -783,7 +796,7 @@
             updateUI();
         }
 
-        /* ---------------- 바카라 3D 플립 로직 ---------------- */
+        /* ---------------- 바카라 로직 ---------------- */
         function selectBacBet(target) {
             if(gameState.isBaccaratPlaying) return;
             gameState.selectedBacTarget = target;
@@ -986,7 +999,7 @@
             return 0;
         }
 
-        /* ---------------- 하이로우 (동일 숫자 성공 처리) ---------------- */
+        /* ---------------- 하이로우 ---------------- */
         function addHiloBet(amt) {
             if(gameState.isHiloPlaying) return;
             if(gameState.hiloBet + amt <= gameState.gold) gameState.hiloBet += amt;
@@ -1067,7 +1080,6 @@
             const nextNum = nextCard.num;
 
             let win = false;
-            // 숫자가 같으면 무조건 적중 성공!
             if(currNum === nextNum) win = true;
             else if(choice === 'HIGH' && nextNum > currNum) win = true;
             else if(choice === 'LOW' && nextNum < currNum) win = true;
@@ -1112,7 +1124,7 @@
             updateUI();
         }
 
-        /* ---------------- 슬롯머신 로직 ---------------- */
+        /* ---------------- 슬롯머신 ---------------- */
         function addSlotBet(amt) {
             if(gameState.isSlotSpinning) return;
             if(gameState.slotBet + amt <= gameState.gold) gameState.slotBet += amt;
@@ -1125,107 +1137,4 @@
             document.getElementById('slotBetInput').value = gameState.slotBet;
         }
         function resetSlotBet() {
-            if(gameState.isSlotSpinning) return;
-            gameState.slotBet = 0;
-            document.getElementById('slotBetInput').value = 0;
-        }
-        function validateSlotBet() {
-            let val = parseInt(document.getElementById('slotBetInput').value) || 0;
-            if(val < 0) val = 0;
-            if(val > gameState.gold) val = gameState.gold;
-            gameState.slotBet = val;
-            document.getElementById('slotBetInput').value = val;
-        }
-
-        async function spinSlot() {
-            if(gameState.slotBet <= 0) return alert('베팅 금액을 설정하세요!');
-            if(gameState.slotBet > gameState.gold) return alert('골드가 부족합니다!');
-
-            gameState.isSlotSpinning = true;
-            gameState.gold -= gameState.slotBet;
-            updateUI();
-            document.getElementById('slotSpinBtn').disabled = true;
-            document.getElementById('slotResultText').innerText = '슬롯 회전 중... 🎰';
-
-            const res = [
-                slotSymbols[Math.floor(Math.random() * slotSymbols.length)],
-                slotSymbols[Math.floor(Math.random() * slotSymbols.length)],
-                slotSymbols[Math.floor(Math.random() * slotSymbols.length)]
-            ];
-
-            // 릴 애니메이션
-            for(let i=0; i<12; i++) {
-                document.getElementById('reel0').innerText = slotSymbols[Math.floor(Math.random() * slotSymbols.length)];
-                document.getElementById('reel1').innerText = slotSymbols[Math.floor(Math.random() * slotSymbols.length)];
-                document.getElementById('reel2').innerText = slotSymbols[Math.floor(Math.random() * slotSymbols.length)];
-                await sleep(80);
-            }
-
-            document.getElementById('reel0').innerText = res[0];
-            await sleep(200);
-            document.getElementById('reel1').innerText = res[1];
-            await sleep(200);
-            document.getElementById('reel2').innerText = res[2];
-            await sleep(200);
-
-            // 배당 계산
-            let multiplier = 0;
-            let msg = '';
-
-            if(res[0] === '7️⃣' && res[1] === '7️⃣' && res[2] === '7️⃣') {
-                multiplier = 100;
-                msg = '🚨 [JACKPOT 777!!] 100배 대박 적중!';
-            } else if(res[0] === '💎' && res[1] === '💎' && res[2] === '💎') {
-                multiplier = 50;
-                msg = '💎 [다이아몬드 트리플!] 50배 적중!';
-            } else if(res[0] === '👑' && res[1] === '👑' && res[2] === '👑') {
-                multiplier = 30;
-                msg = '👑 [크라운 트리플!] 30배 적중!';
-            } else if(res[0] === res[1] && res[1] === res[2]) {
-                multiplier = 15;
-                msg = '🎉 [트리플 적중!] 15배 획득!';
-            } else if(res[0] === res[1] || res[1] === res[2] || res[0] === res[2]) {
-                multiplier = 2;
-                msg = '✨ [더블 적중!] 2배 획득!';
-            } else {
-                msg = '아쉽습니다! 꽝입니다.';
-            }
-
-            if(multiplier > 0) {
-                const prize = gameState.slotBet * multiplier;
-                gameState.gold += prize;
-                document.getElementById('slotResultText').innerText = `${msg} (+${prize.toLocaleString()} G)`;
-            } else {
-                document.getElementById('slotResultText').innerText = msg;
-            }
-
-            gameState.isSlotSpinning = false;
-            document.getElementById('slotSpinBtn').disabled = false;
-            updateUI();
-        }
-
-        /* ---------------- 보상 및 기타 ---------------- */
-        function watchAd() {
-            const modal = document.getElementById('adModal');
-            const timerEl = document.getElementById('adTimer');
-            let cnt = 5;
-            modal.style.display = 'flex';
-            timerEl.innerText = cnt;
-            const t = setInterval(() => {
-                cnt--;
-                timerEl.innerText = cnt;
-                if(cnt <= 0) {
-                    clearInterval(t);
-                    modal.style.display = 'none';
-                    gameState.gold += 1000;
-                    updateUI();
-                    alert('🎬 +1,000 Gold 지급 완료!');
-                }
-            }, 1000);
-        }
-
-        function openPrivacy() { document.getElementById('privacyModal').style.display = 'flex'; }
-        function closePrivacy() { document.getElementById('privacyModal').style.display = 'none'; }
-    </script>
-</body>
-</html>
+            if(gameState.isSlotSpinning
