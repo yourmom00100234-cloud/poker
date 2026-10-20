@@ -6,15 +6,15 @@
     <title>WANT.BET CASINO</title>
     <style>
         :root {
-            --bg-main: #09070c;
-            --bg-card: #15101f;
-            --bg-input: #1d1729;
+            --bg-main: #0c0a10;
+            --bg-card: #161220;
+            --bg-input: #1f192c;
             --accent-gold: #f59e0b;
             --accent-gold-light: #fef08a;
             --text-main: #f8fafc;
             --text-sub: #94a3b8;
-            --border-color: #2b223d;
-            --gold-gradient: linear-gradient(135deg, #d4af37, #fef08a, #aa771c);
+            --border-color: #312642;
+            --gold-gradient: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
             --gold-btn-grad: linear-gradient(180deg, #f59e0b, #d97706);
         }
 
@@ -29,114 +29,112 @@
             padding-bottom: 75px;
         }
 
-        /* 닉네임 입력 모달 */
+        /* 닉네임 모달 */
         #nameModal {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(5, 4, 8, 0.98);
+            background: rgba(5, 4, 8, 0.96);
             display: flex; align-items: center; justify-content: center; z-index: 2000;
         }
         .modal-card {
             background: var(--bg-card); border: 2px solid var(--accent-gold);
             padding: 28px 20px; border-radius: 20px; width: 88%; max-width: 340px; text-align: center;
-            box-shadow: 0 0 30px rgba(245, 158, 11, 0.3);
+            box-shadow: 0 0 25px rgba(245, 158, 11, 0.25);
         }
-        .modal-title { font-size: 1.4rem; font-weight: 900; margin-bottom: 6px; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 1px; }
-        .modal-sub { color: var(--text-sub); font-size: 0.85rem; margin-bottom: 20px; line-height: 1.4; }
+        .modal-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 6px; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .modal-sub { color: var(--text-sub); font-size: 0.85rem; margin-bottom: 20px; }
         .modal-input { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-input); color: #fff; font-size: 1rem; text-align: center; margin-bottom: 16px; outline: none; }
         .modal-btn { width: 100%; padding: 14px; border-radius: 12px; border: none; background: var(--gold-btn-grad); color: #000; font-size: 1rem; font-weight: bold; cursor: pointer; }
 
-        /* 최상단 앱 다운로드 배너 (스크린샷 완벽 일치) */
-        .top-app-banner { background: linear-gradient(90deg, #181525, #2a1b3d); border-bottom: 1px solid var(--border-color); padding: 8px 12px; display: flex; align-items: center; justify-content: space-between; font-size: 0.72rem; }
+        /* 최상단 앱 배너 & 헤더 */
+        .top-app-banner { background: linear-gradient(90deg, #1e1b2e, #2d1b3e); border-bottom: 1px solid var(--border-color); padding: 8px 12px; display: flex; align-items: center; justify-content: space-between; font-size: 0.75rem; }
         .app-banner-left { display: flex; align-items: center; gap: 8px; }
-        .app-logo-box { width: 28px; height: 28px; background: linear-gradient(135deg, #111, #333); border: 1px solid var(--accent-gold); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 900; color: var(--accent-gold); font-size: 0.7rem; }
-        .app-download-btn { background: var(--gold-btn-grad); color: #000; border: none; padding: 5px 12px; border-radius: 6px; font-weight: 900; font-size: 0.75rem; cursor: pointer; box-shadow: 0 2px 6px rgba(245,158,11,0.3); }
+        .app-logo-sm { width: 28px; height: 28px; background: var(--gold-gradient); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #000; font-size: 0.8rem; }
+        .app-download-btn { background: var(--gold-btn-grad); color: #000; border: none; padding: 5px 12px; border-radius: 6px; font-weight: 800; font-size: 0.75rem; cursor: pointer; }
 
-        /* 카지노 헤더 (WANT.BET 로고 및 지갑 바) */
         .casino-header { background: var(--bg-card); padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-color); }
-        .brand-logo { font-size: 1.35rem; font-weight: 900; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 1px; }
-        .header-wallet { display: flex; align-items: center; background: var(--bg-input); border: 1px solid var(--border-color); border-radius: 20px; padding: 4px 12px; gap: 8px; }
-        .wallet-gold { font-size: 0.95rem; font-weight: 800; color: #fff; }
+        .brand-logo { font-size: 1.3rem; font-weight: 900; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .header-wallet { display: flex; align-items: center; background: var(--bg-input); border: 1px solid var(--border-color); border-radius: 20px; padding: 4px 10px; gap: 8px; }
+        .wallet-gold { font-size: 0.95rem; font-weight: 800; color: var(--accent-gold-light); }
         .wallet-refresh-btn, .wallet-plus-btn { background: transparent; border: none; color: var(--text-sub); font-size: 0.9rem; cursor: pointer; }
-        .wallet-plus-btn { background: var(--accent-gold); color: #000; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.85rem; }
+        .wallet-plus-btn { background: var(--accent-gold); color: #000; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.8rem; }
 
         /* 홈 로비 */
-        .page-panel { display: none; padding: 12px; }
-        .page-panel.active { display: block; }
-
-        /* 이벤트 배너 (스크린샷의 제니 지니 테마 반영) */
-        .promo-banner { margin-bottom: 12px; background: linear-gradient(135deg, #3b0764, #581c87); border: 1px solid #7c3aed; border-radius: 14px; padding: 14px; position: relative; overflow: hidden; }
-        .promo-title { font-size: 0.95rem; font-weight: 800; color: #fef08a; margin-bottom: 6px; }
-        .promo-list { font-size: 0.72rem; color: #e2e8f0; line-height: 1.5; }
-        .promo-list b { color: #fef08a; }
-
-        /* 공지 티커 */
-        .notice-ticker { background: var(--bg-card); margin-bottom: 12px; padding: 8px 12px; border-radius: 10px; display: flex; align-items: center; gap: 8px; font-size: 0.75rem; border: 1px solid var(--border-color); color: var(--text-sub); }
-
-        /* 상단 카테고리 탭 (스크린샷과 동일한 모양) */
-        .category-scroll { display: flex; gap: 8px; margin-bottom: 14px; overflow-x: auto; white-space: nowrap; padding-bottom: 4px; }
-        .cat-btn { background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-sub); padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; cursor: pointer; flex: 0 0 auto; }
-        .cat-btn.active { background: var(--gold-btn-grad); border-color: var(--accent-gold); color: #000; font-weight: 900; box-shadow: 0 0 10px rgba(245,158,11,0.3); }
-
-        .section-title { margin-bottom: 10px; font-size: 0.9rem; font-weight: bold; color: var(--accent-gold-light); display: flex; align-items: center; gap: 6px; }
+        .promo-banner { margin: 12px; background: linear-gradient(135deg, #2e1065, #581c87); border: 1px solid #7c3aed; border-radius: 14px; padding: 14px; }
+        .promo-title { font-size: 0.95rem; font-weight: 800; color: #fef08a; margin-bottom: 4px; }
+        .promo-desc { font-size: 0.75rem; color: #e2e8f0; line-height: 1.4; }
+        .notice-ticker { background: var(--bg-card); margin: 0 12px 12px 12px; padding: 8px 12px; border-radius: 10px; display: flex; align-items: center; gap: 8px; font-size: 0.75rem; border: 1px solid var(--border-color); color: var(--text-sub); }
+        .category-scroll { display: flex; gap: 8px; padding: 0 12px 12px 12px; overflow-x: auto; white-space: nowrap; }
+        .cat-btn { background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-sub); padding: 8px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; cursor: pointer; flex: 0 0 auto; }
+        .cat-btn.active { background: var(--gold-btn-grad); border-color: var(--accent-gold); color: #000; }
+        .section-title { padding: 0 14px 8px 14px; font-size: 0.9rem; font-weight: bold; color: var(--accent-gold-light); }
+        .game-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 0 12px 16px 12px; }
         
-        /* 게임 그리드 및 썸네일 (스크린샷 15092_2.jpg 속 실제 게임 표지 디자인을 완벽히 재현) */
-        .game-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 16px; }
         .game-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; overflow: hidden; cursor: pointer; transition: transform 0.2s; position: relative; }
         .game-card:active { transform: scale(0.97); }
-        
-        .game-thumb { height: 110px; position: relative; overflow: hidden; background: #000; display: flex; align-items: center; justify-content: center; }
+        .game-thumb { height: 110px; position: relative; overflow: hidden; background: #000; }
         .game-thumb img { width: 100%; height: 100%; object-fit: cover; }
-        
-        /* 하이로우 썸네일 (스크린샷 원본의 HiLo 로고 디자인과 정확히 일치) */
-        .hilo-thumb-bg {
-            width: 100%; height: 100%;
-            background: linear-gradient(135deg, #0d2b55, #1e3a8a);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            position: relative; border: 1px solid #3b82f6;
-        }
-        .hilo-thumb-logo { font-size: 1.6rem; font-weight: 900; font-style: italic; color: #fef08a; letter-spacing: 1px; text-shadow: 0 2px 5px rgba(0,0,0,0.8); }
-        .hilo-thumb-cards { display: flex; gap: 4px; margin-top: 4px; font-size: 0.85rem; }
-
-        .game-badge { position: absolute; top: 6px; left: 6px; background: #ef4444; color: #fff; font-size: 0.62rem; font-weight: bold; padding: 2px 6px; border-radius: 4px; z-index: 2; }
+        .hilo-thumb-bg { width: 100%; height: 100%; background: linear-gradient(135deg, #0d2b55, #1e3a8a); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .game-badge { position: absolute; top: 6px; left: 6px; background: #ef4444; color: #fff; font-size: 0.65rem; font-weight: bold; padding: 2px 6px; border-radius: 4px; z-index: 2; }
         .game-info { padding: 10px; }
         .game-name { font-size: 0.85rem; font-weight: bold; margin-bottom: 2px; }
         .game-provider { font-size: 0.7rem; color: var(--text-sub); }
 
+        .page-panel { display: none; padding: 12px; }
+        .page-panel.active { display: block; }
         .back-lobby-btn { background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-sub); padding: 6px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: bold; margin-bottom: 12px; cursor: pointer; }
 
-        /* 바카라 UI */
-        .bac-screen { background: #0c1a13; border-radius: 16px; border: 2px solid #15803d; overflow: hidden; margin-bottom: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.6); }
-        .bac-video-area { height: 110px; background: radial-gradient(circle, #166534 0%, #052e16 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; border-bottom: 1px solid #15803d; }
-        .bac-dealer-circle { width: 52px; height: 52px; background: rgba(0,0,0,0.75); border: 3px solid #ef4444; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 900; color: #fff; box-shadow: 0 0 15px rgba(239,68,68,0.7); }
-        .bac-scoreboard { background: #ffffff; padding: 4px; display: grid; grid-template-columns: repeat(14, 1fr); grid-template-rows: repeat(6, 1fr); gap: 2px; height: 75px; border-bottom: 1px solid #15803d; }
-        .score-cell { border: 1px solid #cbd5e1; border-radius: 2px; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: bold; background: #f8fafc; }
-        .bac-deal-cards-box { background: rgba(4, 47, 26, 0.95); padding: 8px; display: flex; justify-content: space-around; align-items: center; border-bottom: 1px solid #15803d; }
+        /* ---------------- [실제 원본 스크린샷 15094_2.jpg 완벽 재현 바카라 UI] ---------------- */
+        .baccarat-wrapper { background: #181412; border-radius: 14px; border: 1px solid #42362b; overflow: hidden; margin-bottom: 10px; }
+        .bac-top-video { height: 130px; background: url('https://images.unsplash.com/photo-1511193311914-0346f16efe90?auto=format&fit=crop&w=600&q=80') center/cover no-repeat; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .bac-overlay-dark { position: absolute; inset: 0; background: rgba(0,0,0,0.55); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .bac-timer-ring { width: 64px; height: 64px; border-radius: 50%; background: #000; border: 3px solid #ef4444; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 900; color: #fff; box-shadow: 0 0 15px rgba(239,68,68,0.8); }
+        .bac-info-bar { position: absolute; top: 6px; left: 8px; right: 8px; display: flex; justify-content: space-between; font-size: 0.7rem; color: #e2e8f0; font-weight: bold; }
+        
+        /* 스코어보드 (흰색 격자 형태) */
+        .bac-scoreboard-box { background: #ffffff; padding: 4px; height: 85px; display: grid; grid-template-columns: repeat(20, 1fr); grid-template-rows: repeat(6, 1fr); gap: 1px; border-bottom: 1px solid #cbd5e1; }
+        .sb-cell { border: 1px solid #e2e8f0; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 0.55rem; font-weight: bold; }
+        .sb-dot-b { width: 10px; height: 10px; background: #ef4444; border-radius: 50%; display: inline-block; }
+        .sb-dot-p { width: 10px; height: 10px; background: #3b82f6; border-radius: 50%; display: inline-block; }
+
+        .bac-dealer-cards-area { background: #0f1218; padding: 8px 12px; display: flex; justify-content: space-around; align-items: center; border-bottom: 1px solid #334155; }
         .bac-side-box { text-align: center; width: 45%; }
-        .bac-side-label { font-size: 0.8rem; font-weight: 800; margin-bottom: 4px; }
-        .cards-row { display: flex; justify-content: center; gap: 4px; min-height: 52px; }
-        .card-item { width: 34px; height: 48px; background: #fff; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800; color: #000; box-shadow: 0 2px 6px rgba(0,0,0,0.5); border: 1px solid #cbd5e1; }
+        .cards-row { display: flex; justify-content: center; gap: 4px; min-height: 44px; margin-top: 4px; }
+        .card-item { width: 30px; height: 42px; background: #fff; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 800; color: #000; box-shadow: 0 2px 4px rgba(0,0,0,0.4); }
 
-        .bac-bet-table-box { background: radial-gradient(circle, #065f46 0%, #022c22 100%); border: 3px solid var(--accent-gold); border-radius: 16px; padding: 12px; box-shadow: inset 0 0 20px rgba(0,0,0,0.8); }
-        .bac-top-side-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-bottom: 8px; }
-        .b-card { background: rgba(0, 0, 0, 0.45); border: 2px solid rgba(245,158,11,0.3); border-radius: 10px; padding: 10px 4px; text-align: center; cursor: pointer; }
-        .b-card.active { border-color: var(--accent-gold); background: rgba(245,158,11,0.35); box-shadow: 0 0 12px rgba(245,158,11,0.5); }
-        .b-title { font-size: 0.72rem; font-weight: bold; }
-        .b-odds { font-size: 0.65rem; color: var(--accent-gold); margin-top: 2px; }
-        .b-amt { font-size: 0.65rem; color: #34d399; font-weight: bold; margin-top: 2px; }
-        .bac-main-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 12px; }
-        .b-main-player { background: #1e3a8a; border: 2px solid #3b82f6; border-radius: 12px; padding: 14px 6px; text-align: center; cursor: pointer; }
-        .b-main-player.active { border-color: #fef08a; background: #2563eb; box-shadow: 0 0 15px rgba(59,130,246,0.8); }
-        .b-main-banker { background: #7f1d1d; border: 2px solid #ef4444; border-radius: 12px; padding: 14px 6px; text-align: center; cursor: pointer; }
-        .b-main-banker.active { border-color: #fef08a; background: #dc2626; box-shadow: 0 0 15px rgba(239,68,68,0.8); }
-        .b-main-tie { background: #047857; border: 2px solid #10b981; border-radius: 12px; padding: 14px 6px; text-align: center; cursor: pointer; }
-        .b-main-tie.active { border-color: #fef08a; background: #059669; box-shadow: 0 0 15px rgba(16,185,129,0.8); }
+        /* 베팅 테이블 (스크린샷 15094_2.jpg 색상 및 배치 100% 일치) */
+        .bac-table-board { background: #221c18; border: 2px solid #b38728; border-radius: 14px; padding: 10px; }
+        
+        .table-top-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-bottom: 4px; }
+        .table-sub-btn { background: #854d0e; border: 1px solid #ca8a04; border-radius: 6px; padding: 8px 4px; text-align: center; cursor: pointer; }
+        .table-sub-btn.active { background: #a16207; box-shadow: 0 0 10px #f59e0b; }
 
-        /* 하이로우 화면 */
+        .table-pair-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-bottom: 6px; }
+        .pair-box { background: #1e1b2e; border: 1px solid #4c1d95; border-radius: 6px; padding: 6px 2px; text-align: center; cursor: pointer; }
+        .pair-box.active { border-color: #f59e0b; background: #311042; }
+
+        .table-main-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+        .t-player { background: #1e3a8a; border: 2px solid #3b82f6; border-radius: 10px; padding: 12px 4px; text-align: center; cursor: pointer; }
+        .t-player.active { background: #2563eb; box-shadow: 0 0 12px #3b82f6; }
+        .t-tie { background: #047857; border: 2px solid #10b981; border-radius: 10px; padding: 12px 4px; text-align: center; cursor: pointer; }
+        .t-tie.active { background: #059669; box-shadow: 0 0 12px #10b981; }
+        .t-banker { background: #7f1d1d; border: 2px solid #ef4444; border-radius: 10px; padding: 12px 4px; text-align: center; cursor: pointer; }
+        .t-banker.active { background: #dc2626; box-shadow: 0 0 12px #ef4444; }
+
+        /* 하단 칩 바 (스크린샷처럼 원형 칩 모양) */
+        .chip-bar { display: flex; justify-content: space-between; align-items: center; gap: 4px; margin-bottom: 10px; }
+        .chip-circle { width: 38px; height: 38px; border-radius: 50%; border: 2px dashed #fff; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: bold; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.5); }
+        .c-1k { background: #1e3a8a; color: #93c5fd; }
+        .c-5k { background: #b45309; color: #fef08a; }
+        .c-10k { background: #7c3aed; color: #e9d5ff; }
+        .c-50k { background: #047857; color: #a7f3d0; }
+        .c-all { background: #991b1b; color: #fca5a5; }
+        .c-reset { background: #334155; color: #cbd5e1; }
+
+        /* 하이로우 UI */
         .hilo-screen {
             background: linear-gradient(135deg, #0d2b55, #041428);
-            border: 3px solid #1d4ed8;
-            border-radius: 20px; padding: 16px; text-align: center; margin-bottom: 12px;
-            box-shadow: 0 0 25px rgba(29, 78, 216, 0.4), inset 0 0 20px rgba(0,0,0,0.6);
+            border: 3px solid #1d4ed8; border-radius: 20px; padding: 16px; text-align: center; margin-bottom: 12px;
+            box-shadow: 0 0 25px rgba(29, 78, 216, 0.4);
         }
         .hilo-jackpot-title { font-size: 0.8rem; color: #38bdf8; font-weight: bold; letter-spacing: 1px; }
         .hilo-jackpot-amount { font-size: 1.5rem; font-weight: 900; background: linear-gradient(135deg, #fef08a, #f59e0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; }
@@ -145,16 +143,10 @@
         .hilo-action-buttons { display: flex; flex-direction: column; gap: 8px; width: 160px; }
         .hilo-btn-high { background: linear-gradient(180deg, #d97706, #b45309); border: 2px solid #fef08a; border-radius: 12px; padding: 12px; color: #fff; font-weight: 800; cursor: pointer; text-align: center; }
         .hilo-btn-low { background: linear-gradient(180deg, #7c3aed, #5b21b6); border: 2px solid #c084fc; border-radius: 12px; padding: 12px; color: #fff; font-weight: 800; cursor: pointer; text-align: center; }
-        .hilo-btn-high span, .hilo-btn-low span { display: block; font-size: 0.7rem; color: #f8fafc; font-weight: normal; margin-top: 2px; }
-
-        .chip-flex { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin-bottom: 10px; }
-        .chip-btn { background: #2e2417; border: 1px solid var(--border-color); color: var(--accent-gold-light); padding: 9px 0; border-radius: 8px; font-size: 0.75rem; font-weight: bold; cursor: pointer; }
-        .chip-btn.reset-btn { background: #7f1d1d; border-color: #ef4444; color: #fff; }
+        
         .start-race-btn { width: 100%; padding: 14px; background: var(--gold-btn-grad); border: none; border-radius: 12px; color: #000; font-size: 1.1rem; font-weight: 800; cursor: pointer; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3); }
-        .input-row { display: flex; align-items: center; background: var(--bg-input); border-radius: 10px; padding: 8px 14px; margin-bottom: 8px; border: 1px solid var(--border-color); }
-        .input-row input { background: transparent; border: none; color: #fff; font-size: 1.1rem; font-weight: bold; width: 100%; text-align: right; outline: none; padding-right: 6px; }
 
-        /* 하단 고정 네비바 (스크린샷과 일치) */
+        /* 하단 네비바 */
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 480px; margin: 0 auto; background: #110d18; border-top: 1px solid var(--border-color); display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; }
         .nav-item { background: transparent; border: none; color: var(--text-sub); font-size: 0.7rem; font-weight: bold; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; flex: 1; }
         .nav-item span.icon { font-size: 1.2rem; }
@@ -168,7 +160,7 @@
 </head>
 <body>
 
-    <!-- 닉네임 입력 모달 -->
+    <!-- 닉네임 모달 -->
     <div id="nameModal">
         <div class="modal-card">
             <div class="modal-title">👑 WANT.BET 👑</div>
@@ -181,7 +173,7 @@
     <!-- 최상단 앱 다운로드 배너 -->
     <div class="top-app-banner">
         <div class="app-banner-left">
-            <div class="app-logo-box">VIP</div>
+            <div class="app-logo-sm">VIP</div>
             <div><b>유효 초대당 88만원 예상</b></div>
         </div>
         <button class="app-download-btn" onclick="alert('모바일 전용 앱 설치 파일 다운로드 중...')">APP 다운로드</button>
@@ -199,31 +191,21 @@
 
     <!-- 홈 로비 -->
     <div id="homeLobby" class="page-panel active">
-        <!-- 이벤트 배너 (스크린샷 내용 100% 반영) -->
         <div class="promo-banner">
             <div class="promo-title">🔥 4가지 추천 수수료 이벤트</div>
-            <div class="promo-list">
-                1. 인당 최대 <b>48,000원</b> 적립<br>
-                2. 모든 입금 <b>1.28%</b> 즉시 지급<br>
-                3. 베팅 수수료 <b>0.48%</b> 페이백<br>
-                4. 업적 달성 보너스 <b>68,888,800원</b>
-            </div>
+            <div class="promo-desc">• 인당 최대 48,000원 적립<br>• 모든 입금 1.28% 즉시 지급<br>• 베팅 수수료 0.48% 페이백</div>
         </div>
-
         <div class="notice-ticker">
             <span>📢</span>
             <div style="overflow:hidden; white-space:nowrap; text-overflow:ellipsis;">[공지] 평생 유효한 VIP 주간 보너스 최대 ₩24,880,000 지급 중!</div>
         </div>
-
-        <!-- 카테고리 탭 (스크린샷과 동일한 모양과 아이콘) -->
         <div class="category-scroll">
             <button class="cat-btn active">🔥 인기 게임</button>
             <button class="cat-btn">❤️ 즐겨찾기</button>
             <button class="cat-btn">🎴 라이브</button>
             <button class="cat-btn">📈 JILI</button>
         </div>
-
-        <div class="section-title">🔥 인기 게임</div>
+        <div class="section-title">✨ 실시간 인기 게임</div>
         <div class="game-grid" id="gameGridContainer"></div>
     </div>
 
@@ -231,71 +213,88 @@
     <div id="gamePlayArea" class="page-panel">
         <button class="back-lobby-btn" onclick="returnToLobby()">⬅ 로비로 돌아가기</button>
         
-        <!-- 1. 스피드 바카라 패널 -->
+        <!-- 1. [스크린샷 15094_2.jpg 완벽 일치] 스피드 바카라 패널 -->
         <div id="panel-baccarat" class="sub-game-panel" style="display:none;">
-            <div class="bac-screen">
-                <div class="bac-video-area">
-                    <div class="bac-dealer-circle" id="bacTimerCircle">10</div>
+            <div class="baccarat-wrapper">
+                <div class="bac-top-video">
+                    <div class="bac-overlay-dark">
+                        <div class="bac-info-bar">
+                            <span>한국 스피드 바카라 5</span>
+                            <span id="bacUserId">ID: 18341526914</span>
+                        </div>
+                        <div class="bac-timer-ring" id="bacTimerCircle">3</div>
+                    </div>
                 </div>
-                <div class="bac-scoreboard" id="bacScoreboardGrid"></div>
-                <div class="bac-deal-cards-box">
+                
+                <!-- 스코어보드 도트 그리드 -->
+                <div class="bac-scoreboard-box" id="bacScoreboardGrid"></div>
+
+                <div class="bac-dealer-cards-area">
                     <div class="bac-side-box">
-                        <div class="bac-side-label" style="color:#38bdf8;">PLAYER</div>
+                        <div style="font-size:0.75rem; color:#38bdf8; font-weight:800;">PLAYER</div>
                         <div id="playerCards" class="cards-row"></div>
-                        <div id="playerScore" style="font-size:0.8rem; font-weight:bold; color:#fef08a; margin-top:4px;">0점</div>
+                        <div id="playerScore" style="font-size:0.75rem; color:#fef08a; font-weight:bold; margin-top:2px;">0점</div>
                     </div>
                     <div class="bac-side-box">
-                        <div class="bac-side-label" style="color:#f87171;">BANKER</div>
+                        <div style="font-size:0.75rem; color:#f87171; font-weight:800;">BANKER</div>
                         <div id="bankerCards" class="cards-row"></div>
-                        <div id="bankerScore" style="font-size:0.8rem; font-weight:bold; color:#fef08a; margin-top:4px;">0점</div>
+                        <div id="bankerScore" style="font-size:0.75rem; color:#fef08a; font-weight:bold; margin-top:2px;">0점</div>
                     </div>
                 </div>
             </div>
 
-            <div class="bac-bet-table-box">
-                <div class="bac-top-side-grid">
-                    <div class="b-card" id="btn-pPair" onclick="selectBacBet('pPair')">
-                        <div class="b-title" style="color:#38bdf8;">플레이어 페어</div><div class="b-odds">11:1</div><div class="b-amt" id="amt-pPair">0 G</div>
+            <div class="bac-table-board">
+                <!-- 상단 보너스/퍼펙트 페어 -->
+                <div class="table-top-grid">
+                    <div class="table-sub-btn" id="btn-perfect" onclick="selectBacBet('perfect')">
+                        <div style="font-size:0.7rem; color:#fef08a; font-weight:bold;">퍼펙트 페어</div>
+                        <div style="font-size:0.6rem; color:#cbd5e1;">25 : 1</div>
+                        <div style="font-size:0.6rem; color:#34d399;" id="amt-perfect">0 G</div>
                     </div>
-                    <div class="b-card" id="btn-bPair" onclick="selectBacBet('bPair')">
-                        <div class="b-title" style="color:#f87171;">뱅커 페어</div><div class="b-odds">11:1</div><div class="b-amt" id="amt-bPair">0 G</div>
-                    </div>
-                    <div class="b-card" id="btn-pBonus" onclick="selectBacBet('pBonus')">
-                        <div class="b-title" style="color:#38bdf8;">P. 보너스</div><div class="b-odds">30:1</div><div class="b-amt" id="amt-pBonus">0 G</div>
-                    </div>
-                    <div class="b-card" id="btn-bBonus" onclick="selectBacBet('bBonus')">
-                        <div class="b-title" style="color:#f87171;">B. 보너스</div><div class="b-odds">30:1</div><div class="b-amt" id="amt-bBonus">0 G</div>
-                    </div>
-                </div>
-
-                <div class="bac-main-grid">
-                    <div class="b-main-player" id="btn-player" onclick="selectBacBet('player')">
-                        <div class="b-title" style="color:#fff; font-size:0.95rem;">플레이어</div>
-                        <div style="font-size:0.7rem; color:#93c5fd; margin-top:2px;">1 : 1</div>
-                        <div class="b-amt" id="amt-player" style="margin-top:4px; color:#fef08a;">0 G</div>
-                    </div>
-                    <div class="b-main-tie" id="btn-tie" onclick="selectBacBet('tie')">
-                        <div class="b-title" style="color:#fff; font-size:0.95rem;">무승부</div>
-                        <div style="font-size:0.7rem; color:#6ee7b7; margin-top:2px;">8 : 1</div>
-                        <div class="b-amt" id="amt-tie" style="margin-top:4px; color:#fef08a;">0 G</div>
-                    </div>
-                    <div class="b-main-banker" id="btn-banker" onclick="selectBacBet('banker')">
-                        <div class="b-title" style="color:#fff; font-size:0.95rem;">뱅커</div>
-                        <div style="font-size:0.7rem; color:#fca5a5; margin-top:2px;">0.95 : 1</div>
-                        <div class="b-amt" id="amt-banker" style="margin-top:4px; color:#fef08a;">0 G</div>
+                    <div class="table-sub-btn" id="btn-either" onclick="selectBacBet('either')">
+                        <div style="font-size:0.7rem; color:#fef08a; font-weight:bold;">이더 페어</div>
+                        <div style="font-size:0.6rem; color:#cbd5e1;">5 : 1</div>
+                        <div style="font-size:0.6rem; color:#34d399;" id="amt-either">0 G</div>
                     </div>
                 </div>
 
-                <div class="chip-flex">
-                    <button class="chip-btn" onclick="addBacBet(1000)">+1K</button>
-                    <button class="chip-btn" onclick="addBacBet(5000)">+5K</button>
-                    <button class="chip-btn" onclick="addBacBet(10000)">+10K</button>
-                    <button class="chip-btn" onclick="addBacBet(50000)">+50K</button>
-                    <button class="chip-btn" onclick="addBacBetAll()">ALL</button>
-                    <button class="chip-btn reset-btn" onclick="resetBacBets()">리셋</button>
+                <div class="table-pair-grid">
+                    <div class="pair-box" id="btn-pPair" onclick="selectBacBet('pPair')"><div style="font-size:0.65rem; color:#38bdf8;">플.페어</div><div style="font-size:0.55rem; color:#f59e0b;">11:1</div><div style="font-size:0.55rem; color:#34d399;" id="amt-pPair">0 G</div></div>
+                    <div class="pair-box" id="btn-pBonus" onclick="selectBacBet('pBonus')"><div style="font-size:0.65rem; color:#38bdf8;">플.보너스</div><div style="font-size:0.55rem; color:#f59e0b;">30:1</div><div style="font-size:0.55rem; color:#34d399;" id="amt-pBonus">0 G</div></div>
+                    <div class="pair-box" id="btn-bBonus" onclick="selectBacBet('bBonus')"><div style="font-size:0.65rem; color:#f87171;">뱅.보너스</div><div style="font-size:0.55rem; color:#f59e0b;">30:1</div><div style="font-size:0.55rem; color:#34d399;" id="amt-bBonus">0 G</div></div>
+                    <div class="pair-box" id="btn-bPair" onclick="selectBacBet('bPair')"><div style="font-size:0.65rem; color:#f87171;">뱅.페어</div><div style="font-size:0.55rem; color:#f59e0b;">11:1</div><div style="font-size:0.55rem; color:#34d399;" id="amt-bPair">0 G</div></div>
                 </div>
 
-                <div id="bacResultText" style="text-align:center; font-weight:bold; color:var(--accent-gold-light); font-size:0.85rem; margin-bottom:8px;">베팅 구역 선택 후 DEAL을 누르세요</div>
+                <!-- 메인 베팅 구역 (플레이어 / 무승부 / 뱅커) -->
+                <div class="table-main-grid">
+                    <div class="t-player" id="btn-player" onclick="selectBacBet('player')">
+                        <div style="font-size:0.95rem; font-weight:900; color:#fff;">플레이어</div>
+                        <div style="font-size:0.65rem; color:#93c5fd;">1 : 1</div>
+                        <div style="font-size:0.7rem; color:#fef08a; font-weight:bold; margin-top:2px;" id="amt-player">0 G</div>
+                    </div>
+                    <div class="t-tie" id="btn-tie" onclick="selectBacBet('tie')">
+                        <div style="font-size:0.95rem; font-weight:900; color:#fff;">무승부</div>
+                        <div style="font-size:0.65rem; color:#6ee7b7;">8 : 1</div>
+                        <div style="font-size:0.7rem; color:#fef08a; font-weight:bold; margin-top:2px;" id="amt-tie">0 G</div>
+                    </div>
+                    <div class="t-banker" id="btn-banker" onclick="selectBacBet('banker')">
+                        <div style="font-size:0.95rem; font-weight:900; color:#fff;">뱅커</div>
+                        <div style="font-size:0.65rem; color:#fca5a5;">0.95 : 1</div>
+                        <div style="font-size:0.7rem; color:#fef08a; font-weight:bold; margin-top:2px;" id="amt-banker">0 G</div>
+                    </div>
+                </div>
+
+                <!-- 원형 칩 선택 바 -->
+                <div class="chip-bar">
+                    <div class="chip-circle c-1k" onclick="addBacBet(1000)">1K</div>
+                    <div class="chip-circle c-5k" onclick="addBacBet(5000)">5K</div>
+                    <div class="chip-circle c-10k" onclick="addBacBet(10000)">10K</div>
+                    <div class="chip-circle c-50k" onclick="addBacBet(50000)">50K</div>
+                    <div class="chip-circle c-all" onclick="addBacBetAll()">ALL</div>
+                    <div class="chip-circle c-reset" onclick="resetBacBets()">초기화</div>
+                </div>
+
+                <div id="bacResultText" style="text-align:center; font-weight:bold; color:var(--accent-gold-light); font-size:0.8rem; margin-bottom:8px;">베팅 구역 선택 후 DEAL을 누르세요</div>
                 <button id="bacDealBtn" class="start-race-btn" onclick="startBaccaratTimer()">DEAL (베팅 및 딜링)</button>
             </div>
         </div>
@@ -326,17 +325,17 @@
 
             <div class="bet-container" style="background:var(--bg-card); border-radius:16px; padding:14px;">
                 <div id="hiloBetControls">
-                    <div class="input-row">
-                        <input type="number" id="hiloBetInput" value="1000" min="0" oninput="validateHiloBet()">
+                    <div style="display:flex; align-items:center; background:var(--bg-input); border-radius:10px; padding:8px 14px; margin-bottom:8px; border:1px solid var(--border-color);">
+                        <input type="number" id="hiloBetInput" value="1000" min="0" oninput="validateHiloBet()" style="background:transparent; border:none; color:#fff; font-size:1.1rem; font-weight:bold; width:100%; text-align:right; outline:none; padding-right:6px;">
                         <span style="color:var(--accent-gold-light); font-weight:bold;">G</span>
                     </div>
-                    <div class="chip-flex">
-                        <button class="chip-btn" onclick="addHiloBet(1000)">+1K</button>
-                        <button class="chip-btn" onclick="addHiloBet(5000)">+5K</button>
-                        <button class="chip-btn" onclick="addHiloBet(10000)">+10K</button>
-                        <button class="chip-btn" onclick="addHiloBet(50000)">+50K</button>
-                        <button class="chip-btn" onclick="addHiloBetAll()">ALL</button>
-                        <button class="chip-btn reset-btn" onclick="resetHiloBet()">리셋</button>
+                    <div style="display:grid; grid-template-columns: repeat(6, 1fr); gap:4px; margin-bottom:10px;">
+                        <button class="cat-btn" onclick="addHiloBet(1000)" style="padding:8px 0; font-size:0.7rem;">+1K</button>
+                        <button class="cat-btn" onclick="addHiloBet(5000)" style="padding:8px 0; font-size:0.7rem;">+5K</button>
+                        <button class="cat-btn" onclick="addHiloBet(10000)" style="padding:8px 0; font-size:0.7rem;">+10K</button>
+                        <button class="cat-btn" onclick="addHiloBet(50000)" style="padding:8px 0; font-size:0.7rem;">+50K</button>
+                        <button class="cat-btn" onclick="addHiloBetAll()" style="padding:8px 0; font-size:0.7rem;">ALL</button>
+                        <button class="cat-btn" onclick="resetHiloBet()" style="padding:8px 0; font-size:0.7rem; background:#7f1d1d; color:#fff;">리셋</button>
                     </div>
                     <button class="start-race-btn" onclick="startHiloGame()">하이로우 게임 시작</button>
                 </div>
@@ -368,7 +367,7 @@
         <div class="card-box"><h3 style="color:var(--accent-gold-light); margin-bottom:10px;">🏆 실시간 랭킹</h3><div id="rankList"></div></div>
     </div>
 
-    <!-- 하단 네비바 (스크린샷과 100% 동일한 아이콘 및 탭 구조) -->
+    <!-- 하단 네비바 -->
     <div class="bottom-nav">
         <button class="nav-item active" onclick="switchBottomTab('home', this)"><span class="icon">🏠</span><span>홈</span></button>
         <button class="nav-item" onclick="switchBottomTab('promo', this)"><span class="icon">🎁</span><span>프로모션</span></button>
@@ -386,16 +385,15 @@
     <script>
         let gameState = {
             username: '', gold: 10000,
-            bacBets: { player: 0, banker: 0, tie: 0, pPair: 0, bPair: 0, pBonus: 0, bBonus: 0 },
+            bacBets: { player: 0, banker: 0, tie: 0, pPair: 0, bPair: 0, pBonus: 0, bBonus: 0, perfect: 0, either: 0 },
             selectedBacTarget: 'player', isBaccaratPlaying: false,
             hiloBet: 1000, hiloCurrentCard: { val: 7, num: 7, symbol: '♠7', color: '#000' }, hiloAccumulatedPrize: 0, isHiloPlaying: false
         };
 
-        // 스크린샷 15092_2.jpg 속 실제 썸네일 디자인을 그대로 구현한 바카라 & 하이로우 목록
         const gamesList = [
             { 
                 id: 'baccarat', 
-                name: '한국 스피드 바카라 C', 
+                name: '한국 스피드 바카라 5', 
                 provider: 'EVO', 
                 thumbHtml: `<img src="https://images.unsplash.com/photo-1511193311914-0346f16efe90?auto=format&fit=crop&w=400&q=80" alt="바카라">`, 
                 badge: '인기' 
@@ -406,12 +404,8 @@
                 provider: 'JDB', 
                 thumbHtml: `
                     <div class="hilo-thumb-bg">
-                        <div style="position: absolute; top: 12px; left: 10px; display: flex; gap: 3px; font-size: 0.9rem;">⬆️⬇️</div>
-                        <div class="hilo-thumb-logo">HiLo</div>
-                        <div class="hilo-thumb-cards">
-                            <span style="color:#38bdf8; font-weight:bold;">♠K</span>
-                            <span style="color:#f87171; font-weight:bold;">◆A</span>
-                        </div>
+                        <div style="font-weight:900; font-size:1.4rem; color:#fef08a; font-style:italic;">HiLo</div>
+                        <div style="display:flex; gap:4px; margin-top:2px; font-size:0.75rem;"><span style="color:#38bdf8;">♠K</span><span style="color:#f87171;">◆A</span></div>
                     </div>
                 `, 
                 badge: 'HOT' 
@@ -425,8 +419,11 @@
             const grid = document.getElementById('bacScoreboardGrid');
             if(!grid) return;
             let html = '';
-            for(let i=0; i<84; i++) {
-                html += `<div class="score-cell"></div>`;
+            for(let i=0; i<120; i++) {
+                let dot = '';
+                if(i === 2 || i === 25 || i === 44) dot = `<span class="sb-dot-b"></span>`;
+                else if(i === 5 || i === 22 || i === 41) dot = `<span class="sb-dot-p"></span>`;
+                html += `<div class="sb-cell">${dot}</div>`;
             }
             grid.innerHTML = html;
         }
@@ -455,6 +452,7 @@
             document.getElementById('userGold').innerText = (gameState.gold || 0).toLocaleString();
             document.getElementById('profileGold').innerText = (gameState.gold || 0).toLocaleString();
             document.getElementById('profileName').innerText = gameState.username || '-';
+            document.getElementById('bacUserId').innerText = `ID: ${Math.floor(Math.random()*90000000000+10000000000)}`;
             
             for(let key in gameState.bacBets) {
                 const el = document.getElementById(`amt-${key}`);
@@ -522,8 +520,9 @@
         function selectBacBet(t) {
             if(gameState.isBaccaratPlaying) return;
             gameState.selectedBacTarget = t;
-            document.querySelectorAll('.b-card, .b-main-player, .b-main-banker, .b-main-tie').forEach(c => c.classList.remove('active'));
-            document.getElementById(`btn-${t}`).classList.add('active');
+            document.querySelectorAll('.table-sub-btn, .pair-box, .t-player, .t-tie, .t-banker').forEach(c => c.classList.remove('active'));
+            const el = document.getElementById(`btn-${t}`);
+            if(el) el.classList.add('active');
         }
         function addBacBet(amt) {
             if(gameState.isBaccaratPlaying) return;
@@ -559,9 +558,9 @@
             updateUI();
             document.getElementById('bacDealBtn').disabled = true;
 
-            let countdown = 10;
+            let countdown = 3;
             const timerEl = document.getElementById('bacTimerCircle');
-            document.getElementById('bacResultText').innerText = '⏰ 베팅 마감 중... 카드를 섞고 있습니다.';
+            document.getElementById('bacResultText').innerText = '⏰ 베팅 마감 중...';
 
             let timerInterval = setInterval(() => {
                 countdown--;
@@ -570,7 +569,7 @@
                     clearInterval(timerInterval);
                     executeBaccaratDeal();
                 }
-            }, 400);
+            }, 500);
         }
 
         async function executeBaccaratDeal() {
@@ -637,6 +636,10 @@
 
             if(pCards[0].num === pCards[1].num && gameState.bacBets.pPair > 0) payout += gameState.bacBets.pPair * 12;
             if(bCards[0].num === bCards[1].num && gameState.bacBets.bPair > 0) payout += gameState.bacBets.bPair * 12;
+            if(pCards[0].num === pCards[1].num && s_isPerfect(pCards)) payout += gameState.bacBets.perfect * 26;
+            if(pCards[0].num === pCards[1].num || bCards[0].num === bCards[1].num) {
+                if(gameState.bacBets.either > 0) payout += gameState.bacBets.either * 6;
+            }
 
             gameState.gold += Math.floor(payout);
             document.getElementById('bacResultText').innerText = resultMsg + (payout > 0 ? ` (+${Math.floor(payout).toLocaleString()} G 획득!)` : ' (꽝)');
@@ -644,8 +647,12 @@
             for(let k in gameState.bacBets) gameState.bacBets[k] = 0;
             gameState.isBaccaratPlaying = false;
             document.getElementById('bacDealBtn').disabled = false;
-            document.getElementById('bacTimerCircle').innerText = '10';
+            document.getElementById('bacTimerCircle').innerText = '3';
             updateUI();
+        }
+
+        function s_isPerfect(cards) {
+            return cards[0].symbol.charAt(0) === cards[1].symbol.charAt(0);
         }
 
         function renderBacCards(pCards, bCards) {
@@ -673,10 +680,8 @@
             const num = gameState.hiloCurrentCard.val || 7;
             const high = getHiloOdds(num, 'HIGH');
             const low = getHiloOdds(num, 'LOW');
-            const highText = document.getElementById('oddsHighText');
-            const lowText = document.getElementById('oddsLowText');
-            if(highText) highText.innerText = `${high.pct}% (${high.odds} X)`;
-            if(lowText) lowText.innerText = `${low.pct}% (${low.odds} X)`;
+            document.getElementById('oddsHighText').innerText = `${high.pct}% (${high.odds} X)`;
+            document.getElementById('oddsLowText').innerText = `${low.pct}% (${low.odds} X)`;
         }
 
         function addHiloBet(amt) { gameState.hiloBet = (gameState.hiloBet || 0) + amt; document.getElementById('hiloBetInput').value = gameState.hiloBet; }
