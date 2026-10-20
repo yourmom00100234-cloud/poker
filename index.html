@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>바카라 포커 경마</title>
-    <!-- 구글 애드센스 코드 위치 -->
+    <title>골드 카지노</title>
     <style>
         :root {
             --bg-main: #0a080d;
@@ -14,7 +13,6 @@
             --accent-green: #10b981;
             --accent-gold: #f59e0b;
             --accent-gold-light: #fef08a;
-            --accent-gold-glow: #d97706;
             --accent-red: #ef4444;
             --text-main: #f8fafc;
             --text-sub: #a1a1aa;
@@ -66,9 +64,9 @@
         .modal-input { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-input); color: #fff; font-size: 1rem; text-align: center; margin-bottom: 16px; outline: none; }
         .modal-btn { width: 100%; padding: 14px; border-radius: 12px; border: none; background: var(--gold-btn-grad); color: #000; font-size: 1rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4); }
 
-        /* 탭 네비게이션 */
-        .nav-container { display: flex; background: var(--bg-card); border-radius: 14px; padding: 4px; margin-bottom: 12px; border: 1px solid var(--border-color); }
-        .nav-btn { flex: 1; padding: 10px 0; border: none; background: transparent; color: var(--text-sub); font-size: 0.75rem; font-weight: bold; border-radius: 10px; cursor: pointer; }
+        /* 탭 네비게이션 (스크롤 가능하게 수정) */
+        .nav-container { display: flex; background: var(--bg-card); border-radius: 14px; padding: 4px; margin-bottom: 12px; border: 1px solid var(--border-color); overflow-x: auto; white-space: nowrap; }
+        .nav-btn { flex: 0 0 auto; padding: 10px 10px; border: none; background: transparent; color: var(--text-sub); font-size: 0.75rem; font-weight: bold; border-radius: 10px; cursor: pointer; }
         .nav-btn.active { background: var(--gold-btn-grad); color: #000; font-weight: 800; }
 
         /* 프로필 바 */
@@ -162,6 +160,12 @@
         .bac-bet-card .odds { font-size: 0.7rem; color: var(--accent-gold); margin-top: 2px; }
         .bac-bet-card .amount { font-size: 0.7rem; color: var(--accent-green); font-weight: bold; margin-top: 2px; }
 
+        /* 룰렛 디자인 */
+        .roulette-board { background: radial-gradient(circle, #1e293b 0%, #0f172a 100%); border: 3px solid var(--accent-gold); border-radius: 20px; padding: 20px 12px; text-align: center; margin-bottom: 12px; box-shadow: 0 0 20px rgba(245, 158, 11, 0.2); }
+        .roulette-wheel-display { width: 110px; height: 110px; background: #000; border: 4px solid var(--accent-gold); border-radius: 50%; margin: 0 auto 14px auto; display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: 800; color: #fff; box-shadow: 0 0 15px rgba(245, 158, 11, 0.4); }
+        .roulette-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 8px; }
+        .roulette-sub-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-bottom: 12px; }
+
         /* 하이로우 디자인 */
         .hilo-board { background: var(--bg-card); border: 2px solid var(--accent-gold); border-radius: 20px; padding: 20px; text-align: center; margin-bottom: 12px; }
         .gold-badge { position: absolute; top: -10px; right: -10px; background: #ef4444; color: #fff; font-size: 0.7rem; padding: 2px 6px; border-radius: 10px; font-weight: bold; box-shadow: 0 2px 6px rgba(0,0,0,0.4); z-index: 10; }
@@ -230,6 +234,7 @@
     <div class="nav-container">
         <button class="nav-btn active" onclick="switchTab('gameTab', this)">경마</button>
         <button class="nav-btn" onclick="switchTab('baccaratTab', this)">바카라</button>
+        <button class="nav-btn" onclick="switchTab('rouletteTab', this)">룰렛</button>
         <button class="nav-btn" onclick="switchTab('hiloTab', this)">하이로우</button>
         <button class="nav-btn" onclick="switchTab('slotTab', this)">슬롯</button>
         <button class="nav-btn" onclick="switchTab('rankTab', this)">랭킹</button>
@@ -398,7 +403,61 @@
         </div>
     </div>
 
-    <!-- 3. 하이로우 탭 -->
+    <!-- 3. 룰렛 탭 (신규 추가) -->
+    <div id="rouletteTab" class="tab-panel">
+        <div class="roulette-board">
+            <div id="rouletteDisplay" class="roulette-wheel-display">🎡</div>
+            <div id="rouletteResultText" style="color:var(--accent-gold-light); font-weight:bold; font-size:0.95rem;">베팅 구역을 선택 후 SPIN을 누르세요</div>
+        </div>
+
+        <div class="bet-container">
+            <div class="sub-header">1. 베팅 구역 선택</div>
+            <div class="roulette-grid">
+                <div class="bac-bet-card" id="btn-rRed" onclick="selectRouletteBet('red')">
+                    <div class="title" style="color:#ef4444;">레드 (Red)</div>
+                    <div class="odds">2 : 1</div>
+                    <div class="amount" id="amt-rRed">0 G</div>
+                </div>
+                <div class="bac-bet-card" id="btn-rGreen" onclick="selectRouletteBet('green')">
+                    <div class="title" style="color:#10b981;">그린 0 (Zero)</div>
+                    <div class="odds">36 : 1</div>
+                    <div class="amount" id="amt-rGreen">0 G</div>
+                </div>
+                <div class="bac-bet-card" id="btn-rBlack" onclick="selectRouletteBet('black')">
+                    <div class="title" style="color:#38bdf8;">블랙 (Black)</div>
+                    <div class="odds">2 : 1</div>
+                    <div class="amount" id="amt-rBlack">0 G</div>
+                </div>
+            </div>
+
+            <div class="roulette-sub-grid">
+                <div class="bac-bet-card" id="btn-rEven" onclick="selectRouletteBet('even')">
+                    <div class="title" style="color:#fef08a;">짝수 (Even)</div>
+                    <div class="odds">2 : 1</div>
+                    <div class="amount" id="amt-rEven">0 G</div>
+                </div>
+                <div class="bac-bet-card" id="btn-rOdd" onclick="selectRouletteBet('odd')">
+                    <div class="title" style="color:#fef08a;">홀수 (Odd)</div>
+                    <div class="odds">2 : 1</div>
+                    <div class="amount" id="amt-rOdd">0 G</div>
+                </div>
+            </div>
+
+            <div class="sub-header">2. 칩 설정</div>
+            <div class="chip-flex">
+                <button class="chip-btn" onclick="addRouletteBet(1000)">+1K</button>
+                <button class="chip-btn" onclick="addRouletteBet(5000)">+5K</button>
+                <button class="chip-btn" onclick="addRouletteBet(10000)">+10K</button>
+                <button class="chip-btn" onclick="addRouletteBet(50000)">+50K</button>
+                <button class="chip-btn" onclick="addRouletteBetAll()">ALL</button>
+                <button class="chip-btn reset-btn" onclick="resetRouletteBets()">리셋</button>
+            </div>
+
+            <button id="rouletteSpinBtn" class="start-race-btn" onclick="startRoulette()">🎰 룰렛 스핀 (SPIN)</button>
+        </div>
+    </div>
+
+    <!-- 4. 하이로우 탭 -->
     <div id="hiloTab" class="tab-panel">
         <div class="hilo-board">
             <div id="hiloCardContainer" class="card-flip-container hilo-card-flip-container">
@@ -441,7 +500,7 @@
         </div>
     </div>
 
-    <!-- 4. 슬롯머신 탭 -->
+    <!-- 5. 슬롯머신 탭 -->
     <div id="slotTab" class="tab-panel">
         <div class="slot-board">
             <div class="slot-reels-container">
@@ -472,16 +531,22 @@
         </div>
     </div>
 
-    <!-- 5. 랭킹 탭 -->
+    <!-- 6. 랭킹 탭 -->
     <div id="rankTab" class="tab-panel">
         <h3 style="margin-bottom: 12px; font-size: 1rem; color: var(--text-main);">🏆 실시간 리얼 랭킹</h3>
         <div id="rankList"></div>
     </div>
 
-    <!-- 6. 규칙 탭 -->
+    <!-- 7. 규칙 탭 -->
     <div id="ruleTab" class="tab-panel">
         <div class="rule-card">
-            <h3 style="margin-top:0;">📖 포커 경마 승식 & 배당</h3>
+            <h3 style="margin-top:0;">🎡 유러피언 룰렛 룰</h3>
+            <ul>
+                <li><b>그린 0 (36배):</b> 숫자 0 적중</li>
+                <li><b>레드 / 블랙 (2배):</b> 당첨 번호의 색상 맞히기</li>
+                <li><b>홀 / 짝 (2배):</b> 당첨 번호의 홀짝 맞히기</li>
+            </ul>
+            <h3>📖 포커 경마 승식 & 배당</h3>
             <ul>
                 <li><b>단승식 (5배):</b> 우승 1위 말 적중</li>
                 <li><b>복승식 (12배):</b> 순서 상관없이 1위와 2위 말 맞히기</li>
@@ -491,28 +556,25 @@
             <ul>
                 <li><b>7️⃣ 7️⃣ 7️⃣ (JACKPOT):</b> 베팅금의 <b>100배</b></li>
                 <li><b>💎 💎 💎 (다이아):</b> 베팅금의 <b>50배</b></li>
-                <li><b>👑 👑 👑 (크라운):</b> 베팅금의 <b>30배</b></li>
-                <li><b>동일 그림 3개 (트리플):</b> 베팅금의 <b>15배</b></li>
-                <li><b>동일 그림 2개 (더블):</b> 베팅금의 <b>2배</b></li>
+                <li><b>동일 그림 3개:</b> 베팅금의 <b>15배</b></li>
+                <li><b>동일 그림 2개:</b> 베팅금의 <b>2배</b></li>
             </ul>
             <h3>📈 하이로우 룰</h3>
             <ul>
-                <li>다음 카드가 높은지(HIGH) 낮은지(LOW) 예측하며, <b>숫자가 같을 경우 무조건 성공(적중)</b> 처리됩니다!</li>
+                <li>다음 카드가 높은지(HIGH) 낮은지(LOW) 예측하며, **숫자가 같을 경우 무조건 성공(적중)** 처리됩니다!</li>
             </ul>
         </div>
     </div>
 
     <footer>
-        <p>© Gold Casino - Baccarat & Poker Racing & Hi-Lo & Slot. All rights reserved.</p>
+        <p>© Gold Casino - All rights reserved.</p>
         <p><a onclick="openPrivacy()">개인정보처리방침 (Privacy Policy)</a></p>
     </footer>
 
     <div id="privacyModal">
         <div class="privacy-box">
             <h3 style="color:#fff; margin-bottom:10px;">개인정보처리방침</h3>
-            <p>본 웹사이트는 이용자의 개인정보를 중요시하며, 구글 애드센스 등 타사 광고 네트워크를 통해 광고를 제공할 수 있습니다.</p><br>
-            <p><b>1. 쿠키 사용</b><br>구글을 포함한 타사 판매자는 쿠키를 사용하여 이용자의 이전 방문 기록을 바탕으로 맞춤형 광고를 제공합니다.</p><br>
-            <p><b>2. 사용자 데이터</b><br>이용자는 구글 광고 설정을 방문하여 맞춤형 광고를 거부할 수 있습니다.</p><br>
+            <p>본 웹사이트는 이용자의 개인정보를 중요시하며, 광고 네트워크를 통해 광고를 제공할 수 있습니다.</p><br>
             <button class="modal-btn" style="margin-top:15px;" onclick="closePrivacy()">닫기</button>
         </div>
     </div>
@@ -539,6 +601,11 @@
             bacBets: { player: 0, banker: 0, tie: 0, pPair: 0, bPair: 0, pBonus: 0, bBonus: 0 },
             selectedBacTarget: 'player',
             isBaccaratPlaying: false,
+            // 룰렛 상태
+            rouletteBets: { red: 0, black: 0, green: 0, even: 0, odd: 0 },
+            selectedRouletteTarget: 'red',
+            isRouletteSpinning: false,
+            // 하이로우 상태
             hiloBet: 0,
             hiloCurrentCard: null,
             hiloAccumulatedPrize: 0,
@@ -586,6 +653,10 @@
             for(let key in gameState.bacBets) {
                 const el = document.getElementById(`amt-${key}`);
                 if(el) el.innerText = `${gameState.bacBets[key].toLocaleString()} G`;
+            }
+            for(let key in gameState.rouletteBets) {
+                const el = document.getElementById(`amt-r${key.charAt(0).toUpperCase() + key.slice(1)}`);
+                if(el) el.innerText = `${gameState.rouletteBets[key].toLocaleString()} G`;
             }
 
             if(gameState.username) saveRealRanking();
@@ -704,7 +775,7 @@
         function startRace() {
             if(gameState.raceMode === 'win' && !gameState.selectedHorse1) return alert('우승할 말을 선택하세요!');
             if((gameState.raceMode === 'quinella' || gameState.raceMode === 'exacta') && (!gameState.selectedHorse1 || !gameState.selectedHorse2)) {
-                return alert('말 2개 선택해야 합니다!');
+                return alert('말 2개를 선택해야 합니다!');
             }
             if (gameState.betAmount <= 0) return alert('베팅 금액을 입력하세요!');
             if (gameState.betAmount > gameState.gold) return alert('골드가 부족합니다!');
@@ -783,11 +854,11 @@
             updateUI();
         }
 
-        /* ---------------- 바카라 3D 플립 로직 ---------------- */
+        /* ---------------- 바카라 로직 ---------------- */
         function selectBacBet(target) {
             if(gameState.isBaccaratPlaying) return;
             gameState.selectedBacTarget = target;
-            document.querySelectorAll('.bac-bet-card').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('#baccaratTab .bac-bet-card').forEach(c => c.classList.remove('active'));
             document.getElementById(`btn-${target}`).classList.add('active');
         }
 
@@ -887,4 +958,437 @@
                 if(pScore <= 5) {
                     p3rd = drawCard();
                     pCards.push(p3rd);
-                    document.getElementById('playerCards').innerHTML += createCardElement('p
+                    document.getElementById('playerCards').innerHTML += createCardElement('pCard2');
+                    await sleep(300);
+                    await flipCard('pCard2', p3rd);
+                    pScore = calcBacScore(pCards);
+                    document.getElementById('playerScore').innerText = `${pScore}점`;
+                }
+
+                let b3rdNeed = false;
+                if(!p3rd) {
+                    if(bScore <= 5) b3rdNeed = true;
+                } else {
+                    const pv = p3rd.val;
+                    if(bScore <= 2) b3rdNeed = true;
+                    else if(bScore === 3 && pv !== 8) b3rdNeed = true;
+                    else if(bScore === 4 && (pv >= 2 && pv <= 7)) b3rdNeed = true;
+                    else if(bScore === 5 && (pv >= 4 && pv <= 7)) b3rdNeed = true;
+                    else if(bScore === 6 && (pv === 6 || pv === 7)) b3rdNeed = true;
+                }
+
+                if(b3rdNeed) {
+                    const b3rd = drawCard();
+                    bCards.push(b3rd);
+                    document.getElementById('bankerCards').innerHTML += createCardElement('bCard2');
+                    await sleep(300);
+                    await flipCard('bCard2', b3rd);
+                    bScore = calcBacScore(bCards);
+                    document.getElementById('bankerScore').innerText = `${bScore}점`;
+                }
+            }
+
+            finishBaccarat(pCards, bCards, pScore, bScore);
+        }
+
+        function flipCard(cardId, cardData) {
+            return new Promise(resolve => {
+                const front = document.getElementById(`${cardId}-front`);
+                const container = document.getElementById(cardId);
+                front.innerText = cardData.symbol;
+                front.style.color = cardData.color;
+                if(cardData.isGold) front.classList.add('gold-card');
+                else front.classList.remove('gold-card');
+
+                setTimeout(() => {
+                    container.classList.add('flipped');
+                    setTimeout(resolve, 500);
+                }, 50);
+            });
+        }
+
+        function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
+
+        function finishBaccarat(pCards, bCards, pScore, bScore) {
+            let winSide = '';
+            if(pScore > bScore) winSide = 'player';
+            else if(bScore > pScore) winSide = 'banker';
+            else winSide = 'tie';
+
+            let totalPayout = 0;
+
+            if(winSide === 'player' && gameState.bacBets.player > 0) totalPayout += gameState.bacBets.player * 2;
+            if(winSide === 'banker' && gameState.bacBets.banker > 0) totalPayout += gameState.bacBets.banker * 1.95;
+            if(winSide === 'tie') {
+                if(gameState.bacBets.tie > 0) totalPayout += gameState.bacBets.tie * 9;
+                totalPayout += gameState.bacBets.player;
+                totalPayout += gameState.bacBets.banker;
+            }
+
+            if(pCards[0].num === pCards[1].num && gameState.bacBets.pPair > 0) totalPayout += gameState.bacBets.pPair * 12;
+            if(bCards[0].num === bCards[1].num && gameState.bacBets.bPair > 0) totalPayout += gameState.bacBets.bPair * 12;
+
+            const isNatural = (pCards.length === 2 && pScore >= 8) || (bCards.length === 2 && bScore >= 8);
+            const diff = Math.abs(pScore - bScore);
+
+            if(winSide === 'player' && gameState.bacBets.pBonus > 0) totalPayout += calcBonusPayout(gameState.bacBets.pBonus, isNatural, diff);
+            if(winSide === 'banker' && gameState.bacBets.bBonus > 0) totalPayout += calcBonusPayout(gameState.bacBets.bBonus, isNatural, diff);
+
+            gameState.gold += Math.floor(totalPayout);
+            
+            let resultText = winSide === 'tie' ? '👔 TIE (무승부)!' : (winSide === 'player' ? '🔵 PLAYER 승리!' : '🔴 BANKER 승리!');
+            if(totalPayout > 0) resultText += ` (+${Math.floor(totalPayout).toLocaleString()} G 획득)`;
+            
+            document.getElementById('bacResultText').innerText = resultText;
+            for(let key in gameState.bacBets) gameState.bacBets[key] = 0;
+            gameState.isBaccaratPlaying = false;
+            document.getElementById('bacDealBtn').disabled = false;
+            updateUI();
+        }
+
+        function calcBonusPayout(bet, isNatural, diff) {
+            if(isNatural) return bet * 2;
+            if(diff === 9) return bet * 31;
+            if(diff === 8) return bet * 11;
+            if(diff === 7) return bet * 7;
+            if(diff === 6) return bet * 5;
+            if(diff === 5) return bet * 3;
+            if(diff === 4) return bet * 2;
+            return 0;
+        }
+
+        /* ---------------- 룰렛 로직 ---------------- */
+        function selectRouletteBet(target) {
+            if(gameState.isRouletteSpinning) return;
+            gameState.selectedRouletteTarget = target;
+            document.querySelectorAll('#rouletteTab .bac-bet-card').forEach(c => c.classList.remove('active'));
+            document.getElementById(`btn-r${target.charAt(0).toUpperCase() + target.slice(1)}`).classList.add('active');
+        }
+
+        function getTotalRouletteBet() {
+            let sum = 0;
+            for(let key in gameState.rouletteBets) sum += gameState.rouletteBets[key];
+            return sum;
+        }
+
+        function addRouletteBet(amt) {
+            if(gameState.isRouletteSpinning) return;
+            const currentTotal = getTotalRouletteBet();
+            if(currentTotal + amt <= gameState.gold) gameState.rouletteBets[gameState.selectedRouletteTarget] += amt;
+            else {
+                const remain = gameState.gold - currentTotal;
+                if(remain > 0) gameState.rouletteBets[gameState.selectedRouletteTarget] += remain;
+            }
+            updateUI();
+        }
+
+        function addRouletteBetAll() {
+            if(gameState.isRouletteSpinning) return;
+            const currentTotal = getTotalRouletteBet();
+            const remain = gameState.gold - currentTotal;
+            if(remain > 0) gameState.rouletteBets[gameState.selectedRouletteTarget] += remain;
+            updateUI();
+        }
+
+        function resetRouletteBets() {
+            if(gameState.isRouletteSpinning) return;
+            for(let key in gameState.rouletteBets) gameState.rouletteBets[key] = 0;
+            updateUI();
+        }
+
+        async function startRoulette() {
+            const totalBet = getTotalRouletteBet();
+            if(totalBet <= 0) return alert('최소 1개 이상의 구역에 베팅하세요!');
+            if(totalBet > gameState.gold) return alert('골드가 부족합니다!');
+
+            gameState.isRouletteSpinning = true;
+            gameState.gold -= totalBet;
+            updateUI();
+            document.getElementById('rouletteSpinBtn').disabled = true;
+            document.getElementById('rouletteResultText').innerText = '룰렛 휠이 돌아가는 중... 🎡';
+
+            const display = document.getElementById('rouletteDisplay');
+
+            // 휠 회전 애니메이션 효과
+            for(let i=0; i<15; i++) {
+                let tempNum = Math.floor(Math.random() * 37);
+                display.innerText = tempNum;
+                display.style.color = tempNum === 0 ? '#10b981' : (tempNum % 2 === 0 ? '#38bdf8' : '#ef4444');
+                await sleep(70);
+            }
+
+            // 최종 당첨 번호 결정 (0~36)
+            const winNum = Math.floor(Math.random() * 37);
+            display.innerText = winNum;
+            const isRed = winNum !== 0 && winNum % 2 !== 0;
+            const isBlack = winNum !== 0 && winNum % 2 === 0;
+            const isGreen = winNum === 0;
+            const isEven = winNum !== 0 && winNum % 2 === 0;
+            const isOdd = winNum !== 0 && winNum % 2 !== 0;
+
+            display.style.color = isGreen ? '#10b981' : (isRed ? '#ef4444' : '#38bdf8');
+
+            let totalPayout = 0;
+            if(isRed && gameState.rouletteBets.red > 0) totalPayout += gameState.rouletteBets.red * 2;
+            if(isBlack && gameState.rouletteBets.black > 0) totalPayout += gameState.rouletteBets.black * 2;
+            if(isGreen && gameState.rouletteBets.green > 0) totalPayout += gameState.rouletteBets.green * 36;
+            if(isEven && gameState.rouletteBets.even > 0) totalPayout += gameState.rouletteBets.even * 2;
+            if(isOdd && gameState.rouletteBets.odd > 0) totalPayout += gameState.rouletteBets.odd * 2;
+
+            gameState.gold += Math.floor(totalPayout);
+
+            let colorName = isGreen ? '그린(0)' : (isRed ? '레드' : '블랙');
+            let resMsg = `🎯 당첨 번호: ${winNum} (${colorName})`;
+            if(totalPayout > 0) {
+                resMsg += ` 🎉 +${Math.floor(totalPayout).toLocaleString()} G 대박 적중!`;
+            } else {
+                resMsg += ` 아쉽습니다! 꽝입니다.`;
+            }
+
+            document.getElementById('rouletteResultText').innerText = resMsg;
+            for(let key in gameState.rouletteBets) gameState.rouletteBets[key] = 0;
+            gameState.isRouletteSpinning = false;
+            document.getElementById('rouletteSpinBtn').disabled = false;
+            updateUI();
+        }
+
+        /* ---------------- 하이로우 로직 ---------------- */
+        function addHiloBet(amt) {
+            if(gameState.isHiloPlaying) return;
+            if(gameState.hiloBet + amt <= gameState.gold) gameState.hiloBet += amt;
+            else gameState.hiloBet = gameState.gold;
+            document.getElementById('hiloBetInput').value = gameState.hiloBet;
+        }
+        function addHiloBetAll() {
+            if(gameState.isHiloPlaying) return;
+            gameState.hiloBet = gameState.gold;
+            document.getElementById('hiloBetInput').value = gameState.hiloBet;
+        }
+        function resetHiloBet() {
+            if(gameState.isHiloPlaying) return;
+            gameState.hiloBet = 0;
+            document.getElementById('hiloBetInput').value = 0;
+        }
+        function validateHiloBet() {
+            let val = parseInt(document.getElementById('hiloBetInput').value) || 0;
+            if(val < 0) val = 0;
+            if(val > gameState.gold) val = gameState.gold;
+            gameState.hiloBet = val;
+            document.getElementById('hiloBetInput').value = val;
+        }
+
+        async function setAndFlipHiloCard(cardData) {
+            const container = document.getElementById('hiloCardContainer');
+            const front = document.getElementById('hiloCardFront');
+            container.classList.remove('flipped');
+            await sleep(300);
+
+            front.innerText = cardData.symbol;
+            front.style.color = cardData.color;
+
+            let badge = container.querySelector('.gold-badge');
+            if(badge) badge.remove();
+
+            if(cardData.isGold) {
+                front.classList.add('gold-card');
+                container.insertAdjacentHTML('beforeend', '<div class="gold-badge">GOLD 1.5x</div>');
+            } else front.classList.remove('gold-card');
+
+            await sleep(100);
+            container.classList.add('flipped');
+            await sleep(500);
+        }
+
+        async function startHiloGame() {
+            if(gameState.hiloBet <= 0) return alert('베팅 금액을 설정하세요!');
+            if(gameState.hiloBet > gameState.gold) return alert('골드가 부족합니다!');
+
+            gameState.isHiloPlaying = true;
+            gameState.gold -= gameState.hiloBet;
+            gameState.hiloStreak = 0;
+            gameState.hiloAccumulatedPrize = gameState.hiloBet;
+            updateUI();
+
+            document.getElementById('hiloBetControls').style.display = 'none';
+            document.getElementById('hiloGameControls').style.display = 'block';
+
+            gameState.hiloCurrentCard = drawCard();
+            await setAndFlipHiloCard(gameState.hiloCurrentCard);
+
+            document.getElementById('hiloStatusText').innerText = '다음 카드가 HIGH일까요, LOW일까요?';
+            document.getElementById('hiloMultiplierText').innerText = `누적 예정금: ${gameState.hiloAccumulatedPrize.toLocaleString()} G`;
+        }
+
+        async function guessHilo(choice) {
+            if(!gameState.isHiloPlaying) return;
+
+            document.getElementById('btnHigh').disabled = true;
+            document.getElementById('btnLow').disabled = true;
+            document.getElementById('btnCashout').disabled = true;
+
+            const nextCard = drawCard();
+            await setAndFlipHiloCard(nextCard);
+
+            const currNum = gameState.hiloCurrentCard.num;
+            const nextNum = nextCard.num;
+
+            let win = false;
+            if(currNum === nextNum) win = true;
+            else if(choice === 'HIGH' && nextNum > currNum) win = true;
+            else if(choice === 'LOW' && nextNum < currNum) win = true;
+
+            if(win) {
+                gameState.hiloStreak++;
+                let multiplier = 1.2;
+                if(nextCard.isGold) multiplier = 1.5;
+
+                gameState.hiloAccumulatedPrize = Math.floor(gameState.hiloAccumulatedPrize * multiplier);
+                gameState.hiloCurrentCard = nextCard;
+
+                const sameText = (currNum === nextNum) ? ' (동일 숫자 보너스 성공!)' : '';
+                document.getElementById('hiloStatusText').innerText = `🎉 적중 성공! (${gameState.hiloStreak}연승${sameText} ${nextCard.isGold ? '✨골드카드!' : ''})`;
+                document.getElementById('hiloMultiplierText').innerText = `누적 예정금: ${gameState.hiloAccumulatedPrize.toLocaleString()} G`;
+
+                document.getElementById('btnHigh').disabled = false;
+                document.getElementById('btnLow').disabled = false;
+                document.getElementById('btnCashout').disabled = false;
+            } else {
+                alert(`아쉽게도 틀렸습니다! (현재: ${currNum} / 다음: ${nextNum})\n베팅금을 잃었습니다.`);
+                endHiloGame(false);
+            }
+        }
+
+        function cashoutHilo() {
+            if(!gameState.isHiloPlaying) return;
+            gameState.gold += gameState.hiloAccumulatedPrize;
+            alert(`💰 성공적으로 ${gameState.hiloAccumulatedPrize.toLocaleString()} G를 수령했습니다!`);
+            endHiloGame(true);
+        }
+
+        function endHiloGame(isWin) {
+            gameState.isHiloPlaying = false;
+            document.getElementById('hiloBetControls').style.display = 'block';
+            document.getElementById('hiloGameControls').style.display = 'none';
+            document.getElementById('btnHigh').disabled = false;
+            document.getElementById('btnLow').disabled = false;
+            document.getElementById('btnCashout').disabled = false;
+            gameState.hiloBet = 0;
+            document.getElementById('hiloBetInput').value = 0;
+            updateUI();
+        }
+
+        /* ---------------- 슬롯머신 로직 ---------------- */
+        function addSlotBet(amt) {
+            if(gameState.isSlotSpinning) return;
+            if(gameState.slotBet + amt <= gameState.gold) gameState.slotBet += amt;
+            else gameState.slotBet = gameState.gold;
+            document.getElementById('slotBetInput').value = gameState.slotBet;
+        }
+        function addSlotBetAll() {
+            if(gameState.isSlotSpinning) return;
+            gameState.slotBet = gameState.gold;
+            document.getElementById('slotBetInput').value = gameState.slotBet;
+        }
+        function resetSlotBet() {
+            if(gameState.isSlotSpinning) return;
+            gameState.slotBet = 0;
+            document.getElementById('slotBetInput').value = 0;
+        }
+        function validateSlotBet() {
+            let val = parseInt(document.getElementById('slotBetInput').value) || 0;
+            if(val < 0) val = 0;
+            if(val > gameState.gold) val = gameState.gold;
+            gameState.slotBet = val;
+            document.getElementById('slotBetInput').value = val;
+        }
+
+        async function spinSlot() {
+            if(gameState.slotBet <= 0) return alert('베팅 금액을 설정하세요!');
+            if(gameState.slotBet > gameState.gold) return alert('골드가 부족합니다!');
+
+            gameState.isSlotSpinning = true;
+            gameState.gold -= gameState.slotBet;
+            updateUI();
+            document.getElementById('slotSpinBtn').disabled = true;
+            document.getElementById('slotResultText').innerText = '슬롯 회전 중... 🎰';
+
+            const res = [
+                slotSymbols[Math.floor(Math.random() * slotSymbols.length)],
+                slotSymbols[Math.floor(Math.random() * slotSymbols.length)],
+                slotSymbols[Math.floor(Math.random() * slotSymbols.length)]
+            ];
+
+            for(let i=0; i<12; i++) {
+                document.getElementById('reel0').innerText = slotSymbols[Math.floor(Math.random() * slotSymbols.length)];
+                document.getElementById('reel1').innerText = slotSymbols[Math.floor(Math.random() * slotSymbols.length)];
+                document.getElementById('reel2').innerText = slotSymbols[Math.floor(Math.random() * slotSymbols.length)];
+                await sleep(80);
+            }
+
+            document.getElementById('reel0').innerText = res[0];
+            await sleep(200);
+            document.getElementById('reel1').innerText = res[1];
+            await sleep(200);
+            document.getElementById('reel2').innerText = res[2];
+            await sleep(200);
+
+            let multiplier = 0;
+            let msg = '';
+
+            if(res[0] === '7️⃣' && res[1] === '7️⃣' && res[2] === '7️⃣') {
+                multiplier = 100;
+                msg = '🚨 [JACKPOT 777!!] 100배 대박 적중!';
+            } else if(res[0] === '💎' && res[1] === '💎' && res[2] === '💎') {
+                multiplier = 50;
+                msg = '💎 [다이아몬드 트리플!] 50배 적중!';
+            } else if(res[0] === '👑' && res[1] === '👑' && res[2] === '👑') {
+                multiplier = 30;
+                msg = '👑 [크라운 트리플!] 30배 적중!';
+            } else if(res[0] === res[1] && res[1] === res[2]) {
+                multiplier = 15;
+                msg = '🎉 [트리플 적중!] 15배 획득!';
+            } else if(res[0] === res[1] || res[1] === res[2] || res[0] === res[2]) {
+                multiplier = 2;
+                msg = '✨ [더블 적중!] 2배 획득!';
+            } else {
+                msg = '아쉽습니다! 꽝입니다.';
+            }
+
+            if(multiplier > 0) {
+                const prize = gameState.slotBet * multiplier;
+                gameState.gold += prize;
+                document.getElementById('slotResultText').innerText = `${msg} (+${prize.toLocaleString()} G)`;
+            } else {
+                document.getElementById('slotResultText').innerText = msg;
+            }
+
+            gameState.isSlotSpinning = false;
+            document.getElementById('slotSpinBtn').disabled = false;
+            updateUI();
+        }
+
+        /* ---------------- 보상 및 기타 ---------------- */
+        function watchAd() {
+            const modal = document.getElementById('adModal');
+            const timerEl = document.getElementById('adTimer');
+            let cnt = 5;
+            modal.style.display = 'flex';
+            timerEl.innerText = cnt;
+            const t = setInterval(() => {
+                cnt--;
+                timerEl.innerText = cnt;
+                if(cnt <= 0) {
+                    clearInterval(t);
+                    modal.style.display = 'none';
+                    gameState.gold += 1000;
+                    updateUI();
+                    alert('🎬 +1,000 Gold 지급 완료!');
+                }
+            }, 1000);
+        }
+
+        function openPrivacy() { document.getElementById('privacyModal').style.display = 'flex'; }
+        function closePrivacy() { document.getElementById('privacyModal').style.display = 'none'; }
+    </script>
+</body>
+</html>
