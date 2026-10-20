@@ -73,6 +73,7 @@
             cursor: pointer; 
             margin-top: 6px; 
             box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4);
+            touch-action: manipulation;
         }
         .auth-toggle { margin-top: 14px; font-size: 0.85rem; color: var(--accent-gold-light); cursor: pointer; text-decoration: underline; padding: 6px; display: inline-block; }
 
@@ -197,10 +198,12 @@
         <div class="modal-card">
             <div class="modal-title">👑 골드 카지노 👑</div>
             <div id="authSub" class="modal-sub">아이디와 비밀번호로 로그인하세요</div>
-            <input type="text" id="authId" class="modal-input" placeholder="아이디" maxlength="12">
-            <input type="password" id="authPw" class="modal-input" placeholder="비밀번호" maxlength="16">
-            <button id="authSubmitBtn" class="modal-btn" type="button" onclick="handleLogin()">로그인</button>
-            <div id="authToggleText" class="auth-toggle" onclick="toggleAuthMode()">계정이 없으신가요? 회원가입</div>
+            <!-- 엔터키 입력 시 바로 로그인 실행되도록 이벤트 추가 -->
+            <input type="text" id="authId" class="modal-input" placeholder="아이디" maxlength="12" onkeydown="if(event.key==='Enter') handleLogin()">
+            <input type="password" id="authPw" class="modal-input" placeholder="비밀번호" maxlength="16" onkeydown="if(event.key==='Enter') handleLogin()">
+            <!-- 터치 이벤트(touchstart) 명시적 추가 -->
+            <button id="authSubmitBtn" class="modal-btn" type="button" ontouchstart="handleLogin()" onclick="handleLogin()">로그인</button>
+            <div id="authToggleText" class="auth-toggle" ontouchstart="toggleAuthMode()" onclick="toggleAuthMode()">계정이 없으신가요? 회원가입</div>
         </div>
     </div>
 
@@ -502,7 +505,6 @@
         let currentUserKey = null;
         let isSignUpMode = false;
 
-        // 안전한 Firebase 초기화
         try {
             const firebaseConfig = {
                 apiKey: "AIzaSyDqyhJ0KUej2LHCDDOu0W1",
@@ -563,7 +565,6 @@
 
             const safeId = id.replace(/[.#$\/\[\]]/g, '_');
 
-            // Firebase가 제대로 연결 안 된 경우의 오프라인 대응
             if (!db) {
                 currentUserKey = safeId;
                 gameState.username = id;
@@ -598,7 +599,6 @@
                     }
                 } else {
                     if(!data) {
-                        // 계정이 없을 경우 회원가입 모드로 자동 전환 권유
                         if(confirm('존재하지 않는 아이디입니다.\n[확인]을 누르면 회원가입으로 전환됩니다.')) {
                             toggleAuthMode();
                         }
