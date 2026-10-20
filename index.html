@@ -21,7 +21,7 @@
             --gold-btn-grad: linear-gradient(180deg, #f59e0b, #d97706);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -175,21 +175,21 @@
             <div>
                 <input type="text" id="authId" class="auth-input" placeholder="아이디" maxlength="12" autocomplete="off">
                 <input type="password" id="authPw" class="auth-input" placeholder="비밀번호" maxlength="16" autocomplete="off">
-                <button type="button" id="authSubmitBtn" class="auth-submit-btn" onclick="executeAuth()">로그인</button>
+                <button type="button" id="authSubmitBtn" class="auth-submit-btn">로그인</button>
             </div>
 
-            <span id="authToggleBtn" class="auth-toggle-btn" onclick="toggleAuthMode()">계정이 없으신가요? 회원가입</span>
+            <span id="authToggleBtn" class="auth-toggle-btn">계정이 없으신가요? 회원가입</span>
         </div>
     </div>
 
     <!-- 2. 본 게임 전체 화면 -->
     <div id="mainGamePage">
         <div class="nav-container">
-            <button class="nav-btn active" onclick="switchTab('gameTab', this)">경마</button>
-            <button class="nav-btn" onclick="switchTab('baccaratTab', this)">바카라</button>
-            <button class="nav-btn" onclick="switchTab('hiloTab', this)">하이로우</button>
-            <button class="nav-btn" onclick="switchTab('slotTab', this)">슬롯</button>
-            <button class="nav-btn" onclick="switchTab('rankTab', this)">랭킹</button>
+            <button class="nav-btn active" data-tab="gameTab">경마</button>
+            <button class="nav-btn" data-tab="baccaratTab">바카라</button>
+            <button class="nav-btn" data-tab="hiloTab">하이로우</button>
+            <button class="nav-btn" data-tab="slotTab">슬롯</button>
+            <button class="nav-btn" data-tab="rankTab">랭킹</button>
         </div>
 
         <div class="profile-bar">
@@ -199,7 +199,7 @@
             </div>
             <div>
                 <span id="userGold" class="gold-info">1,000</span> <span style="font-size:0.8rem; color:var(--accent-gold-light);">G</span>
-                <button class="ad-recharge-btn" onclick="watchAd()">+1K 광고</button>
+                <button class="ad-recharge-btn" id="adBtn">+1K 광고</button>
             </div>
         </div>
 
@@ -215,35 +215,35 @@
             <div class="bet-container">
                 <div class="sub-header">베팅 방식 선택</div>
                 <div class="race-mode-select">
-                    <button class="mode-btn active" id="mode-win" onclick="setRaceBetMode('win')">단승 (5배)</button>
-                    <button class="mode-btn" id="mode-quinella" onclick="setRaceBetMode('quinella')">복승 (12배)</button>
-                    <button class="mode-btn" id="mode-exacta" onclick="setRaceBetMode('exacta')">쌍승 (25배)</button>
+                    <button class="mode-btn active" id="mode-win" data-mode="win">단승 (5배)</button>
+                    <button class="mode-btn" id="mode-quinella" data-mode="quinella">복승 (12배)</button>
+                    <button class="mode-btn" id="mode-exacta" data-mode="exacta">쌍승 (25배)</button>
                 </div>
 
                 <div class="sub-header">말 선택</div>
                 <div class="horse-grid">
-                    <div class="horse-select-card" id="hcard-spade" onclick="selectHorse('spade')"><div class="spade-color" style="font-size:1.3rem;">♠</div><span>스페이드</span></div>
-                    <div class="horse-select-card" id="hcard-diamond" onclick="selectHorse('diamond')"><div class="diamond-color" style="font-size:1.3rem;">◆</div><span>다이아몬드</span></div>
-                    <div class="horse-select-card" id="hcard-heart" onclick="selectHorse('heart')"><div class="heart-color" style="font-size:1.3rem;">♥</div><span>하트</span></div>
-                    <div class="horse-select-card" id="hcard-club" onclick="selectHorse('club')"><div class="club-color" style="font-size:1.3rem;">♣</div><span>클로버</span></div>
+                    <div class="horse-select-card" id="hcard-spade" data-horse="spade"><div class="spade-color" style="font-size:1.3rem;">♠</div><span>스페이드</span></div>
+                    <div class="horse-select-card" id="hcard-diamond" data-horse="diamond"><div class="diamond-color" style="font-size:1.3rem;">◆</div><span>다이아몬드</span></div>
+                    <div class="horse-select-card" id="hcard-heart" data-horse="heart"><div class="heart-color" style="font-size:1.3rem;">♥</div><span>하트</span></div>
+                    <div class="horse-select-card" id="hcard-club" data-horse="club"><div class="club-color" style="font-size:1.3rem;">♣</div><span>클로버</span></div>
                 </div>
 
                 <div class="sub-header">베팅 금액 설정</div>
                 <div class="input-row">
-                    <input type="number" id="betAmountInput" value="0" min="0" oninput="validateBetInput()">
+                    <input type="number" id="betAmountInput" value="0" min="0">
                     <span style="color:var(--accent-gold-light); font-weight:bold;">G</span>
                 </div>
 
                 <div class="chip-flex">
-                    <button class="chip-btn" onclick="addBet(1000)">+1K</button>
-                    <button class="chip-btn" onclick="addBet(5000)">+5K</button>
-                    <button class="chip-btn" onclick="addBet(10000)">+10K</button>
-                    <button class="chip-btn" onclick="addBet(50000)">+50K</button>
-                    <button class="chip-btn" onclick="addBetAll()">ALL</button>
-                    <button class="chip-btn reset-btn" onclick="resetBet()">리셋</button>
+                    <button class="chip-btn" data-amt="1000">+1K</button>
+                    <button class="chip-btn" data-amt="5000">+5K</button>
+                    <button class="chip-btn" data-amt="10000">+10K</button>
+                    <button class="chip-btn" data-amt="50000">+50K</button>
+                    <button class="chip-btn" id="betAllBtn">ALL</button>
+                    <button class="chip-btn reset-btn" id="betResetBtn">리셋</button>
                 </div>
 
-                <button id="raceStartBtn" class="action-btn" onclick="startRace()">경마 시작</button>
+                <button id="raceStartBtn" class="action-btn">경마 시작</button>
             </div>
         </div>
 
@@ -268,26 +268,26 @@
             <div class="bet-container">
                 <div class="sub-header">베팅 구역 선택</div>
                 <div class="bac-bet-grid">
-                    <div class="bac-bet-card active" id="btn-player" onclick="selectBacBet('player')">
+                    <div class="bac-bet-card active" id="btn-player" data-bac="player">
                         <div style="color:#38bdf8; font-weight:bold;">플레이어 (1:1)</div>
                         <div id="amt-player" style="font-size:0.75rem; color:var(--accent-gold-light); margin-top:2px;">0 G</div>
                     </div>
-                    <div class="bac-bet-card" id="btn-tie" onclick="selectBacBet('tie')">
+                    <div class="bac-bet-card" id="btn-tie" data-bac="tie">
                         <div style="color:#c084fc; font-weight:bold;">타이 (8:1)</div>
                         <div id="amt-tie" style="font-size:0.75rem; color:var(--accent-gold-light); margin-top:2px;">0 G</div>
                     </div>
-                    <div class="bac-bet-card" id="btn-banker" onclick="selectBacBet('banker')">
+                    <div class="bac-bet-card" id="btn-banker" data-bac="banker">
                         <div style="color:#f87171; font-weight:bold;">뱅커 (0.95:1)</div>
                         <div id="amt-banker" style="font-size:0.75rem; color:var(--accent-gold-light); margin-top:2px;">0 G</div>
                     </div>
                 </div>
 
                 <div class="bac-bet-grid-sub">
-                    <div class="bac-bet-card" id="btn-pPair" onclick="selectBacBet('pPair')">
+                    <div class="bac-bet-card" id="btn-pPair" data-bac="pPair">
                         <div style="color:#38bdf8; font-weight:bold;">플레이어 페어 (11:1)</div>
                         <div id="amt-pPair" style="font-size:0.75rem; color:var(--accent-gold-light); margin-top:2px;">0 G</div>
                     </div>
-                    <div class="bac-bet-card" id="btn-bPair" onclick="selectBacBet('bPair')">
+                    <div class="bac-bet-card" id="btn-bPair" data-bac="bPair">
                         <div style="color:#f87171; font-weight:bold;">뱅커 페어 (11:1)</div>
                         <div id="amt-bPair" style="font-size:0.75rem; color:var(--accent-gold-light); margin-top:2px;">0 G</div>
                     </div>
@@ -295,15 +295,15 @@
 
                 <div class="sub-header">칩 추가</div>
                 <div class="chip-flex">
-                    <button class="chip-btn" onclick="addBacBet(1000)">+1K</button>
-                    <button class="chip-btn" onclick="addBacBet(5000)">+5K</button>
-                    <button class="chip-btn" onclick="addBacBet(10000)">+10K</button>
-                    <button class="chip-btn" onclick="addBacBet(50000)">+50K</button>
-                    <button class="chip-btn" onclick="addBacBetAll()">ALL</button>
-                    <button class="chip-btn reset-btn" onclick="resetBacBets()">리셋</button>
+                    <button class="chip-btn" data-bac-amt="1000">+1K</button>
+                    <button class="chip-btn" data-bac-amt="5000">+5K</button>
+                    <button class="chip-btn" data-bac-amt="10000">+10K</button>
+                    <button class="chip-btn" data-bac-amt="50000">+50K</button>
+                    <button class="chip-btn" id="bacAllBtn">ALL</button>
+                    <button class="chip-btn reset-btn" id="bacResetBtn">리셋</button>
                 </div>
 
-                <button id="bacDealBtn" class="action-btn" onclick="startBaccarat()">DEAL (카드 딜링)</button>
+                <button id="bacDealBtn" class="action-btn">DEAL (카드 딜링)</button>
             </div>
         </div>
 
@@ -319,26 +319,26 @@
                 <div id="hiloBetControls">
                     <div class="sub-header">하이로우 베팅 금액</div>
                     <div class="input-row">
-                        <input type="number" id="hiloBetInput" value="0" min="0" oninput="validateHiloBet()">
+                        <input type="number" id="hiloBetInput" value="0" min="0">
                         <span style="color:var(--accent-gold-light); font-weight:bold;">G</span>
                     </div>
                     <div class="chip-flex">
-                        <button class="chip-btn" onclick="addHiloBet(1000)">+1K</button>
-                        <button class="chip-btn" onclick="addHiloBet(5000)">+5K</button>
-                        <button class="chip-btn" onclick="addHiloBet(10000)">+10K</button>
-                        <button class="chip-btn" onclick="addHiloBet(50000)">+50K</button>
-                        <button class="chip-btn" onclick="addHiloBetAll()">ALL</button>
-                        <button class="chip-btn reset-btn" onclick="resetHiloBet()">리셋</button>
+                        <button class="chip-btn" data-hilo-amt="1000">+1K</button>
+                        <button class="chip-btn" data-hilo-amt="5000">+5K</button>
+                        <button class="chip-btn" data-hilo-amt="10000">+10K</button>
+                        <button class="chip-btn" data-hilo-amt="50000">+50K</button>
+                        <button class="chip-btn" id="hiloAllBtn">ALL</button>
+                        <button class="chip-btn reset-btn" id="hiloResetBtn">리셋</button>
                     </div>
-                    <button class="action-btn" onclick="startHiloGame()">하이로우 게임 시작</button>
+                    <button class="action-btn" id="hiloStartBtn">하이로우 게임 시작</button>
                 </div>
 
                 <div id="hiloGameControls" style="display:none;">
                     <div class="hilo-btn-grid">
-                        <button class="hilo-btn btn-high" onclick="guessHilo('HIGH')">HIGH (높음)</button>
-                        <button class="hilo-btn btn-low" onclick="guessHilo('LOW')">LOW (낮음)</button>
+                        <button class="hilo-btn btn-high" id="hiloHighBtn">HIGH (높음)</button>
+                        <button class="hilo-btn btn-low" id="hiloLowBtn">LOW (낮음)</button>
                     </div>
-                    <button class="btn-cashout" onclick="cashoutHilo()">💰 적중금 수령하기</button>
+                    <button class="btn-cashout" id="hiloCashBtn">💰 적중금 수령하기</button>
                 </div>
             </div>
         </div>
@@ -357,20 +357,20 @@
             <div class="bet-container">
                 <div class="sub-header">슬롯 베팅 금액 설정</div>
                 <div class="input-row">
-                    <input type="number" id="slotBetInput" value="0" min="0" oninput="validateSlotBet()">
+                    <input type="number" id="slotBetInput" value="0" min="0">
                     <span style="color:var(--accent-gold-light); font-weight:bold;">G</span>
                 </div>
 
                 <div class="chip-flex">
-                    <button class="chip-btn" onclick="addSlotBet(1000)">+1K</button>
-                    <button class="chip-btn" onclick="addSlotBet(5000)">+5K</button>
-                    <button class="chip-btn" onclick="addSlotBet(10000)">+10K</button>
-                    <button class="chip-btn" onclick="addSlotBet(50000)">+50K</button>
-                    <button class="chip-btn" onclick="addSlotBetAll()">ALL</button>
-                    <button class="chip-btn reset-btn" onclick="resetSlotBet()">리셋</button>
+                    <button class="chip-btn" data-slot-amt="1000">+1K</button>
+                    <button class="chip-btn" data-slot-amt="5000">+5K</button>
+                    <button class="chip-btn" data-slot-amt="10000">+10K</button>
+                    <button class="chip-btn" data-slot-amt="50000">+50K</button>
+                    <button class="chip-btn" id="slotAllBtn">ALL</button>
+                    <button class="chip-btn reset-btn" id="slotResetBtn">리셋</button>
                 </div>
 
-                <button id="slotSpinBtn" class="action-btn" onclick="spinSlot()">🎰 스핀 (SPIN)</button>
+                <button id="slotSpinBtn" class="action-btn">🎰 스핀 (SPIN)</button>
             </div>
         </div>
 
@@ -399,7 +399,7 @@
         var db = null;
         var currentUserKey = null;
 
-        // Firebase 초기화
+        // [안전한 Firebase 초기화] 에러가 나도 게임 실행에 절대 지장을 주지 않도록 분리
         try {
             if (typeof firebase !== 'undefined') {
                 var firebaseConfig = {
@@ -411,11 +411,14 @@
                     messagingSenderId: "130430532601",
                     appId: "1:130430532601:web:010a55ed2"
                 };
-                if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+                if (!firebase.apps.length) {
+                    firebase.initializeApp(firebaseConfig);
+                }
                 db = firebase.database();
             }
         } catch (e) {
-            console.log("DB 연결 미사용");
+            console.log("Firebase 연결 우회 (오프라인 모드 작동)", e);
+            db = null;
         }
 
         var gameState = {
@@ -439,6 +442,92 @@
         var suits = ['spade', 'diamond', 'heart', 'club'];
         var suitSymbols = { spade: '♠', diamond: '◆', heart: '♥', club: '♣' };
         var slotSymbols = ['7️⃣', '💎', '👑', '🪙', '🍒', '🍇', '🔔'];
+
+        function bindSafeClick(elemId, callback) {
+            var el = document.getElementById(elemId);
+            if (!el) return;
+            el.addEventListener('click', function(e) {
+                e.preventDefault();
+                callback();
+            });
+            el.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                callback();
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', function() {
+            bindSafeClick('authSubmitBtn', executeAuth);
+            bindSafeClick('authToggleBtn', toggleAuthMode);
+
+            document.querySelectorAll('.nav-btn').forEach(function(btn) {
+                var tabId = btn.getAttribute('data-tab');
+                btn.addEventListener('click', function() { switchTab(tabId, btn); });
+                btn.addEventListener('touchend', function() { switchTab(tabId, btn); });
+            });
+
+            bindSafeClick('adBtn', watchAd);
+
+            document.querySelectorAll('.mode-btn').forEach(function(btn) {
+                var mode = btn.getAttribute('data-mode');
+                btn.addEventListener('click', function() { setRaceBetMode(mode); });
+                btn.addEventListener('touchend', function() { setRaceBetMode(mode); });
+            });
+
+            document.querySelectorAll('.horse-select-card').forEach(function(card) {
+                var horse = card.getAttribute('data-horse');
+                card.addEventListener('click', function() { selectHorse(horse); });
+                card.addEventListener('touchend', function() { selectHorse(horse); });
+            });
+
+            document.querySelectorAll('[data-amt]').forEach(function(btn) {
+                var amt = parseInt(btn.getAttribute('data-amt'));
+                btn.addEventListener('click', function() { addBet(amt); });
+                btn.addEventListener('touchend', function() { addBet(amt); });
+            });
+            bindSafeClick('betAllBtn', addBetAll);
+            bindSafeClick('betResetBtn', resetBet);
+            bindSafeClick('raceStartBtn', startRace);
+            document.getElementById('betAmountInput').addEventListener('input', validateBetInput);
+
+            document.querySelectorAll('[data-bac]').forEach(function(card) {
+                var target = card.getAttribute('data-bac');
+                card.addEventListener('click', function() { selectBacBet(target); });
+                card.addEventListener('touchend', function() { selectBacBet(target); });
+            });
+
+            document.querySelectorAll('[data-bac-amt]').forEach(function(btn) {
+                var amt = parseInt(btn.getAttribute('data-bac-amt'));
+                btn.addEventListener('click', function() { addBacBet(amt); });
+                btn.addEventListener('touchend', function() { addBacBet(amt); });
+            });
+            bindSafeClick('bacAllBtn', addBacBetAll);
+            bindSafeClick('bacResetBtn', resetBacBets);
+            bindSafeClick('bacDealBtn', startBaccarat);
+
+            document.querySelectorAll('[data-hilo-amt]').forEach(function(btn) {
+                var amt = parseInt(btn.getAttribute('data-hilo-amt'));
+                btn.addEventListener('click', function() { addHiloBet(amt); });
+                btn.addEventListener('touchend', function() { addHiloBet(amt); });
+            });
+            bindSafeClick('hiloAllBtn', addHiloBetAll);
+            bindSafeClick('hiloResetBtn', resetHiloBet);
+            bindSafeClick('hiloStartBtn', startHiloGame);
+            bindSafeClick('hiloHighBtn', function() { guessHilo('HIGH'); });
+            bindSafeClick('hiloLowBtn', function() { guessHilo('LOW'); });
+            bindSafeClick('hiloCashBtn', cashoutHilo);
+            document.getElementById('hiloBetInput').addEventListener('input', validateHiloBet);
+
+            document.querySelectorAll('[data-slot-amt]').forEach(function(btn) {
+                var amt = parseInt(btn.getAttribute('data-slot-amt'));
+                btn.addEventListener('click', function() { addSlotBet(amt); });
+                btn.addEventListener('touchend', function() { addSlotBet(amt); });
+            });
+            bindSafeClick('slotAllBtn', addSlotBetAll);
+            bindSafeClick('slotResetBtn', resetSlotBet);
+            bindSafeClick('slotSpinBtn', spinSlot);
+            document.getElementById('slotBetInput').addEventListener('input', validateSlotBet);
+        });
 
         function toggleAuthMode() {
             isSignUpMode = !isSignUpMode;
@@ -490,66 +579,79 @@
                 return;
             }
 
-            var userRef = db.ref('users/' + safeId);
-            userRef.once('value', function(snapshot) {
-                var data = snapshot.val();
-                if(isSignUpMode) {
-                    if(data) {
-                        alert('이미 존재하는 아이디입니다!');
+            try {
+                var userRef = db.ref('users/' + safeId);
+                userRef.once('value', function(snapshot) {
+                    var data = snapshot.val();
+                    if(isSignUpMode) {
+                        if(data) {
+                            alert('이미 존재하는 아이디입니다!');
+                        } else {
+                            userRef.set({ username: id, password: pw, gold: 1000 }).then(function() {
+                                gameState.gold = 1000;
+                                startRealtimeSync();
+                                enterGame('🎉 회원가입 성공! (1,000G 지급)');
+                            }).catch(function() {
+                                enterGame('🎉 회원가입 성공!');
+                            });
+                        }
                     } else {
-                        userRef.set({ username: id, password: pw, gold: 1000 }).then(function() {
-                            gameState.gold = 1000;
+                        if(!data) {
+                            if(confirm('존재하지 않는 아이디입니다.\n회원가입으로 전환하시겠습니까?')) toggleAuthMode();
+                        } else if(data.password !== pw) {
+                            alert('비밀번호가 올바르지 않습니다!');
+                        } else {
+                            gameState.gold = data.gold !== undefined ? data.gold : 1000;
                             startRealtimeSync();
-                            enterGame('🎉 회원가입 성공! (1,000G 지급)');
-                        }).catch(function() {
-                            enterGame('🎉 회원가입 성공!');
-                        });
+                            enterGame('로그인 성공!');
+                        }
                     }
-                } else {
-                    if(!data) {
-                        if(confirm('존재하지 않는 아이디입니다.\n회원가입으로 전환하시겠습니까?')) toggleAuthMode();
-                    } else if(data.password !== pw) {
-                        alert('비밀번호가 올바르지 않습니다!');
-                    } else {
-                        gameState.gold = data.gold !== undefined ? data.gold : 1000;
-                        startRealtimeSync();
-                        enterGame('로그인 성공!');
-                    }
-                }
-            }, function() {
+                }, function(err) {
+                    enterGame(isSignUpMode ? '🎉 회원가입 성공!' : '로그인 성공!');
+                });
+            } catch (err) {
                 enterGame(isSignUpMode ? '🎉 회원가입 성공!' : '로그인 성공!');
-            });
+            }
         }
 
         function startRealtimeSync() {
             if(!currentUserKey || !db) return;
-            db.ref('users/' + currentUserKey + '/gold').on('value', function(snapshot) {
-                var val = snapshot.val();
-                if(val !== null && val !== gameState.gold) {
-                    gameState.gold = val;
-                    updateUIOnly();
-                }
-            });
-
-            db.ref('users').on('value', function(snapshot) {
-                var users = snapshot.val();
-                if(!users) return;
-                var rankArr = [];
-                for(var key in users) {
-                    if(users[key].username && users[key].gold !== undefined) {
-                        rankArr.push({ name: users[key].username, gold: users[key].gold });
+            try {
+                db.ref('users/' + currentUserKey + '/gold').on('value', function(snapshot) {
+                    var val = snapshot.val();
+                    if(val !== null && val !== gameState.gold) {
+                        gameState.gold = val;
+                        updateUIOnly();
                     }
-                }
-                rankArr.sort(function(a,b) { return b.gold - a.gold; });
-                document.getElementById('rankList').innerHTML = rankArr.map(function(item, i) {
-                    return '<div class="rank-card"><span><b>' + (i + 1) + '위</b> ' + item.name + '</span><span style="color:var(--accent-gold-light); font-weight:bold;">' + item.gold.toLocaleString() + ' G</span></div>';
-                }).join('');
-            });
+                });
+
+                db.ref('users').on('value', function(snapshot) {
+                    var users = snapshot.val();
+                    if(!users) return;
+                    var rankArr = [];
+                    for(var key in users) {
+                        if(users[key].username && users[key].gold !== undefined) {
+                            rankArr.push({ name: users[key].username, gold: users[key].gold });
+                        }
+                    }
+                    rankArr.sort(function(a,b) { return b.gold - a.gold; });
+                    var rankListEl = document.getElementById('rankList');
+                    if(rankListEl) {
+                        rankListEl.innerHTML = rankArr.map(function(item, i) {
+                            return '<div class="rank-card"><span><b>' + (i + 1) + '위</b> ' + item.name + '</span><span style="color:var(--accent-gold-light); font-weight:bold;">' + item.gold.toLocaleString() + ' G</span></div>';
+                        }).join('');
+                    }
+                });
+            } catch (e) {
+                console.log("Sync error ignored");
+            }
         }
 
         function syncGoldToServer() {
             if(!currentUserKey || !db) return;
-            db.ref('users/' + currentUserKey).update({ gold: gameState.gold });
+            try {
+                db.ref('users/' + currentUserKey).update({ gold: gameState.gold });
+            } catch (e) {}
         }
 
         function switchTab(tabId, btn) {
@@ -752,7 +854,7 @@
             updateUI();
         }
 
-        /* 하이로우 로직 (배율 완화: 1.25배로 조정) */
+        /* 하이로우 로직 (배율 1.25배) */
         function addHiloBet(amt) {
             if(gameState.hiloBet + amt <= gameState.gold) gameState.hiloBet += amt;
             else gameState.hiloBet = gameState.gold;
@@ -792,13 +894,12 @@
             document.getElementById('hiloCardDisplay').innerText = nextNum;
 
             var win = false;
-            if(nextNum === gameState.hiloCurrentNum) win = true; // 동점은 승리 처리
+            if(nextNum === gameState.hiloCurrentNum) win = true;
             else if(choice === 'HIGH' && nextNum > gameState.hiloCurrentNum) win = true;
             else if(choice === 'LOW' && nextNum < gameState.hiloCurrentNum) win = true;
 
             if(win) {
                 gameState.hiloStreak++;
-                // 배율을 기존 1.6배에서 1.25배로 완화하여 안정적인 상승 도모
                 gameState.hiloAccumulated = Math.floor(gameState.hiloAccumulated * 1.25);
                 gameState.hiloCurrentNum = nextNum;
                 document.getElementById('hiloStatusText').innerText = '🎉 ' + gameState.hiloStreak + '연승 성공! 계속 도전하세요.';
