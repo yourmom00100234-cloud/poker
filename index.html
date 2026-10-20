@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>KRVIP CASINO</title>
+    <title>WANT.BET CASINO</title>
     <style>
         :root {
             --bg-main: #0c0a10;
@@ -52,7 +52,7 @@
         .app-download-btn { background: var(--gold-btn-grad); color: #000; border: none; padding: 5px 12px; border-radius: 6px; font-weight: 800; font-size: 0.75rem; cursor: pointer; }
 
         .casino-header { background: var(--bg-card); padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-color); }
-        .brand-logo { font-size: 1.3rem; font-weight: 900; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .brand-logo { font-size: 1.3rem; font-weight: 900; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 1px; }
         .header-wallet { display: flex; align-items: center; background: var(--bg-input); border: 1px solid var(--border-color); border-radius: 20px; padding: 4px 10px; gap: 8px; }
         .wallet-gold { font-size: 0.95rem; font-weight: 800; color: var(--accent-gold-light); }
         .wallet-refresh-btn, .wallet-plus-btn { background: transparent; border: none; color: var(--text-sub); font-size: 0.9rem; cursor: pointer; }
@@ -69,10 +69,9 @@
         .section-title { padding: 0 14px 8px 14px; font-size: 0.9rem; font-weight: bold; color: var(--accent-gold-light); }
         .game-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 0 12px 16px 12px; }
         
-        /* 스크린샷과 정확히 일치하는 썸네일 카드 스타일 */
         .game-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; overflow: hidden; cursor: pointer; transition: transform 0.2s; position: relative; }
         .game-card:active { transform: scale(0.97); }
-        .game-thumb { height: 110px; position: relative; overflow: hidden; }
+        .game-thumb { height: 110px; position: relative; overflow: hidden; background: #000; }
         .game-thumb img { width: 100%; height: 100%; object-fit: cover; }
         .game-badge { position: absolute; top: 6px; left: 6px; background: #ef4444; color: #fff; font-size: 0.65rem; font-weight: bold; padding: 2px 6px; border-radius: 4px; z-index: 2; }
         .game-info { padding: 10px; }
@@ -84,7 +83,7 @@
         .page-panel.active { display: block; }
         .back-lobby-btn { background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-sub); padding: 6px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: bold; margin-bottom: 12px; cursor: pointer; }
 
-        /* 바카라 UI */
+        /* 스피드 바카라 UI */
         .bac-screen { background: #0c1a13; border-radius: 16px; border: 2px solid #15803d; overflow: hidden; margin-bottom: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.6); }
         .bac-video-area { height: 110px; background: radial-gradient(circle, #166534 0%, #052e16 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; border-bottom: 1px solid #15803d; }
         .bac-dealer-circle { width: 52px; height: 52px; background: rgba(0,0,0,0.75); border: 3px solid #ef4444; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 900; color: #fff; box-shadow: 0 0 15px rgba(239,68,68,0.7); }
@@ -111,7 +110,7 @@
         .b-main-tie { background: #047857; border: 2px solid #10b981; border-radius: 12px; padding: 14px 6px; text-align: center; cursor: pointer; }
         .b-main-tie.active { border-color: #fef08a; background: #059669; box-shadow: 0 0 15px rgba(16,185,129,0.8); }
 
-        /* 하이로우 화면 (JILI 블루톤) */
+        /* 하이로우 화면 (JILI 블루톤 및 자연스러운 배율) */
         .hilo-screen {
             background: linear-gradient(135deg, #0d2b55, #041428);
             border: 3px solid #1d4ed8;
@@ -151,7 +150,7 @@
     <!-- 닉네임 모달 -->
     <div id="nameModal">
         <div class="modal-card">
-            <div class="modal-title">👑 KRVIP CASINO 👑</div>
+            <div class="modal-title">👑 WANT.BET CASINO 👑</div>
             <div class="modal-sub">닉네임을 입력하고 입장하세요<br>(이스터에그: 이하율천재 = 1억G)</div>
             <input type="text" id="usernameInput" class="modal-input" placeholder="닉네임 (최대 8자)" maxlength="8">
             <button class="modal-btn" onclick="startGameWithNickname()">입장하기</button>
@@ -161,7 +160,7 @@
     <!-- 최상단 앱 배너 -->
     <div class="top-app-banner">
         <div class="app-banner-left">
-            <div class="app-logo-sm">VIP</div>
+            <div class="app-logo-sm">BET</div>
             <div><b>유효 초대당 88만원 예상</b></div>
         </div>
         <button class="app-download-btn" onclick="alert('모바일 전용 앱 설치 파일 다운로드 중...')">APP 다운로드</button>
@@ -169,7 +168,7 @@
 
     <!-- 카지노 헤더 -->
     <div class="casino-header">
-        <div class="brand-logo">KRVIP.CC</div>
+        <div class="brand-logo">WANT.BET</div>
         <div class="header-wallet">
             <span id="userGold" class="wallet-gold">10,000</span> <span style="font-size:0.75rem; color:var(--accent-gold);">G</span>
             <button class="wallet-refresh-btn" onclick="updateUI()">🔄</button>
@@ -189,8 +188,8 @@
         </div>
         <div class="category-scroll">
             <button class="cat-btn active">🔥 인기 게임</button>
-            <button class="cat-btn" onclick="alert('바카라와 하이로우만 제공됩니다!')">🎴 라이브</button>
-            <button class="cat-btn" onclick="alert('바카라와 하이로우만 제공됩니다!')">📈 JILI</button>
+            <button class="cat-btn">🎴 라이브</button>
+            <button class="cat-btn">📈 JILI</button>
         </div>
         <div class="section-title">✨ 실시간 인기 게임</div>
         <div class="game-grid" id="gameGridContainer"></div>
@@ -280,11 +279,11 @@
                     <div class="hilo-action-buttons">
                         <button id="btnHigh" class="hilo-btn-high" onclick="guessHilo('HIGH')">
                             높은 (HIGH)
-                            <span id="oddsHighText">50.00% (1.90 X)</span>
+                            <span id="oddsHighText">50.00% (1.42 X)</span>
                         </button>
                         <button id="btnLow" class="hilo-btn-low" onclick="guessHilo('LOW')">
                             낮은 (LOW)
-                            <span id="oddsLowText">50.00% (1.90 X)</span>
+                            <span id="oddsLowText">50.00% (1.42 X)</span>
                         </button>
                     </div>
                 </div>
@@ -360,7 +359,7 @@
             hiloBet: 1000, hiloCurrentCard: { val: 7, num: 7, symbol: '♠7', color: '#000' }, hiloAccumulatedPrize: 0, isHiloPlaying: false
         };
 
-        // 스크린샷과 정확히 동일한 표지(이미지 및 색감)를 가진 바카라와 하이로우만 남김
+        // 보내주신 스크린샷 15092_2.jpg의 표지와 정확히 일치하는 바카라 & 하이로우 썸네일 구성
         const gamesList = [
             { 
                 id: 'baccarat', 
@@ -373,7 +372,7 @@
                 id: 'hilo', 
                 name: '높음 낮음', 
                 provider: 'JDB', 
-                thumbHtml: `<div style="width:100%; height:100%; background:linear-gradient(135deg,#0d2b55,#041428); display:flex; align-items:center; justify-content:center; font-weight:900; font-size:1.4rem; color:#fef08a; letter-spacing:1px;">HiLo</div>`, 
+                thumbHtml: `<div style="width:100%; height:100%; background:linear-gradient(135deg,#1e1b2e,#311042); display:flex; flex-direction:column; align-items:center; justify-content:center;"><div style="font-weight:900; font-size:1.4rem; color:#fef08a; font-style:italic; text-shadow:0 2px 4px rgba(0,0,0,0.8);">HiLo</div><div style="font-size:0.65rem; color:#38bdf8; margin-top:2px;">JDB Gaming</div></div>`, 
                 badge: 'HOT' 
             }
         ];
@@ -618,13 +617,14 @@
             document.getElementById('bankerScore').innerText = `${b}점`;
         }
 
-        /* 하이로우 로직 */
+        /* 하이로우 로직 (부담 없는 현실적 배율 적용) */
         function getHiloOdds(num, type) {
             let prob = (type === 'HIGH') ? (13 - num) / 13 : (num - 1) / 13;
-            if (prob <= 0.05) prob = 0.05;
-            let odds = 0.95 / prob;
-            if (odds < 1.05) odds = 1.05;
-            return { pct: (prob * 100).toFixed(2), odds: odds.toFixed(2) };
+            if (prob <= 0.15) prob = 0.15;
+            if (prob >= 0.85) prob = 0.85;
+            let odds = 1.85 / (prob * 1.5);
+            if (odds < 1.2) odds = 1.2;
+            return { pct: (prob * 100).toFixed(0), odds: odds.toFixed(2) };
         }
 
         function updateHiloOddsDisplay() {
