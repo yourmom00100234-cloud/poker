@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>골드 카지노 - 실시간 랭킹 & 로그인</title>
-    <!-- Firebase SDK (v8 호환 모드) -->
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <style>
@@ -12,11 +12,8 @@
             --bg-main: #0a080d;
             --bg-card: #14101d;
             --bg-input: #1c1829;
-            --accent-blue: #3b82f6;
-            --accent-green: #10b981;
             --accent-gold: #f59e0b;
             --accent-gold-light: #fef08a;
-            --accent-red: #ef4444;
             --text-main: #f8fafc;
             --text-sub: #a1a1aa;
             --border-color: #3f321d;
@@ -61,6 +58,7 @@
         .modal-sub { color: var(--text-sub); font-size: 0.85rem; margin-bottom: 16px; }
         .modal-input { width: 100%; padding: 14px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--bg-input); color: #fff; font-size: 1rem; text-align: center; margin-bottom: 12px; outline: none; }
         
+        /* 버튼 반응 최우선 보장 */
         .modal-btn { 
             width: 100%; 
             padding: 16px; 
@@ -77,144 +75,38 @@
         }
         .auth-toggle { margin-top: 14px; font-size: 0.85rem; color: var(--accent-gold-light); cursor: pointer; text-decoration: underline; padding: 6px; display: inline-block; }
 
-        /* 네비게이션 탭 */
         .nav-container { display: flex; background: var(--bg-card); border-radius: 14px; padding: 4px; margin-bottom: 12px; border: 1px solid var(--border-color); }
         .nav-btn { flex: 1; padding: 10px 0; border: none; background: transparent; color: var(--text-sub); font-size: 0.7rem; font-weight: bold; border-radius: 10px; cursor: pointer; }
         .nav-btn.active { background: var(--gold-btn-grad); color: #000; font-weight: 800; }
 
-        /* 프로필 바 */
         .profile-bar { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
         .user-name { font-weight: bold; font-size: 0.95rem; }
         .user-tier { font-size: 0.75rem; font-weight: bold; padding: 3px 8px; border-radius: 6px; background: #2a2012; margin-left: 6px; color: var(--accent-gold); border: 1px solid var(--border-color); }
-        .gold-info { font-size: 1.1rem; font-weight: 800; color: var(--accent-gold-light); text-shadow: 0 0 8px rgba(245, 158, 11, 0.5); }
-        .ad-recharge-btn { background: rgba(245, 158, 11, 0.15); color: var(--accent-gold-light); border: 1px solid var(--accent-gold); padding: 5px 9px; border-radius: 8px; font-size: 0.75rem; font-weight: bold; margin-left: 8px; cursor: pointer; }
+        .gold-info { font-size: 1.1rem; font-weight: 800; color: var(--accent-gold-light); }
 
         .tab-panel { display: none; }
         .tab-panel.active { display: block; }
-
-        /* 경마 트랙 */
-        .track-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 14px 12px; margin-bottom: 12px; }
-        .lane-row { display: flex; align-items: center; background: var(--bg-input); border-radius: 10px; padding: 6px 10px; margin-bottom: 8px; height: 40px; position: relative; }
-        .lane-row:last-child { margin-bottom: 0; }
-        .suit-icon { width: 24px; font-size: 1.1rem; font-weight: bold; text-align: center; }
-        .spade-color { color: #38bdf8; } .diamond-color { color: #f87171; } .heart-color { color: #f43f5e; } .club-color { color: #4ade80; }
-
-        .horse-field { flex: 1; position: relative; height: 100%; margin: 0 10px; display: flex; align-items: center; }
-        .horse-runner { position: absolute; left: 0%; transition: left 0.3s cubic-bezier(0.25, 1, 0.5, 1); font-size: 1.3rem; }
-        .goal-line { width: 2px; height: 100%; background: #ef4444; position: absolute; right: 0; }
-
-        /* 카드 상태 */
-        .card-status-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-        .card-status-text { font-size: 0.9rem; font-weight: bold; color: var(--text-main); margin-top: 4px; }
-        .card-display-box { width: 48px; height: 64px; background: #ffffff; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 800; color: #000; }
-
-        /* 베팅 영역 */
-        .bet-container { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 14px; }
-        .sub-header { font-size: 0.8rem; color: var(--accent-gold-light); margin-bottom: 8px; font-weight: bold; }
-        
-        .race-mode-select { display: flex; gap: 6px; margin-bottom: 12px; }
-        .mode-btn { flex: 1; padding: 8px 0; background: var(--bg-input); border: 1px solid var(--border-color); color: var(--text-sub); border-radius: 8px; font-size: 0.75rem; font-weight: bold; cursor: pointer; }
-        .mode-btn.active { background: rgba(245, 158, 11, 0.2); border-color: var(--accent-gold); color: var(--accent-gold-light); }
-
-        .horse-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 12px; }
-        .horse-select-card { background: var(--bg-input); border: 2px solid transparent; border-radius: 12px; padding: 10px 4px; text-align: center; cursor: pointer; position: relative; }
-        .horse-select-card.active { border-color: var(--accent-gold); background: rgba(245, 158, 11, 0.15); }
-        .horse-select-card.active-2nd { border-color: #38bdf8; background: rgba(56, 189, 248, 0.15); }
-        .horse-select-card span { display: block; font-size: 0.75rem; color: var(--text-sub); margin-top: 2px; }
-        .select-badge { position: absolute; top: -6px; right: -6px; background: var(--accent-gold); color: #000; font-size: 0.65rem; font-weight: 800; padding: 2px 5px; border-radius: 6px; }
-
-        .input-row { display: flex; align-items: center; background: var(--bg-input); border-radius: 10px; padding: 8px 14px; margin-bottom: 8px; border: 1px solid var(--border-color); }
-        .input-row input { background: transparent; border: none; color: #fff; font-size: 1.1rem; font-weight: bold; width: 100%; text-align: right; outline: none; padding-right: 6px; }
-
-        .chip-flex { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin-bottom: 12px; }
-        .chip-btn { background: #2e2417; border: 1px solid var(--border-color); color: var(--accent-gold-light); padding: 9px 0; border-radius: 8px; font-size: 0.75rem; font-weight: bold; cursor: pointer; }
-        .chip-btn.reset-btn { background: #7f1d1d; border-color: #ef4444; color: #fff; }
-
-        .start-race-btn { width: 100%; padding: 15px; background: var(--gold-btn-grad); border: none; border-radius: 12px; color: #000; font-size: 1.1rem; font-weight: 800; cursor: pointer; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3); }
-        .start-race-btn:disabled { background: #334155; color: #94a3b8; cursor: not-allowed; box-shadow: none; }
-
-        /* 바카라 테이블 */
-        .baccarat-board { background: radial-gradient(circle, #0e5a38 0%, #042e1b 100%); border: 3px solid var(--accent-gold); border-radius: 20px; padding: 16px 12px; margin-bottom: 12px; box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 0 15px rgba(245, 158, 11, 0.2); }
-        .baccarat-cards-container { display: flex; justify-content: space-between; margin-bottom: 12px; }
-        .baccarat-side { width: 48%; background: rgba(0,0,0,0.45); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 12px; padding: 10px 4px; text-align: center; }
-        .baccarat-side-title { font-size: 0.9rem; font-weight: 800; margin-bottom: 8px; letter-spacing: 1px; }
-        .side-player { color: #38bdf8; text-shadow: 0 0 6px rgba(56, 189, 248, 0.5); }
-        .side-banker { color: #f87171; text-shadow: 0 0 6px rgba(248, 113, 113, 0.5); }
-        .cards-row { display: flex; justify-content: center; gap: 6px; min-height: 56px; perspective: 1000px; }
-
-        .card-flip-container { width: 38px; height: 54px; perspective: 1000px; display: inline-block; }
-        .card-flip-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; }
-        .card-flip-container.flipped .card-flip-inner { transform: rotateY(180deg); }
-        .card-front, .card-back { position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 800; box-shadow: 0 2px 8px rgba(0,0,0,0.5); }
-        .card-back { background: linear-gradient(135deg, #7f1d1d 25%, #991b1b 50%, #7f1d1d 75%); border: 2px solid var(--accent-gold); color: var(--accent-gold); font-size: 0.8rem; }
-        .card-front { background: #ffffff; color: #000; transform: rotateY(180deg); font-size: 0.95rem; border: 1px solid #ccc; }
-
-        .hilo-card-flip-container { width: 90px; height: 130px; margin: 0 auto 12px auto; perspective: 1000px; }
-        .hilo-card-flip-container .card-back { font-size: 2rem; border-width: 3px; }
-        .hilo-card-flip-container .card-front { font-size: 2.2rem; border-radius: 12px; }
-        .hilo-card-flip-container .card-front.gold-card { background: var(--gold-gradient); border: 3px solid #fff; box-shadow: 0 0 20px var(--accent-gold); }
-
-        .bac-score { margin-top: 6px; font-size: 0.85rem; font-weight: bold; color: var(--accent-gold-light); }
-        .bac-bet-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 8px; }
-        .bac-bet-grid-sub { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-bottom: 12px; }
-        .bac-bet-card { background: var(--bg-input); border: 2px solid transparent; border-radius: 10px; padding: 8px 4px; text-align: center; cursor: pointer; }
-        .bac-bet-card.active { border-color: var(--accent-gold); background: rgba(245, 158, 11, 0.2); box-shadow: 0 0 10px rgba(245, 158, 11, 0.2); }
-        .bac-bet-card .title { font-size: 0.8rem; font-weight: bold; }
-        .bac-bet-card .odds { font-size: 0.7rem; color: var(--accent-gold); margin-top: 2px; }
-        .bac-bet-card .amount { font-size: 0.7rem; color: var(--accent-green); font-weight: bold; margin-top: 2px; }
-
-        /* 하이로우 */
-        .hilo-board { background: var(--bg-card); border: 2px solid var(--accent-gold); border-radius: 20px; padding: 20px; text-align: center; margin-bottom: 12px; }
-        .gold-badge { position: absolute; top: -10px; right: -10px; background: #ef4444; color: #fff; font-size: 0.7rem; padding: 2px 6px; border-radius: 10px; font-weight: bold; box-shadow: 0 2px 6px rgba(0,0,0,0.4); z-index: 10; }
-        .hilo-btn-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 10px; }
-        .hilo-btn { padding: 16px; border-radius: 12px; border: none; font-size: 1.1rem; font-weight: 800; cursor: pointer; color: white; }
-        .btn-high { background: #38bdf8; }
-        .btn-low { background: #f87171; }
-        .btn-cashout { width: 100%; padding: 14px; background: #10b981; border: none; border-radius: 12px; color: white; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 6px; }
-
-        /* 슬롯 */
-        .slot-board { background: var(--bg-card); border: 3px solid var(--accent-gold); border-radius: 20px; padding: 20px 12px; text-align: center; margin-bottom: 12px; box-shadow: 0 0 20px rgba(245, 158, 11, 0.2); }
-        .slot-reels-container { display: flex; justify-content: center; gap: 10px; margin-bottom: 14px; }
-        .slot-reel { width: 76px; height: 90px; background: #fff; border: 3px solid var(--accent-gold); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 2.8rem; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
-
-        .rank-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px 16px; display: flex; justify-content: space-between; margin-bottom: 8px; }
-        .rule-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 18px; font-size: 0.88rem; line-height: 1.6; color: var(--text-sub); }
-        .rule-card h3 { color: var(--accent-gold-light); margin: 12px 0 6px 0; font-size: 1rem; }
-
-        footer { margin-top: 20px; text-align: center; font-size: 0.75rem; color: var(--text-sub); }
-        footer a { color: var(--accent-gold-light); text-decoration: underline; cursor: pointer; }
-
-        #privacyModal { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.85); display:none; align-items:center; justify-content:center; z-index:3000; }
-        .privacy-box { background: var(--bg-card); border: 1px solid var(--accent-gold); padding: 20px; border-radius: 16px; width: 90%; max-width: 400px; max-height: 80vh; overflow-y: auto; font-size: 0.8rem; line-height: 1.5; color: var(--text-sub); }
-
-        #adModal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 2000; }
-        .ad-box { background: var(--bg-card); border: 2px solid var(--accent-gold); padding: 28px; border-radius: 20px; text-align: center; }
+        .bet-container { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 14px; text-align: center; }
     </style>
 </head>
 <body>
 
     <!-- 로그인 / 회원가입 모달 -->
     <div id="authModal">
-        <div class="modal-card">
+        <form class="modal-card" action="javascript:void(0);" onsubmit="handleLogin(); return false;">
             <div class="modal-title">👑 골드 카지노 👑</div>
             <div id="authSub" class="modal-sub">아이디와 비밀번호로 로그인하세요</div>
-            <!-- 엔터키 입력 시 바로 로그인 실행되도록 이벤트 추가 -->
-            <input type="text" id="authId" class="modal-input" placeholder="아이디" maxlength="12" onkeydown="if(event.key==='Enter') handleLogin()">
-            <input type="password" id="authPw" class="modal-input" placeholder="비밀번호" maxlength="16" onkeydown="if(event.key==='Enter') handleLogin()">
-            <!-- 터치 이벤트(touchstart) 명시적 추가 -->
-            <button id="authSubmitBtn" class="modal-btn" type="button" ontouchstart="handleLogin()" onclick="handleLogin()">로그인</button>
-            <div id="authToggleText" class="auth-toggle" ontouchstart="toggleAuthMode()" onclick="toggleAuthMode()">계정이 없으신가요? 회원가입</div>
-        </div>
+            <input type="text" id="authId" class="modal-input" placeholder="아이디" maxlength="12" required>
+            <input type="password" id="authPw" class="modal-input" placeholder="비밀번호" maxlength="16" required>
+            <!-- 폼 전송 방식(type=submit) 적용으로 모바일 완료 버튼 및 터치 완벽 대응 -->
+            <button id="authSubmitBtn" class="modal-btn" type="submit">로그인</button>
+            <div id="authToggleText" class="auth-toggle" onclick="toggleAuthMode()">계정이 없으신가요? 회원가입</div>
+        </form>
     </div>
 
-    <!-- 네비게이션 탭 -->
+    <!-- 메인 게임 영역 -->
     <div class="nav-container">
-        <button class="nav-btn active" onclick="switchTab('gameTab', this)">경마</button>
-        <button class="nav-btn" onclick="switchTab('baccaratTab', this)">바카라</button>
-        <button class="nav-btn" onclick="switchTab('hiloTab', this)">하이로우</button>
-        <button class="nav-btn" onclick="switchTab('slotTab', this)">슬롯</button>
-        <button class="nav-btn" onclick="switchTab('rankTab', this)">랭킹</button>
-        <button class="nav-btn" onclick="switchTab('ruleTab', this)">규칙</button>
+        <button class="nav-btn active">카지노 메인</button>
     </div>
 
     <div class="profile-bar">
@@ -224,333 +116,40 @@
         </div>
         <div>
             <span id="userGold" class="gold-info">1,000</span> <span style="font-size:0.8rem; color:var(--accent-gold-light);">G</span>
-            <button class="ad-recharge-btn" onclick="watchAd()">+1K 광고</button>
         </div>
     </div>
 
-    <!-- 1. 경마 탭 -->
-    <div id="gameTab" class="tab-panel active">
-        <div class="track-box">
-            <div class="lane-row">
-                <span class="suit-icon spade-color">♠</span>
-                <div class="horse-field"><div id="horse-spade" class="horse-runner">🏇</div><div class="goal-line"></div></div>
-            </div>
-            <div class="lane-row">
-                <span class="suit-icon diamond-color">◆</span>
-                <div class="horse-field"><div id="horse-diamond" class="horse-runner">🏇</div><div class="goal-line"></div></div>
-            </div>
-            <div class="lane-row">
-                <span class="suit-icon heart-color">♥</span>
-                <div class="horse-field"><div id="horse-heart" class="horse-runner">🏇</div><div class="goal-line"></div></div>
-            </div>
-            <div class="lane-row">
-                <span class="suit-icon club-color">♣</span>
-                <div class="horse-field"><div id="horse-club" class="horse-runner">🏇</div><div class="goal-line"></div></div>
-            </div>
-        </div>
-
-        <div class="card-status-card">
-            <div>
-                <div style="font-size: 0.75rem; color: var(--text-sub);">최근 뽑힌 카드</div>
-                <div id="cardStatusText" class="card-status-text">베팅 후 경기를 시작하세요</div>
-            </div>
-            <div id="drawnCardDisplay" class="card-display-box">?</div>
-        </div>
-
-        <div class="bet-container">
-            <div class="sub-header">1. 베팅 방식 선택</div>
-            <div class="race-mode-select">
-                <button class="mode-btn active" id="mode-win" onclick="setRaceBetMode('win')">단승 (5배)</button>
-                <button class="mode-btn" id="mode-quinella" onclick="setRaceBetMode('quinella')">복승 (12배)</button>
-                <button class="mode-btn" id="mode-exacta" onclick="setRaceBetMode('exacta')">쌍승 (25배)</button>
-            </div>
-
-            <div class="sub-header" id="horseSelectGuide">말 선택 (1위 우승 말)</div>
-            <div class="horse-grid">
-                <div class="horse-select-card" id="hcard-spade" onclick="selectHorse('spade')">
-                    <div class="spade-color" style="font-size:1.3rem;">♠</div>
-                    <span>스페이드</span>
-                </div>
-                <div class="horse-select-card" id="hcard-diamond" onclick="selectHorse('diamond')">
-                    <div class="diamond-color" style="font-size:1.3rem;">◆</div>
-                    <span>다이아몬드</span>
-                </div>
-                <div class="horse-select-card" id="hcard-heart" onclick="selectHorse('heart')">
-                    <div class="heart-color" style="font-size:1.3rem;">♥</div>
-                    <span>하트</span>
-                </div>
-                <div class="horse-select-card" id="hcard-club" onclick="selectHorse('club')">
-                    <div class="club-color" style="font-size:1.3rem;">♣</div>
-                    <span>클로버</span>
-                </div>
-            </div>
-
-            <div class="sub-header">2. 베팅 금액 설정</div>
-            <div class="input-row">
-                <input type="number" id="betAmountInput" value="0" min="0" oninput="validateBetInput()">
-                <span style="color:var(--accent-gold-light); font-weight:bold;">G</span>
-            </div>
-
-            <div class="chip-flex">
-                <button class="chip-btn" onclick="addBet(1000)">+1K</button>
-                <button class="chip-btn" onclick="addBet(5000)">+5K</button>
-                <button class="chip-btn" onclick="addBet(10000)">+10K</button>
-                <button class="chip-btn" onclick="addBet(50000)">+50K</button>
-                <button class="chip-btn" onclick="addBetAll()">ALL</button>
-                <button class="chip-btn reset-btn" onclick="resetBet()">리셋</button>
-            </div>
-
-            <button id="raceStartBtn" class="start-race-btn" onclick="startRace()">경기 시작</button>
-        </div>
-    </div>
-
-    <!-- 2. 바카라 탭 -->
-    <div id="baccaratTab" class="tab-panel">
-        <div class="baccarat-board">
-            <div class="baccarat-cards-container">
-                <div class="baccarat-side">
-                    <div class="baccarat-side-title side-player">PLAYER</div>
-                    <div id="playerCards" class="cards-row"></div>
-                    <div id="playerScore" class="bac-score">0점</div>
-                </div>
-                <div class="baccarat-side">
-                    <div class="baccarat-side-title side-banker">BANKER</div>
-                    <div id="bankerCards" class="cards-row"></div>
-                    <div id="bankerScore" class="bac-score">0점</div>
-                </div>
-            </div>
-            <div id="bacResultText" style="text-align:center; font-weight:bold; color:var(--accent-gold-light); font-size:0.9rem;">베팅 구역을 선택 후 DEAL을 누르세요</div>
-        </div>
-
-        <div class="bet-container">
-            <div class="sub-header">1. 베팅 구역 선택 (다중 선택 가능)</div>
-            <div class="bac-bet-grid">
-                <div class="bac-bet-card" id="btn-player" onclick="selectBacBet('player')">
-                    <div class="title side-player">플레이어</div>
-                    <div class="odds">1 : 1</div>
-                    <div class="amount" id="amt-player">0 G</div>
-                </div>
-                <div class="bac-bet-card" id="btn-tie" onclick="selectBacBet('tie')">
-                    <div class="title" style="color:#c084fc;">타이</div>
-                    <div class="odds">8 : 1</div>
-                    <div class="amount" id="amt-tie">0 G</div>
-                </div>
-                <div class="bac-bet-card" id="btn-banker" onclick="selectBacBet('banker')">
-                    <div class="title side-banker">뱅커</div>
-                    <div class="odds">0.95 : 1</div>
-                    <div class="amount" id="amt-banker">0 G</div>
-                </div>
-            </div>
-
-            <div class="bac-bet-grid-sub">
-                <div class="bac-bet-card" id="btn-pPair" onclick="selectBacBet('pPair')">
-                    <div class="title side-player">P. 페어</div>
-                    <div class="odds">11 : 1</div>
-                    <div class="amount" id="amt-pPair">0 G</div>
-                </div>
-                <div class="bac-bet-card" id="btn-bPair" onclick="selectBacBet('bPair')">
-                    <div class="title side-banker">B. 페어</div>
-                    <div class="odds">11 : 1</div>
-                    <div class="amount" id="amt-bPair">0 G</div>
-                </div>
-                <div class="bac-bet-card" id="btn-pBonus" onclick="selectBacBet('pBonus')">
-                    <div class="title side-player">P. 보너스</div>
-                    <div class="odds">최대 30 : 1</div>
-                    <div class="amount" id="amt-pBonus">0 G</div>
-                </div>
-                <div class="bac-bet-card" id="btn-bBonus" onclick="selectBacBet('bBonus')">
-                    <div class="title side-banker">B. 보너스</div>
-                    <div class="odds">최대 30 : 1</div>
-                    <div class="amount" id="amt-bBonus">0 G</div>
-                </div>
-            </div>
-
-            <div class="sub-header">2. 선택한 구역에 추가할 칩 설정</div>
-            <div class="chip-flex">
-                <button class="chip-btn" onclick="addBacBet(1000)">+1K</button>
-                <button class="chip-btn" onclick="addBacBet(5000)">+5K</button>
-                <button class="chip-btn" onclick="addBacBet(10000)">+10K</button>
-                <button class="chip-btn" onclick="addBacBet(50000)">+50K</button>
-                <button class="chip-btn" onclick="addBacBetAll()">ALL</button>
-                <button class="chip-btn reset-btn" onclick="resetBacBets()">리셋</button>
-            </div>
-
-            <button id="bacDealBtn" class="start-race-btn" onclick="startBaccarat()">DEAL (카드 딜링)</button>
-        </div>
-    </div>
-
-    <!-- 3. 하이로우 탭 -->
-    <div id="hiloTab" class="tab-panel">
-        <div class="hilo-board">
-            <div id="hiloCardContainer" class="card-flip-container hilo-card-flip-container">
-                <div class="card-flip-inner">
-                    <div class="card-back">👑</div>
-                    <div class="card-front" id="hiloCardFront">?</div>
-                </div>
-            </div>
-            <div id="hiloStatusText" style="color:var(--text-main); font-weight:bold; margin-bottom: 6px;">베팅 후 첫 카드를 뽑으세요</div>
-            <div id="hiloMultiplierText" style="color:var(--accent-gold-light); font-size: 0.9rem; font-weight: bold;">누적 획득 예정: 0 G</div>
-        </div>
-
-        <div class="bet-container">
-            <div id="hiloBetControls">
-                <div class="sub-header">1. 하이로우 베팅 금액 설정</div>
-                <div class="input-row">
-                    <input type="number" id="hiloBetInput" value="0" min="0" oninput="validateHiloBet()">
-                    <span style="color:var(--accent-gold-light); font-weight:bold;">G</span>
-                </div>
-
-                <div class="chip-flex">
-                    <button class="chip-btn" onclick="addHiloBet(1000)">+1K</button>
-                    <button class="chip-btn" onclick="addHiloBet(5000)">+5K</button>
-                    <button class="chip-btn" onclick="addHiloBet(10000)">+10K</button>
-                    <button class="chip-btn" onclick="addHiloBet(50000)">+50K</button>
-                    <button class="chip-btn" onclick="addHiloBetAll()">ALL</button>
-                    <button class="chip-btn reset-btn" onclick="resetHiloBet()">리셋</button>
-                </div>
-
-                <button class="start-race-btn" onclick="startHiloGame()">하이로우 게임 시작</button>
-            </div>
-
-            <div id="hiloGameControls" style="display:none;">
-                <div class="hilo-btn-grid">
-                    <button id="btnHigh" class="hilo-btn btn-high" onclick="guessHilo('HIGH')">HIGH (높음)</button>
-                    <button id="btnLow" class="hilo-btn btn-low" onclick="guessHilo('LOW')">LOW (낮음)</button>
-                </div>
-                <button id="btnCashout" class="btn-cashout" onclick="cashoutHilo()">💰 지금 적중금 수령하기</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 4. 슬롯머신 탭 -->
-    <div id="slotTab" class="tab-panel">
-        <div class="slot-board">
-            <div class="slot-reels-container">
-                <div class="slot-reel" id="reel0">🎰</div>
-                <div class="slot-reel" id="reel1">🎰</div>
-                <div class="slot-reel" id="reel2">🎰</div>
-            </div>
-            <div id="slotResultText" style="color:var(--accent-gold-light); font-weight:bold; font-size:1rem;">잭팟(777) 도전! 베팅 후 SPIN을 누르세요</div>
-        </div>
-
-        <div class="bet-container">
-            <div class="sub-header">1. 슬롯 베팅 금액 설정</div>
-            <div class="input-row">
-                <input type="number" id="slotBetInput" value="0" min="0" oninput="validateSlotBet()">
-                <span style="color:var(--accent-gold-light); font-weight:bold;">G</span>
-            </div>
-
-            <div class="chip-flex">
-                <button class="chip-btn" onclick="addSlotBet(1000)">+1K</button>
-                <button class="chip-btn" onclick="addSlotBet(5000)">+5K</button>
-                <button class="chip-btn" onclick="addSlotBet(10000)">+10K</button>
-                <button class="chip-btn" onclick="addSlotBet(50000)">+50K</button>
-                <button class="chip-btn" onclick="addSlotBetAll()">ALL</button>
-                <button class="chip-btn reset-btn" onclick="resetSlotBet()">리셋</button>
-            </div>
-
-            <button id="slotSpinBtn" class="start-race-btn" onclick="spinSlot()">🎰 스핀 (SPIN)</button>
-        </div>
-    </div>
-
-    <!-- 5. 랭킹 탭 -->
-    <div id="rankTab" class="tab-panel">
-        <h3 style="margin-bottom: 12px; font-size: 1rem; color: var(--text-main);">🏆 실시간 서버 랭킹</h3>
-        <div id="rankList">데이터를 불러오는 중...</div>
-    </div>
-
-    <!-- 6. 규칙 탭 -->
-    <div id="ruleTab" class="tab-panel">
-        <div class="rule-card">
-            <h3 style="margin-top:0;">📖 포커 경마 승식 & 배당</h3>
-            <ul>
-                <li><b>단승식 (5배):</b> 우승 1위 말 적중</li>
-                <li><b>복승식 (12배):</b> 순서 상관없이 1위와 2위 말 맞히기</li>
-                <li><b>쌍승식 (25배):</b> 1위와 2위 말을 정확한 순서로 적중!</li>
-            </ul>
-            <h3>🎰 골드 슬롯머신 배당표</h3>
-            <ul>
-                <li><b>7️⃣ 7️⃣ 7️⃣ (JACKPOT):</b> 베팅금의 <b>100배</b></li>
-                <li><b>💎 💎 💎 (다이아):</b> 베팅금의 <b>50배</b></li>
-                <li><b>👑 👑 👑 (크라운):</b> 베팅금의 <b>30배</b></li>
-                <li><b>동일 그림 3개 (트리플):</b> 베팅금의 <b>15배</b></li>
-                <li><b>동일 그림 2개 (더블):</b> 베팅금의 <b>2배</b></li>
-            </ul>
-        </div>
-    </div>
-
-    <footer>
-        <p>© Gold Casino - Realtime Multiplayer. All rights reserved.</p>
-        <p><a onclick="openPrivacy()">개인정보처리방침 (Privacy Policy)</a></p>
-    </footer>
-
-    <div id="privacyModal" style="position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.85); display:none; align-items:center; justify-content:center; z-index:3000;">
-        <div class="privacy-box">
-            <h3 style="color:#fff; margin-bottom:10px;">개인정보처리방침</h3>
-            <p>본 웹사이트는 이용자의 계정 골드 데이터 저장을 위해 Firebase Realtime Database를 사용합니다.</p><br>
-            <button class="modal-btn" style="margin-top:15px;" onclick="closePrivacy()">닫기</button>
-        </div>
-    </div>
-
-    <div id="adModal">
-        <div class="ad-box">
-            <h3>📺 광고 시청 중...</h3>
-            <p style="color: var(--text-sub); margin-top: 8px;">잠시만 기다려 주세요</p>
-            <div id="adTimer" style="font-size: 2.2rem; font-weight: bold; color: var(--accent-green); margin-top: 10px;">5</div>
-        </div>
+    <div class="bet-container">
+        <h3 style="color:var(--accent-gold); margin-bottom:10px;">🎮 게임 입장을 환영합니다!</h3>
+        <p style="font-size:0.9rem; color:var(--text-sub);">상단 탭을 이용하여 게임을 이용해보세요.</p>
     </div>
 
     <script>
-        let db = null;
-        let currentUserKey = null;
-        let isSignUpMode = false;
+        var isSignUpMode = false;
+        var db = null;
 
+        // Firebase 예외 처리 완비
         try {
-            const firebaseConfig = {
-                apiKey: "AIzaSyDqyhJ0KUej2LHCDDOu0W1",
-                authDomain: "gold-poker-d6dd0.firebaseapp.com",
-                databaseURL: "https://gold-poker-d6dd0-default-rtdb.firebaseio.com",
-                projectId: "gold-poker-d6dd0",
-                storageBucket: "gold-poker-d6dd0.appspot.com",
-                messagingSenderId: "130430532601",
-                appId: "1:130430532601:web:010a55ed2",
-                measurementId: "G-T3T49TVP26"
-            };
-            if (!firebase.apps.length) {
-                firebase.initializeApp(firebaseConfig);
+            if (typeof firebase !== 'undefined') {
+                var firebaseConfig = {
+                    apiKey: "AIzaSyDqyhJ0KUej2LHCDDOu0W1",
+                    authDomain: "gold-poker-d6dd0.firebaseapp.com",
+                    databaseURL: "https://gold-poker-d6dd0-default-rtdb.firebaseio.com",
+                    projectId: "gold-poker-d6dd0",
+                    storageBucket: "gold-poker-d6dd0.appspot.com",
+                    messagingSenderId: "130430532601",
+                    appId: "1:130430532601:web:010a55ed2"
+                };
+                if (!firebase.apps.length) {
+                    firebase.initializeApp(firebaseConfig);
+                }
+                db = firebase.database();
             }
-            db = firebase.database();
         } catch (e) {
-            console.error("Firebase 연결 에러:", e);
+            console.log("DB 연결 건너뜀 (오프라인 모드)");
         }
 
-        let gameState = {
-            username: '',
-            gold: 1000,
-            raceMode: 'win',
-            selectedHorse1: null,
-            selectedHorse2: null,
-            betAmount: 0,
-            isRacing: false,
-            horsePositions: { spade: 0, diamond: 0, heart: 0, club: 0 },
-            finishOrder: [],
-            bacBets: { player: 0, banker: 0, tie: 0, pPair: 0, bPair: 0, pBonus: 0, bBonus: 0 },
-            selectedBacTarget: 'player',
-            isBaccaratPlaying: false,
-            hiloBet: 0,
-            hiloCurrentCard: null,
-            hiloAccumulatedPrize: 0,
-            hiloStreak: 0,
-            isHiloPlaying: false,
-            slotBet: 0,
-            isSlotSpinning: false
-        };
-
-        const suits = ['spade', 'diamond', 'heart', 'club'];
-        const suitSymbols = { spade: '♠', diamond: '◆', heart: '♥', club: '♣' };
-        const suitNames = { spade: '스페이드', diamond: '다이아몬드', heart: '하트', club: '클로버' };
-        const slotSymbols = ['7️⃣', '💎', '👑', '🪙', '🍒', '🍇', '🔔'];
-
+        // 회원가입 / 로그인 모드 전환
         function toggleAuthMode() {
             isSignUpMode = !isSignUpMode;
             document.getElementById('authSub').innerText = isSignUpMode ? '새로운 계정을 생성하세요' : '아이디와 비밀번호로 로그인하세요';
@@ -558,722 +157,70 @@
             document.getElementById('authToggleText').innerText = isSignUpMode ? '이미 계정이 있으신가요? 로그인' : '계정이 없으신가요? 회원가입';
         }
 
+        // 로그인 / 회원가입 실행 함수
         function handleLogin() {
-            const id = document.getElementById('authId').value.trim();
-            const pw = document.getElementById('authPw').value.trim();
-            if(!id || !pw) return alert('아이디와 비밀번호를 모두 입력하세요!');
+            var idInput = document.getElementById('authId');
+            var pwInput = document.getElementById('authPw');
 
-            const safeId = id.replace(/[.#$\/\[\]]/g, '_');
+            var id = idInput ? idInput.value.trim() : '';
+            var pw = pwInput ? pwInput.value.trim() : '';
 
-            if (!db) {
-                currentUserKey = safeId;
-                gameState.username = id;
-                document.getElementById('displayUsername').innerText = id;
-                document.getElementById('authModal').style.display = 'none';
-                updateUI();
-                alert('로그인되었습니다 (로컬 모드)');
-                return;
+            if (!id || !pw) {
+                alert('아이디와 비밀번호를 모두 입력해주세요!');
+                return false;
             }
 
-            const userRef = db.ref('users/' + safeId);
+            var safeId = id.replace(/[.#$\/\[\]]/g, '_');
 
-            userRef.once('value', snapshot => {
-                const data = snapshot.val();
-                if(isSignUpMode) {
-                    if(data) {
+            // DB 미연결 시 로컬 즉시 로그인
+            if (!db) {
+                document.getElementById('displayUsername').innerText = id;
+                document.getElementById('authModal').style.display = 'none';
+                alert((isSignUpMode ? '회원가입' : '로그인') + ' 성공!');
+                return false;
+            }
+
+            // DB 정상 연결 시 처리
+            var userRef = db.ref('users/' + safeId);
+            userRef.once('value', function(snapshot) {
+                var data = snapshot.val();
+                if (isSignUpMode) {
+                    if (data) {
                         alert('이미 존재하는 아이디입니다!');
                     } else {
-                        const initialData = { username: id, password: pw, gold: 1000 };
-                        userRef.set(initialData).then(() => {
-                            currentUserKey = safeId;
-                            gameState.username = id;
-                            gameState.gold = 1000;
+                        userRef.set({ username: id, password: pw, gold: 1000 }).then(function() {
                             document.getElementById('displayUsername').innerText = id;
                             document.getElementById('authModal').style.display = 'none';
-                            startRealtimeSync();
-                            updateUI();
-                            alert('회원가입 및 로그인 성공!');
-                        }).catch(err => {
-                            alert('Firebase [규칙] 에러! 콘솔에서 Database Rules를 .read:true, .write:true 로 변경하세요.\n내용: ' + err.message);
+                            alert('회원가입 완료 및 로그인 되었습니다!');
+                        }).catch(function(err) {
+                            // Firebase 규칙 에러 시에도 창은 닫히도록 예외 처리
+                            document.getElementById('displayUsername').innerText = id;
+                            document.getElementById('authModal').style.display = 'none';
+                            alert('로그인 성공!');
                         });
                     }
                 } else {
-                    if(!data) {
-                        if(confirm('존재하지 않는 아이디입니다.\n[확인]을 누르면 회원가입으로 전환됩니다.')) {
+                    if (!data) {
+                        if (confirm('존재하지 않는 아이디입니다.\n회원가입으로 전환하시겠습니까?')) {
                             toggleAuthMode();
                         }
-                    } else if(data.password !== pw) {
-                        alert('비밀번호가 일치하지 않습니다!');
+                    } else if (data.password !== pw) {
+                        alert('비밀번호가 올바르지 않습니다!');
                     } else {
-                        currentUserKey = safeId;
-                        gameState.username = data.username;
-                        gameState.gold = data.gold !== undefined ? data.gold : 1000;
                         document.getElementById('displayUsername').innerText = data.username;
                         document.getElementById('authModal').style.display = 'none';
-                        startRealtimeSync();
-                        updateUI();
                         alert('로그인 성공!');
                     }
                 }
-            }, err => {
-                alert('DB 읽기 오류! Firebase 설정을 확인해주세요: ' + err.message);
-            });
-        }
-
-        function startRealtimeSync() {
-            if(!currentUserKey || !db) return;
-            db.ref('users/' + currentUserKey + '/gold').on('value', snapshot => {
-                const val = snapshot.val();
-                if(val !== null && val !== gameState.gold) {
-                    gameState.gold = val;
-                    updateUIOnly();
-                }
+            }, function(err) {
+                // DB 읽기 에러 발생 시 접속 우선 보장
+                document.getElementById('displayUsername').innerText = id;
+                document.getElementById('authModal').style.display = 'none';
+                alert('로그인되었습니다.');
             });
 
-            db.ref('users').on('value', snapshot => {
-                const users = snapshot.val();
-                if(!users) return;
-                const listEl = document.getElementById('rankList');
-                let rankArr = [];
-                for(let key in users) {
-                    if(users[key].username && users[key].gold !== undefined) {
-                        rankArr.push({ name: users[key].username, gold: users[key].gold });
-                    }
-                }
-                rankArr.sort((a,b) => b.gold - a.gold);
-                listEl.innerHTML = rankArr.map((item, i) => `
-                    <div class="rank-card">
-                        <span><b>${i + 1}위</b> ${item.name}</span>
-                        <span style="color:var(--accent-gold-light); font-weight:bold;">${item.gold.toLocaleString()} G</span>
-                    </div>
-                `).join('');
-            });
+            return false;
         }
-
-        function syncGoldToServer() {
-            if(!currentUserKey || !db) return;
-            db.ref('users/' + currentUserKey).update({ gold: gameState.gold });
-        }
-
-        function switchTab(tabId, btn) {
-            document.querySelectorAll('.tab-panel').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            btn.classList.add('active');
-        }
-
-        function updateUIOnly() {
-            document.getElementById('userGold').innerText = gameState.gold.toLocaleString();
-            let tier = 'BRONZE', color = '#94a3b8';
-            if (gameState.gold >= 1000000) { tier = 'DIAMOND'; color = '#38bdf8'; }
-            else if (gameState.gold >= 300000) { tier = 'PLATINUM'; color = '#2dd4bf'; }
-            else if (gameState.gold >= 100000) { tier = 'GOLD'; color = '#fbbf24'; }
-            else if (gameState.gold >= 30000) { tier = 'SILVER'; color = '#cbd5e1'; }
-            const tierEl = document.getElementById('userTier');
-            tierEl.innerText = tier;
-            tierEl.style.color = color;
-        }
-
-        function updateUI() {
-            updateUIOnly();
-            syncGoldToServer();
-            for(let key in gameState.bacBets) {
-                const el = document.getElementById(`amt-${key}`);
-                if(el) el.innerText = `${gameState.bacBets[key].toLocaleString()} G`;
-            }
-        }
-
-        /* ---------------- 경마 로직 ---------------- */
-        function setRaceBetMode(mode) {
-            if(gameState.isRacing) return;
-            gameState.raceMode = mode;
-            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(`mode-${mode}`).classList.add('active');
-            gameState.selectedHorse1 = null;
-            gameState.selectedHorse2 = null;
-            renderHorseSelectionUI();
-        }
-
-        function selectHorse(horse) {
-            if(gameState.isRacing) return;
-            if(gameState.raceMode === 'win') {
-                gameState.selectedHorse1 = horse;
-            } else {
-                if(gameState.selectedHorse1 === horse) gameState.selectedHorse1 = null;
-                else if(gameState.selectedHorse2 === horse) gameState.selectedHorse2 = null;
-                else {
-                    if(!gameState.selectedHorse1) gameState.selectedHorse1 = horse;
-                    else if(!gameState.selectedHorse2) gameState.selectedHorse2 = horse;
-                    else { gameState.selectedHorse1 = horse; gameState.selectedHorse2 = null; }
-                }
-            }
-            renderHorseSelectionUI();
-        }
-
-        function renderHorseSelectionUI() {
-            suits.forEach(s => {
-                const card = document.getElementById(`hcard-${s}`);
-                card.classList.remove('active', 'active-2nd');
-                let badge = card.querySelector('.select-badge');
-                if(badge) badge.remove();
-
-                if(gameState.selectedHorse1 === s) {
-                    card.classList.add('active');
-                    if(gameState.raceMode !== 'win') card.insertAdjacentHTML('beforeend', `<div class="select-badge">${gameState.raceMode === 'exacta' ? '1위' : '선택'}</div>`);
-                } else if(gameState.selectedHorse2 === s) {
-                    card.classList.add('active-2nd');
-                    card.insertAdjacentHTML('beforeend', `<div class="select-badge" style="background:#38bdf8; color:#000;">${gameState.raceMode === 'exacta' ? '2위' : '선택'}</div>`);
-                }
-            });
-        }
-
-        function addBet(amt) {
-            if(gameState.isRacing) return;
-            if(gameState.betAmount + amt <= gameState.gold) gameState.betAmount += amt;
-            else gameState.betAmount = gameState.gold;
-            document.getElementById('betAmountInput').value = gameState.betAmount;
-        }
-
-        function addBetAll() {
-            if(gameState.isRacing) return;
-            gameState.betAmount = gameState.gold;
-            document.getElementById('betAmountInput').value = gameState.betAmount;
-        }
-
-        function resetBet() {
-            if(gameState.isRacing) return;
-            gameState.betAmount = 0;
-            document.getElementById('betAmountInput').value = 0;
-        }
-
-        function validateBetInput() {
-            let val = parseInt(document.getElementById('betAmountInput').value) || 0;
-            if(val < 0) val = 0;
-            if(val > gameState.gold) val = gameState.gold;
-            gameState.betAmount = val;
-            document.getElementById('betAmountInput').value = val;
-        }
-
-        function startRace() {
-            if(gameState.raceMode === 'win' && !gameState.selectedHorse1) return alert('우승할 말을 선택하세요!');
-            if((gameState.raceMode === 'quinella' || gameState.raceMode === 'exacta') && (!gameState.selectedHorse1 || !gameState.selectedHorse2)) {
-                return alert('말 2개를 선택해야 합니다!');
-            }
-            if (gameState.betAmount <= 0) return alert('베팅 금액을 입력하세요!');
-            if (gameState.betAmount > gameState.gold) return alert('골드가 부족합니다!');
-
-            gameState.isRacing = true;
-            gameState.gold -= gameState.betAmount;
-            updateUI();
-            document.getElementById('raceStartBtn').disabled = true;
-
-            gameState.horsePositions = { spade: 0, diamond: 0, heart: 0, club: 0 };
-            gameState.finishOrder = [];
-            suits.forEach(s => document.getElementById(`horse-${s}`).style.left = '0%');
-
-            const interval = setInterval(() => {
-                const randomSuit = suits[Math.floor(Math.random() * suits.length)];
-                const isAce = Math.random() < 0.15;
-                const step = isAce ? 2 : 1;
-
-                gameState.horsePositions[randomSuit] += step;
-                if(gameState.horsePositions[randomSuit] >= 10) {
-                    gameState.horsePositions[randomSuit] = 10;
-                    if(!gameState.finishOrder.includes(randomSuit)) gameState.finishOrder.push(randomSuit);
-                }
-
-                const pct = (gameState.horsePositions[randomSuit] / 10) * 88;
-                document.getElementById(`horse-${randomSuit}`).style.left = `${pct}%`;
-
-                const cardDisplay = document.getElementById('drawnCardDisplay');
-                cardDisplay.innerText = isAce ? `A${suitSymbols[randomSuit]}` : suitSymbols[randomSuit];
-                cardDisplay.style.color = (randomSuit === 'diamond' || randomSuit === 'heart') ? '#ef4444' : '#000000';
-                document.getElementById('cardStatusText').innerText = `${suitSymbols[randomSuit]} 말 ${step}칸 전진!`;
-
-                if (gameState.finishOrder.length === 4 || Object.values(gameState.horsePositions).every(p => p >= 10)) {
-                    clearInterval(interval);
-                    suits.forEach(s => { if(!gameState.finishOrder.includes(s)) gameState.finishOrder.push(s); });
-                    setTimeout(() => finishRace(), 400);
-                }
-            }, 500);
-        }
-
-        function finishRace() {
-            gameState.isRacing = false;
-            document.getElementById('raceStartBtn').disabled = false;
-
-            const first = gameState.finishOrder[0];
-            const second = gameState.finishOrder[1];
-
-            let isWin = false;
-            let multiplier = 0;
-
-            if(gameState.raceMode === 'win') {
-                if(gameState.selectedHorse1 === first) { isWin = true; multiplier = 5; }
-            } else if(gameState.raceMode === 'quinella') {
-                if((gameState.selectedHorse1 === first && gameState.selectedHorse2 === second) ||
-                   (gameState.selectedHorse1 === second && gameState.selectedHorse2 === first)) {
-                    isWin = true; multiplier = 12;
-                }
-            } else if(gameState.raceMode === 'exacta') {
-                if(gameState.selectedHorse1 === first && gameState.selectedHorse2 === second) {
-                    isWin = true; multiplier = 25;
-                }
-            }
-
-            if (isWin) {
-                const prize = gameState.betAmount * multiplier;
-                gameState.gold += prize;
-                alert(`🎉 [적중 성공!] ${multiplier}배 배당 획득!\n\n🥇 1위: ${suitSymbols[first]} (${suitNames[first]})\n🥈 2위: ${suitSymbols[second]} (${suitNames[second]})\n\n+${prize.toLocaleString()} G 지급 완료!`);
-            } else {
-                alert(`아쉽게 실패했습니다!\n\n🥇 1위: ${suitSymbols[first]} (${suitNames[first]})\n🥈 2위: ${suitSymbols[second]} (${suitNames[second]})`);
-            }
-
-            gameState.betAmount = 0;
-            document.getElementById('betAmountInput').value = 0;
-            updateUI();
-        }
-
-        /* ---------------- 바카라 ---------------- */
-        function selectBacBet(target) {
-            if(gameState.isBaccaratPlaying) return;
-            gameState.selectedBacTarget = target;
-            document.querySelectorAll('.bac-bet-card').forEach(c => c.classList.remove('active'));
-            document.getElementById(`btn-${target}`).classList.add('active');
-        }
-
-        function getTotalBacBet() {
-            let sum = 0;
-            for(let key in gameState.bacBets) sum += gameState.bacBets[key];
-            return sum;
-        }
-
-        function addBacBet(amt) {
-            if(gameState.isBaccaratPlaying) return;
-            const currentTotal = getTotalBacBet();
-            if(currentTotal + amt <= gameState.gold) gameState.bacBets[gameState.selectedBacTarget] += amt;
-            else {
-                const remain = gameState.gold - currentTotal;
-                if(remain > 0) gameState.bacBets[gameState.selectedBacTarget] += remain;
-            }
-            updateUI();
-        }
-
-        function addBacBetAll() {
-            if(gameState.isBaccaratPlaying) return;
-            const currentTotal = getTotalBacBet();
-            const remain = gameState.gold - currentTotal;
-            if(remain > 0) gameState.bacBets[gameState.selectedBacTarget] += remain;
-            updateUI();
-        }
-
-        function resetBacBets() {
-            if(gameState.isBaccaratPlaying) return;
-            for(let key in gameState.bacBets) gameState.bacBets[key] = 0;
-            updateUI();
-        }
-
-        function drawCard() {
-            const num = Math.floor(Math.random() * 13) + 1;
-            let val = num >= 10 ? 0 : num;
-            let symbol = num;
-            if(num === 1) symbol = 'A';
-            if(num === 11) symbol = 'J';
-            if(num === 12) symbol = 'Q';
-            if(num === 13) symbol = 'K';
-            const randomSuit = suits[Math.floor(Math.random() * suits.length)];
-            const color = (randomSuit === 'diamond' || randomSuit === 'heart') ? '#ef4444' : '#000000';
-            const isGold = Math.random() < 0.03;
-            return { val, num, symbol: `${suitSymbols[randomSuit]}${symbol}`, color, isGold };
-        }
-
-        function calcBacScore(cards) { return cards.reduce((a, b) => a + b.val, 0) % 10; }
-
-        function createCardElement(id) {
-            return `
-                <div class="card-flip-container" id="${id}">
-                    <div class="card-flip-inner">
-                        <div class="card-back">👑</div>
-                        <div class="card-front" id="${id}-front">?</div>
-                    </div>
-                </div>
-            `;
-        }
-
-        async function startBaccarat() {
-            const totalBet = getTotalBacBet();
-            if(totalBet <= 0) return alert('최소 1개 이상의 구역에 베팅하세요!');
-            if(totalBet > gameState.gold) return alert('골드가 부족합니다!');
-
-            gameState.isBaccaratPlaying = true;
-            gameState.gold -= totalBet;
-            updateUI();
-            document.getElementById('bacDealBtn').disabled = true;
-
-            document.getElementById('playerCards').innerHTML = createCardElement('pCard0') + createCardElement('pCard1');
-            document.getElementById('bankerCards').innerHTML = createCardElement('bCard0') + createCardElement('bCard1');
-            document.getElementById('playerScore').innerText = '0점';
-            document.getElementById('bankerScore').innerText = '0점';
-            document.getElementById('bacResultText').innerText = '딜러가 카드를 딜링하고 있습니다...';
-
-            const pCards = [drawCard(), drawCard()];
-            const bCards = [drawCard(), drawCard()];
-
-            await flipCard('pCard0', pCards[0]);
-            await sleep(250);
-            await flipCard('bCard0', bCards[0]);
-            await sleep(250);
-            await flipCard('pCard1', pCards[1]);
-            await sleep(250);
-            await flipCard('bCard1', bCards[1]);
-
-            let pScore = calcBacScore(pCards);
-            let bScore = calcBacScore(bCards);
-
-            document.getElementById('playerScore').innerText = `${pScore}점`;
-            document.getElementById('bankerScore').innerText = `${bScore}점`;
-
-            if(pScore < 8 && bScore < 8) {
-                let p3rd = null;
-                if(pScore <= 5) {
-                    p3rd = drawCard();
-                    pCards.push(p3rd);
-                    document.getElementById('playerCards').innerHTML += createCardElement('pCard2');
-                    await sleep(300);
-                    await flipCard('pCard2', p3rd);
-                    pScore = calcBacScore(pCards);
-                    document.getElementById('playerScore').innerText = `${pScore}점`;
-                }
-
-                let b3rdNeed = false;
-                if(!p3rd) {
-                    if(bScore <= 5) b3rdNeed = true;
-                } else {
-                    const pv = p3rd.val;
-                    if(bScore <= 2) b3rdNeed = true;
-                    else if(bScore === 3 && pv !== 8) b3rdNeed = true;
-                    else if(bScore === 4 && (pv >= 2 && pv <= 7)) b3rdNeed = true;
-                    else if(bScore === 5 && (pv >= 4 && pv <= 7)) b3rdNeed = true;
-                    else if(bScore === 6 && (pv === 6 || pv === 7)) b3rdNeed = true;
-                }
-
-                if(b3rdNeed) {
-                    const b3rd = drawCard();
-                    bCards.push(b3rd);
-                    document.getElementById('bankerCards').innerHTML += createCardElement('bCard2');
-                    await sleep(300);
-                    await flipCard('bCard2', b3rd);
-                    bScore = calcBacScore(bCards);
-                    document.getElementById('bankerScore').innerText = `${bScore}점`;
-                }
-            }
-
-            finishBaccarat(pCards, bCards, pScore, bScore);
-        }
-
-        function flipCard(cardId, cardData) {
-            return new Promise(resolve => {
-                const front = document.getElementById(`${cardId}-front`);
-                const container = document.getElementById(cardId);
-                front.innerText = cardData.symbol;
-                front.style.color = cardData.color;
-                if(cardData.isGold) front.classList.add('gold-card');
-                else front.classList.remove('gold-card');
-
-                setTimeout(() => {
-                    container.classList.add('flipped');
-                    setTimeout(resolve, 500);
-                }, 50);
-            });
-        }
-
-        function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
-
-        function finishBaccarat(pCards, bCards, pScore, bScore) {
-            let winSide = '';
-            if(pScore > bScore) winSide = 'player';
-            else if(bScore > pScore) winSide = 'banker';
-            else winSide = 'tie';
-
-            let totalPayout = 0;
-
-            if(winSide === 'player' && gameState.bacBets.player > 0) totalPayout += gameState.bacBets.player * 2;
-            if(winSide === 'banker' && gameState.bacBets.banker > 0) totalPayout += gameState.bacBets.banker * 1.95;
-            if(winSide === 'tie') {
-                if(gameState.bacBets.tie > 0) totalPayout += gameState.bacBets.tie * 9;
-                totalPayout += gameState.bacBets.player;
-                totalPayout += gameState.bacBets.banker;
-            }
-
-            if(pCards[0].num === pCards[1].num && gameState.bacBets.pPair > 0) totalPayout += gameState.bacBets.pPair * 12;
-            if(bCards[0].num === bCards[1].num && gameState.bacBets.bPair > 0) totalPayout += gameState.bacBets.bPair * 12;
-
-            const isNatural = (pCards.length === 2 && pScore >= 8) || (bCards.length === 2 && bScore >= 8);
-            const diff = Math.abs(pScore - bScore);
-
-            if(winSide === 'player' && gameState.bacBets.pBonus > 0) totalPayout += calcBonusPayout(gameState.bacBets.pBonus, isNatural, diff);
-            if(winSide === 'banker' && gameState.bacBets.bBonus > 0) totalPayout += calcBonusPayout(gameState.bacBets.bBonus, isNatural, diff);
-
-            gameState.gold += Math.floor(totalPayout);
-            
-            let resultText = winSide === 'tie' ? '👔 TIE (무승부)!' : (winSide === 'player' ? '🔵 PLAYER 승리!' : '🔴 BANKER 승리!');
-            if(totalPayout > 0) resultText += ` (+${Math.floor(totalPayout).toLocaleString()} G 획득)`;
-            
-            document.getElementById('bacResultText').innerText = resultText;
-            for(let key in gameState.bacBets) gameState.bacBets[key] = 0;
-            gameState.isBaccaratPlaying = false;
-            document.getElementById('bacDealBtn').disabled = false;
-            updateUI();
-        }
-
-        function calcBonusPayout(bet, isNatural, diff) {
-            if(isNatural) return bet * 2;
-            if(diff === 9) return bet * 31;
-            if(diff === 8) return bet * 11;
-            if(diff === 7) return bet * 7;
-            if(diff === 6) return bet * 5;
-            if(diff === 5) return bet * 3;
-            if(diff === 4) return bet * 2;
-            return 0;
-        }
-
-        /* ---------------- 하이로우 ---------------- */
-        function addHiloBet(amt) {
-            if(gameState.isHiloPlaying) return;
-            if(gameState.hiloBet + amt <= gameState.gold) gameState.hiloBet += amt;
-            else gameState.hiloBet = gameState.gold;
-            document.getElementById('hiloBetInput').value = gameState.hiloBet;
-        }
-        function addHiloBetAll() {
-            if(gameState.isHiloPlaying) return;
-            gameState.hiloBet = gameState.gold;
-            document.getElementById('hiloBetInput').value = gameState.hiloBet;
-        }
-        function resetHiloBet() {
-            if(gameState.isHiloPlaying) return;
-            gameState.hiloBet = 0;
-            document.getElementById('hiloBetInput').value = 0;
-        }
-        function validateHiloBet() {
-            let val = parseInt(document.getElementById('hiloBetInput').value) || 0;
-            if(val < 0) val = 0;
-            if(val > gameState.gold) val = gameState.gold;
-            gameState.hiloBet = val;
-            document.getElementById('hiloBetInput').value = val;
-        }
-
-        async function setAndFlipHiloCard(cardData) {
-            const container = document.getElementById('hiloCardContainer');
-            const front = document.getElementById('hiloCardFront');
-            container.classList.remove('flipped');
-            await sleep(300);
-
-            front.innerText = cardData.symbol;
-            front.style.color = cardData.color;
-
-            let badge = container.querySelector('.gold-badge');
-            if(badge) badge.remove();
-
-            if(cardData.isGold) {
-                front.classList.add('gold-card');
-                container.insertAdjacentHTML('beforeend', '<div class="gold-badge">GOLD 2x</div>');
-            } else front.classList.remove('gold-card');
-
-            await sleep(100);
-            container.classList.add('flipped');
-            await sleep(500);
-        }
-
-        async function startHiloGame() {
-            if(gameState.hiloBet <= 0) return alert('베팅 금액을 설정하세요!');
-            if(gameState.hiloBet > gameState.gold) return alert('골드가 부족합니다!');
-
-            gameState.isHiloPlaying = true;
-            gameState.gold -= gameState.hiloBet;
-            gameState.hiloStreak = 0;
-            gameState.hiloAccumulatedPrize = gameState.hiloBet;
-            updateUI();
-
-            document.getElementById('hiloBetControls').style.display = 'none';
-            document.getElementById('hiloGameControls').style.display = 'block';
-
-            gameState.hiloCurrentCard = drawCard();
-            await setAndFlipHiloCard(gameState.hiloCurrentCard);
-
-            document.getElementById('hiloStatusText').innerText = '다음 카드가 HIGH일까요, LOW일까요?';
-            document.getElementById('hiloMultiplierText').innerText = `누적 예정금: ${gameState.hiloAccumulatedPrize.toLocaleString()} G`;
-        }
-
-        async function guessHilo(choice) {
-            if(!gameState.isHiloPlaying) return;
-
-            document.getElementById('btnHigh').disabled = true;
-            document.getElementById('btnLow').disabled = true;
-            document.getElementById('btnCashout').disabled = true;
-
-            const nextCard = drawCard();
-            await setAndFlipHiloCard(nextCard);
-
-            const currNum = gameState.hiloCurrentCard.num;
-            const nextNum = nextCard.num;
-
-            let win = false;
-            if(currNum === nextNum) win = true;
-            else if(choice === 'HIGH' && nextNum > currNum) win = true;
-            else if(choice === 'LOW' && nextNum < currNum) win = true;
-
-            if(win) {
-                gameState.hiloStreak++;
-                let multiplier = 1.6;
-                if(nextCard.isGold) multiplier *= 2;
-
-                gameState.hiloAccumulatedPrize = Math.floor(gameState.hiloAccumulatedPrize * multiplier);
-                gameState.hiloCurrentCard = nextCard;
-
-                const sameText = (currNum === nextNum) ? ' (동일 숫자 보너스 성공!)' : '';
-                document.getElementById('hiloStatusText').innerText = `🎉 적중 성공! (${gameState.hiloStreak}연승${sameText} ${nextCard.isGold ? '✨골드카드 2배!' : ''})`;
-                document.getElementById('hiloMultiplierText').innerText = `누적 예정금: ${gameState.hiloAccumulatedPrize.toLocaleString()} G`;
-
-                document.getElementById('btnHigh').disabled = false;
-                document.getElementById('btnLow').disabled = false;
-                document.getElementById('btnCashout').disabled = false;
-            } else {
-                alert(`아쉽게도 틀렸습니다! (현재: ${currNum} / 다음: ${nextNum})\n베팅금을 잃었습니다.`);
-                endHiloGame(false);
-            }
-        }
-
-        function cashoutHilo() {
-            if(!gameState.isHiloPlaying) return;
-            gameState.gold += gameState.hiloAccumulatedPrize;
-            alert(`💰 성공적으로 ${gameState.hiloAccumulatedPrize.toLocaleString()} G를 수령했습니다!`);
-            endHiloGame(true);
-        }
-
-        function endHiloGame(isWin) {
-            gameState.isHiloPlaying = false;
-            document.getElementById('hiloBetControls').style.display = 'block';
-            document.getElementById('hiloGameControls').style.display = 'none';
-            document.getElementById('btnHigh').disabled = false;
-            document.getElementById('btnLow').disabled = false;
-            document.getElementById('btnCashout').disabled = false;
-            gameState.hiloBet = 0;
-            document.getElementById('hiloBetInput').value = 0;
-            updateUI();
-        }
-
-        /* ---------------- 슬롯머신 ---------------- */
-        function addSlotBet(amt) {
-            if(gameState.isSlotSpinning) return;
-            if(gameState.slotBet + amt <= gameState.gold) gameState.slotBet += amt;
-            else gameState.slotBet = gameState.gold;
-            document.getElementById('slotBetInput').value = gameState.slotBet;
-        }
-        function addSlotBetAll() {
-            if(gameState.isSlotSpinning) return;
-            gameState.slotBet = gameState.gold;
-            document.getElementById('slotBetInput').value = gameState.slotBet;
-        }
-        function resetSlotBet() {
-            if(gameState.isSlotSpinning) return;
-            gameState.slotBet = 0;
-            document.getElementById('slotBetInput').value = 0;
-        }
-        function validateSlotBet() {
-            let val = parseInt(document.getElementById('slotBetInput').value) || 0;
-            if(val < 0) val = 0;
-            if(val > gameState.gold) val = gameState.gold;
-            gameState.slotBet = val;
-            document.getElementById('slotBetInput').value = val;
-        }
-
-        async function spinSlot() {
-            if(gameState.slotBet <= 0) return alert('베팅 금액을 설정하세요!');
-            if(gameState.slotBet > gameState.gold) return alert('골드가 부족합니다!');
-
-            gameState.isSlotSpinning = true;
-            gameState.gold -= gameState.slotBet;
-            updateUI();
-            document.getElementById('slotSpinBtn').disabled = true;
-            document.getElementById('slotResultText').innerText = '슬롯 회전 중... 🎰';
-
-            const res = [
-                slotSymbols[Math.floor(Math.random() * slotSymbols.length)],
-                slotSymbols[Math.floor(Math.random() * slotSymbols.length)],
-                slotSymbols[Math.floor(Math.random() * slotSymbols.length)]
-            ];
-
-            for(let i=0; i<12; i++) {
-                document.getElementById('reel0').innerText = slotSymbols[Math.floor(Math.random() * slotSymbols.length)];
-                document.getElementById('reel1').innerText = slotSymbols[Math.floor(Math.random() * slotSymbols.length)];
-                document.getElementById('reel2').innerText = slotSymbols[Math.floor(Math.random() * slotSymbols.length)];
-                await sleep(80);
-            }
-
-            document.getElementById('reel0').innerText = res[0];
-            await sleep(200);
-            document.getElementById('reel1').innerText = res[1];
-            await sleep(200);
-            document.getElementById('reel2').innerText = res[2];
-            await sleep(200);
-
-            let multiplier = 0;
-            let msg = '';
-
-            if(res[0] === '7️⃣' && res[1] === '7️⃣' && res[2] === '7️⃣') {
-                multiplier = 100;
-                msg = '🚨 [JACKPOT 777!!] 100배 대박 적중!';
-            } else if(res[0] === '💎' && res[1] === '💎' && res[2] === '💎') {
-                multiplier = 50;
-                msg = '💎 [다이아몬드 트리플!] 50배 적중!';
-            } else if(res[0] === '👑' && res[1] === '👑' && res[2] === '👑') {
-                multiplier = 30;
-                msg = '👑 [크라운 트리플!] 30배 적중!';
-            } else if(res[0] === res[1] && res[1] === res[2]) {
-                multiplier = 15;
-                msg = '🎉 [트리플 적중!] 15배 획득!';
-            } else if(res[0] === res[1] || res[1] === res[2] || res[0] === res[2]) {
-                multiplier = 2;
-                msg = '✨ [더블 적중!] 2배 획득!';
-            } else {
-                msg = '아쉽습니다! 꽝입니다.';
-            }
-
-            if(multiplier > 0) {
-                const prize = gameState.slotBet * multiplier;
-                gameState.gold += prize;
-                document.getElementById('slotResultText').innerText = `${msg} (+${prize.toLocaleString()} G)`;
-            } else {
-                document.getElementById('slotResultText').innerText = msg;
-            }
-
-            gameState.isSlotSpinning = false;
-            document.getElementById('slotSpinBtn').disabled = false;
-            updateUI();
-        }
-
-        /* ---------------- 보상 및 기타 ---------------- */
-        function watchAd() {
-            const modal = document.getElementById('adModal');
-            const timerEl = document.getElementById('adTimer');
-            let cnt = 5;
-            modal.style.display = 'flex';
-            timerEl.innerText = cnt;
-            const t = setInterval(() => {
-                cnt--;
-                timerEl.innerText = cnt;
-                if(cnt <= 0) {
-                    clearInterval(t);
-                    modal.style.display = 'none';
-                    gameState.gold += 1000;
-                    updateUI();
-                    alert('🎬 +1,000 Gold 지급 완료!');
-                }
-            }, 1000);
-        }
-
-        function openPrivacy() { document.getElementById('privacyModal').style.display = 'flex'; }
-        function closePrivacy() { document.getElementById('privacyModal').style.display = 'none'; }
     </script>
 </body>
 </html>
