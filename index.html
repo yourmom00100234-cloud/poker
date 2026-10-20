@@ -7,16 +7,20 @@
     <!-- 구글 애드센스 코드 위치 -->
     <style>
         :root {
-            --bg-main: #0b0f19;
-            --bg-card: #151d30;
-            --bg-input: #1a233a;
+            --bg-main: #0a080d;
+            --bg-card: #14101d;
+            --bg-input: #1c1829;
             --accent-blue: #3b82f6;
             --accent-green: #10b981;
-            --accent-gold: #fbbf24;
+            --accent-gold: #f59e0b;
+            --accent-gold-light: #fef08a;
+            --accent-gold-glow: #d97706;
             --accent-red: #ef4444;
             --text-main: #f8fafc;
-            --text-sub: #94a3b8;
-            --border-color: #26334d;
+            --text-sub: #a1a1aa;
+            --border-color: #3f321d;
+            --gold-gradient: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            --gold-btn-grad: linear-gradient(180deg, #f59e0b, #d97706);
         }
 
         * {
@@ -41,7 +45,7 @@
         #nameModal {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(5, 8, 15, 0.95);
+            background: rgba(5, 4, 8, 0.96);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -49,30 +53,30 @@
         }
         .modal-card {
             background: var(--bg-card);
-            border: 1px solid var(--border-color);
+            border: 2px solid var(--accent-gold);
             padding: 28px 20px;
             border-radius: 20px;
             width: 88%;
             max-width: 340px;
             text-align: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            box-shadow: 0 0 25px rgba(245, 158, 11, 0.25);
         }
-        .modal-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 6px; color: #60a5fa; }
+        .modal-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 6px; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .modal-sub { color: var(--text-sub); font-size: 0.85rem; margin-bottom: 20px; }
         .modal-input { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-input); color: #fff; font-size: 1rem; text-align: center; margin-bottom: 16px; outline: none; }
-        .modal-btn { width: 100%; padding: 14px; border-radius: 12px; border: none; background: var(--accent-blue); color: white; font-size: 1rem; font-weight: bold; cursor: pointer; }
+        .modal-btn { width: 100%; padding: 14px; border-radius: 12px; border: none; background: var(--gold-btn-grad); color: #000; font-size: 1rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4); }
 
         /* 탭 네비게이션 */
         .nav-container { display: flex; background: var(--bg-card); border-radius: 14px; padding: 4px; margin-bottom: 12px; border: 1px solid var(--border-color); }
         .nav-btn { flex: 1; padding: 10px 0; border: none; background: transparent; color: var(--text-sub); font-size: 0.85rem; font-weight: bold; border-radius: 10px; cursor: pointer; }
-        .nav-btn.active { background: var(--accent-blue); color: white; }
+        .nav-btn.active { background: var(--gold-btn-grad); color: #000; font-weight: 800; }
 
         /* 프로필 바 */
         .profile-bar { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
         .user-name { font-weight: bold; font-size: 0.95rem; }
-        .user-tier { font-size: 0.75rem; font-weight: bold; padding: 3px 8px; border-radius: 6px; background: #1e293b; margin-left: 6px; color: #94a3b8; }
-        .gold-info { font-size: 1.1rem; font-weight: 800; color: var(--accent-gold); }
-        .ad-recharge-btn { background: rgba(16, 185, 129, 0.15); color: var(--accent-green); border: 1px solid var(--accent-green); padding: 5px 9px; border-radius: 8px; font-size: 0.75rem; font-weight: bold; margin-left: 8px; cursor: pointer; }
+        .user-tier { font-size: 0.75rem; font-weight: bold; padding: 3px 8px; border-radius: 6px; background: #2a2012; margin-left: 6px; color: var(--accent-gold); border: 1px solid var(--border-color); }
+        .gold-info { font-size: 1.1rem; font-weight: 800; color: var(--accent-gold-light); text-shadow: 0 0 8px rgba(245, 158, 11, 0.5); }
+        .ad-recharge-btn { background: rgba(245, 158, 11, 0.15); color: var(--accent-gold-light); border: 1px solid var(--accent-gold); padding: 5px 9px; border-radius: 8px; font-size: 0.75rem; font-weight: bold; margin-left: 8px; cursor: pointer; }
 
         .tab-panel { display: none; }
         .tab-panel.active { display: block; }
@@ -95,29 +99,30 @@
 
         /* 베팅 영역 */
         .bet-container { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 14px; }
-        .sub-header { font-size: 0.8rem; color: var(--text-sub); margin-bottom: 8px; }
+        .sub-header { font-size: 0.8rem; color: var(--accent-gold-light); margin-bottom: 8px; font-weight: bold; }
         .horse-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 12px; }
         .horse-select-card { background: var(--bg-input); border: 2px solid transparent; border-radius: 12px; padding: 10px 4px; text-align: center; cursor: pointer; }
-        .horse-select-card.active { border-color: var(--accent-blue); background: rgba(59, 130, 246, 0.15); }
+        .horse-select-card.active { border-color: var(--accent-gold); background: rgba(245, 158, 11, 0.15); }
         .horse-select-card span { display: block; font-size: 0.75rem; color: var(--text-sub); margin-top: 2px; }
 
-        .input-row { display: flex; align-items: center; background: var(--bg-input); border-radius: 10px; padding: 8px 14px; margin-bottom: 8px; }
+        .input-row { display: flex; align-items: center; background: var(--bg-input); border-radius: 10px; padding: 8px 14px; margin-bottom: 8px; border: 1px solid var(--border-color); }
         .input-row input { background: transparent; border: none; color: #fff; font-size: 1.1rem; font-weight: bold; width: 100%; text-align: right; outline: none; padding-right: 6px; }
 
         .chip-flex { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin-bottom: 12px; }
-        .chip-btn { background: #26334d; border: none; color: #fff; padding: 9px 0; border-radius: 8px; font-size: 0.75rem; font-weight: bold; cursor: pointer; }
-        .chip-btn.reset-btn { background: #dc2626; }
+        .chip-btn { background: #2e2417; border: 1px solid var(--border-color); color: var(--accent-gold-light); padding: 9px 0; border-radius: 8px; font-size: 0.75rem; font-weight: bold; cursor: pointer; }
+        .chip-btn.reset-btn { background: #7f1d1d; border-color: #ef4444; color: #fff; }
 
-        .start-race-btn { width: 100%; padding: 15px; background: #10b981; border: none; border-radius: 12px; color: white; font-size: 1.1rem; font-weight: bold; cursor: pointer; }
-        .start-race-btn:disabled { background: #334155; cursor: not-allowed; }
+        .start-race-btn { width: 100%; padding: 15px; background: var(--gold-btn-grad); border: none; border-radius: 12px; color: #000; font-size: 1.1rem; font-weight: 800; cursor: pointer; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3); }
+        .start-race-btn:disabled { background: #334155; color: #94a3b8; cursor: not-allowed; box-shadow: none; }
 
-        /* 바카라 전용 디자인 */
+        /* 바카라 테이블 디자인 */
         .baccarat-board {
-            background: #064e3b;
-            border: 2px solid var(--accent-gold);
-            border-radius: 16px;
-            padding: 14px;
+            background: radial-gradient(circle, #0e5a38 0%, #042e1b 100%);
+            border: 3px solid var(--accent-gold);
+            border-radius: 20px;
+            padding: 16px 12px;
             margin-bottom: 12px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 0 15px rgba(245, 158, 11, 0.2);
         }
         .baccarat-cards-container {
             display: flex;
@@ -126,56 +131,81 @@
         }
         .baccarat-side {
             width: 48%;
-            background: rgba(0,0,0,0.3);
+            background: rgba(0,0,0,0.45);
+            border: 1px solid rgba(245, 158, 11, 0.3);
             border-radius: 12px;
-            padding: 10px;
+            padding: 10px 4px;
             text-align: center;
         }
         .baccarat-side-title {
             font-size: 0.9rem;
             font-weight: 800;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
         }
-        .side-player { color: #38bdf8; }
-        .side-banker { color: #f87171; }
+        .side-player { color: #38bdf8; text-shadow: 0 0 6px rgba(56, 189, 248, 0.5); }
+        .side-banker { color: #f87171; text-shadow: 0 0 6px rgba(248, 113, 113, 0.5); }
         .cards-row {
             display: flex;
             justify-content: center;
-            gap: 4px;
-            min-height: 52px;
+            gap: 6px;
+            min-height: 56px;
+            perspective: 1000px; /* 3D 플립용 */
         }
-        .bac-card {
-            width: 36px;
-            height: 50px;
-            background: white;
-            color: #000;
+
+        /* 3D 카드 플립 효과 */
+        .card-flip-container {
+            width: 38px;
+            height: 54px;
+            perspective: 1000px;
+        }
+        .card-flip-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+        .card-flip-container.flipped .card-flip-inner {
+            transform: rotateY(180deg);
+        }
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
             border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 800;
-            font-size: 0.9rem;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
         }
+        .card-back {
+            background: linear-gradient(135deg, #7f1d1d 25%, #991b1b 50%, #7f1d1d 75%);
+            border: 2px solid var(--accent-gold);
+            color: var(--accent-gold);
+            font-size: 0.8rem;
+        }
+        .card-front {
+            background: #ffffff;
+            color: #000;
+            transform: rotateY(180deg);
+            font-size: 0.95rem;
+            border: 1px solid #ccc;
+        }
+
         .bac-score {
             margin-top: 6px;
             font-size: 0.85rem;
             font-weight: bold;
-            color: #fff;
+            color: var(--accent-gold-light);
         }
 
-        .bac-bet-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 6px;
-            margin-bottom: 8px;
-        }
-        .bac-bet-grid-sub {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 6px;
-            margin-bottom: 12px;
-        }
+        .bac-bet-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 8px; }
+        .bac-bet-grid-sub { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-bottom: 12px; }
         .bac-bet-card {
             background: var(--bg-input);
             border: 2px solid transparent;
@@ -186,7 +216,8 @@
         }
         .bac-bet-card.active {
             border-color: var(--accent-gold);
-            background: rgba(251, 191, 36, 0.15);
+            background: rgba(245, 158, 11, 0.2);
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.2);
         }
         .bac-bet-card .title { font-size: 0.8rem; font-weight: bold; }
         .bac-bet-card .odds { font-size: 0.7rem; color: var(--accent-gold); margin-top: 2px; }
@@ -194,24 +225,24 @@
 
         .rank-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px 16px; display: flex; justify-content: space-between; margin-bottom: 8px; }
         .rule-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 18px; font-size: 0.88rem; line-height: 1.6; color: var(--text-sub); }
-        .rule-card h3 { color: var(--accent-gold); margin: 12px 0 6px 0; font-size: 1rem; }
+        .rule-card h3 { color: var(--accent-gold-light); margin: 12px 0 6px 0; font-size: 1rem; }
 
         footer { margin-top: 20px; text-align: center; font-size: 0.75rem; color: var(--text-sub); }
-        footer a { color: var(--text-sub); text-decoration: underline; cursor: pointer; }
+        footer a { color: var(--accent-gold-light); text-decoration: underline; cursor: pointer; }
 
         #privacyModal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 3000; }
-        .privacy-box { background: var(--bg-card); border: 1px solid var(--border-color); padding: 20px; border-radius: 16px; width: 90%; max-width: 400px; max-height: 80vh; overflow-y: auto; font-size: 0.8rem; line-height: 1.5; color: var(--text-sub); }
+        .privacy-box { background: var(--bg-card); border: 1px solid var(--accent-gold); padding: 20px; border-radius: 16px; width: 90%; max-width: 400px; max-height: 80vh; overflow-y: auto; font-size: 0.8rem; line-height: 1.5; color: var(--text-sub); }
 
         #adModal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 2000; }
-        .ad-box { background: var(--bg-card); border: 1px solid var(--border-color); padding: 28px; border-radius: 20px; text-align: center; }
+        .ad-box { background: var(--bg-card); border: 2px solid var(--accent-gold); padding: 28px; border-radius: 20px; text-align: center; }
     </style>
 </head>
 <body>
 
     <div id="nameModal">
         <div class="modal-card">
-            <div class="modal-title">♠️ 포커 경마 & 바카라 ♠️</div>
-            <div class="modal-sub">플레이에 사용할 닉네임을 입력하세요</div>
+            <div class="modal-title">👑 골드 카지노 👑</div>
+            <div class="modal-sub">포커 경마 & 바카라 플레이어 닉네임 입력</div>
             <input type="text" id="usernameInput" class="modal-input" placeholder="닉네임 (최대 8자)" maxlength="8">
             <button class="modal-btn" onclick="startGameWithNickname()">게임 입장하기</button>
         </div>
@@ -219,7 +250,7 @@
 
     <!-- 네비게이션 탭 -->
     <div class="nav-container">
-        <button class="nav-btn active" onclick="switchTab('gameTab', this)">경마</button>
+        <button class="nav-btn active" onclick="switchTab('gameTab', this)">포커 경마</button>
         <button class="nav-btn" onclick="switchTab('baccaratTab', this)">바카라</button>
         <button class="nav-btn" onclick="switchTab('rankTab', this)">랭킹</button>
         <button class="nav-btn" onclick="switchTab('ruleTab', this)">규칙</button>
@@ -231,7 +262,7 @@
             <span id="userTier" class="user-tier">BRONZE</span>
         </div>
         <div>
-            <span id="userGold" class="gold-info">1,000</span> <span style="font-size:0.8rem; color:var(--accent-gold);">G</span>
+            <span id="userGold" class="gold-info">1,000</span> <span style="font-size:0.8rem; color:var(--accent-gold-light);">G</span>
             <button class="ad-recharge-btn" onclick="watchAd()">+1K 광고</button>
         </div>
     </div>
@@ -289,7 +320,7 @@
             <div class="sub-header">2. 베팅 금액 설정</div>
             <div class="input-row">
                 <input type="number" id="betAmountInput" value="0" min="0" oninput="validateBetInput()">
-                <span style="color:var(--accent-gold); font-weight:bold;">G</span>
+                <span style="color:var(--accent-gold-light); font-weight:bold;">G</span>
             </div>
 
             <div class="chip-flex">
@@ -320,7 +351,7 @@
                     <div id="bankerScore" class="bac-score">0점</div>
                 </div>
             </div>
-            <div id="bacResultText" style="text-align:center; font-weight:bold; color:var(--accent-gold); font-size:0.9rem;">베팅을 선택하고 게임을 시작하세요</div>
+            <div id="bacResultText" style="text-align:center; font-weight:bold; color:var(--accent-gold-light); font-size:0.9rem;">베팅 구역을 선택 후 DEAL을 누르세요</div>
         </div>
 
         <div class="bet-container">
@@ -332,7 +363,7 @@
                     <div class="amount" id="amt-player">0 G</div>
                 </div>
                 <div class="bac-bet-card" id="btn-tie" onclick="selectBacBet('tie')">
-                    <div class="title" style="color:#a855f7;">타이</div>
+                    <div class="title" style="color:#c084fc;">타이</div>
                     <div class="odds">8 : 1</div>
                     <div class="amount" id="amt-tie">0 G</div>
                 </div>
@@ -376,13 +407,13 @@
                 <button class="chip-btn reset-btn" onclick="resetBacBets()">리셋</button>
             </div>
 
-            <button id="bacDealBtn" class="start-race-btn" onclick="startBaccarat()">딜 (DEAL)</button>
+            <button id="bacDealBtn" class="start-race-btn" onclick="startBaccarat()">DEAL (카드 딜링)</button>
         </div>
     </div>
 
     <!-- 3. 랭킹 탭 -->
     <div id="rankTab" class="tab-panel">
-        <h3 style="margin-bottom: 12px; font-size: 1rem; color: var(--text-main);">🏆 실시간 랭킹</h3>
+        <h3 style="margin-bottom: 12px; font-size: 1rem; color: var(--text-main);">🏆 카지노 실시간 랭킹</h3>
         <div id="rankList"></div>
     </div>
 
@@ -404,7 +435,7 @@
     </div>
 
     <footer>
-        <p>© Baccarat Poker Horse Racing. All rights reserved.</p>
+        <p>© Gold Casino - Baccarat & Poker Horse Racing. All rights reserved.</p>
         <p><a onclick="openPrivacy()">개인정보처리방침 (Privacy Policy)</a></p>
     </footer>
 
@@ -434,7 +465,6 @@
             betAmount: 0,
             isRacing: false,
             horsePositions: { spade: 0, diamond: 0, heart: 0, club: 0 },
-            // 바카라 베팅
             bacBets: { player: 0, banker: 0, tie: 0, pPair: 0, bPair: 0, pBonus: 0, bBonus: 0 },
             selectedBacTarget: 'player',
             isBaccaratPlaying: false
@@ -460,7 +490,6 @@
             if(tabId === 'rankTab') renderRanking();
         }
 
-        /* 공통 UI 갱신 */
         function updateUI() {
             document.getElementById('userGold').innerText = gameState.gold.toLocaleString();
             let tier = 'BRONZE', color = '#94a3b8';
@@ -472,7 +501,6 @@
             tierEl.innerText = tier;
             tierEl.style.color = color;
 
-            // 바카라 베팅금 표시
             for(let key in gameState.bacBets) {
                 const el = document.getElementById(`amt-${key}`);
                 if(el) el.innerText = `${gameState.bacBets[key].toLocaleString()} G`;
@@ -565,7 +593,7 @@
             updateUI();
         }
 
-        /* ---------------- 바카라 로직 ---------------- */
+        /* ---------------- 바카라 3D 플립 로직 ---------------- */
         function selectBacBet(target) {
             if(gameState.isBaccaratPlaying) return;
             gameState.selectedBacTarget = target;
@@ -595,9 +623,7 @@
             if(gameState.isBaccaratPlaying) return;
             const currentTotal = getTotalBacBet();
             const remain = gameState.gold - currentTotal;
-            if(remain > 0) {
-                gameState.bacBets[gameState.selectedBacTarget] += remain;
-            }
+            if(remain > 0) gameState.bacBets[gameState.selectedBacTarget] += remain;
             updateUI();
         }
 
@@ -608,22 +634,34 @@
         }
 
         function drawCard() {
-            const num = Math.floor(Math.random() * 13) + 1; // 1~13
+            const num = Math.floor(Math.random() * 13) + 1;
             let val = num >= 10 ? 0 : num;
             let symbol = num;
             if(num === 1) symbol = 'A';
             if(num === 11) symbol = 'J';
             if(num === 12) symbol = 'Q';
             if(num === 13) symbol = 'K';
-            return { val, num, symbol };
+            const randomSuit = suits[Math.floor(Math.random() * suits.length)];
+            const color = (randomSuit === 'diamond' || randomSuit === 'heart') ? '#ef4444' : '#000000';
+            return { val, num, symbol: `${suitSymbols[randomSuit]}${symbol}`, color };
         }
 
         function calcBacScore(cards) {
-            let sum = cards.reduce((a, b) => a + b.val, 0);
-            return sum % 10;
+            return cards.reduce((a, b) => a + b.val, 0) % 10;
         }
 
-        function startBaccarat() {
+        function createCardElement(id) {
+            return `
+                <div class="card-flip-container" id="${id}">
+                    <div class="card-flip-inner">
+                        <div class="card-back">👑</div>
+                        <div class="card-front" id="${id}-front">?</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function startBaccarat() {
             const totalBet = getTotalBacBet();
             if(totalBet <= 0) return alert('최소 1개 이상의 구역에 베팅하세요!');
             if(totalBet > gameState.gold) return alert('골드가 부족합니다!');
@@ -633,58 +671,84 @@
             updateUI();
             document.getElementById('bacDealBtn').disabled = true;
 
+            document.getElementById('playerCards').innerHTML = createCardElement('pCard0') + createCardElement('pCard1');
+            document.getElementById('bankerCards').innerHTML = createCardElement('bCard0') + createCardElement('bCard1');
+            document.getElementById('playerScore').innerText = '0점';
+            document.getElementById('bankerScore').innerText = '0점';
+            document.getElementById('bacResultText').innerText = '딜러가 카드를 딜링하고 있습니다...';
+
             const pCards = [drawCard(), drawCard()];
             const bCards = [drawCard(), drawCard()];
 
-            renderBacCards(pCards, bCards);
+            // 1. 순차적 3D 카드 플립 연출
+            await flipCard('pCard0', pCards[0]);
+            await sleep(250);
+            await flipCard('bCard0', bCards[0]);
+            await sleep(250);
+            await flipCard('pCard1', pCards[1]);
+            await sleep(250);
+            await flipCard('bCard1', bCards[1]);
 
             let pScore = calcBacScore(pCards);
             let bScore = calcBacScore(bCards);
 
-            setTimeout(() => {
-                // 내츄럴 여부 (8점 or 9점)
-                if(pScore < 8 && bScore < 8) {
-                    // 플레이어 3번째 카드 드로우 조건 (0~5점)
-                    let p3rd = null;
-                    if(pScore <= 5) {
-                        p3rd = drawCard();
-                        pCards.push(p3rd);
-                        pScore = calcBacScore(pCards);
-                    }
+            document.getElementById('playerScore').innerText = `${pScore}점`;
+            document.getElementById('bankerScore').innerText = `${bScore}점`;
 
-                    // 뱅커 3번째 카드 드로우 조건
-                    let b3rdNeed = false;
-                    if(!p3rd) {
-                        if(bScore <= 5) b3rdNeed = true;
-                    } else {
-                        const pv = p3rd.val;
-                        if(bScore <= 2) b3rdNeed = true;
-                        else if(bScore === 3 && pv !== 8) b3rdNeed = true;
-                        else if(bScore === 4 && (pv >= 2 && pv <= 7)) b3rdNeed = true;
-                        else if(bScore === 5 && (pv >= 4 && pv <= 7)) b3rdNeed = true;
-                        else if(bScore === 6 && (pv === 6 || pv === 7)) b3rdNeed = true;
-                    }
-
-                    if(b3rdNeed) {
-                        bCards.push(drawCard());
-                        bScore = calcBacScore(bCards);
-                    }
+            // 2. 3번째 카드 조건 판정
+            if(pScore < 8 && bScore < 8) {
+                let p3rd = null;
+                if(pScore <= 5) {
+                    p3rd = drawCard();
+                    pCards.push(p3rd);
+                    document.getElementById('playerCards').innerHTML += createCardElement('pCard2');
+                    await sleep(300);
+                    await flipCard('pCard2', p3rd);
+                    pScore = calcBacScore(pCards);
+                    document.getElementById('playerScore').innerText = `${pScore}점`;
                 }
 
-                renderBacCards(pCards, bCards);
-                finishBaccarat(pCards, bCards, pScore, bScore);
-            }, 800);
+                let b3rdNeed = false;
+                if(!p3rd) {
+                    if(bScore <= 5) b3rdNeed = true;
+                } else {
+                    const pv = p3rd.val;
+                    if(bScore <= 2) b3rdNeed = true;
+                    else if(bScore === 3 && pv !== 8) b3rdNeed = true;
+                    else if(bScore === 4 && (pv >= 2 && pv <= 7)) b3rdNeed = true;
+                    else if(bScore === 5 && (pv >= 4 && pv <= 7)) b3rdNeed = true;
+                    else if(bScore === 6 && (pv === 6 || pv === 7)) b3rdNeed = true;
+                }
+
+                if(b3rdNeed) {
+                    const b3rd = drawCard();
+                    bCards.push(b3rd);
+                    document.getElementById('bankerCards').innerHTML += createCardElement('bCard2');
+                    await sleep(300);
+                    await flipCard('bCard2', b3rd);
+                    bScore = calcBacScore(bCards);
+                    document.getElementById('bankerScore').innerText = `${bScore}점`;
+                }
+            }
+
+            finishBaccarat(pCards, bCards, pScore, bScore);
         }
 
-        function renderBacCards(pCards, bCards) {
-            const pBox = document.getElementById('playerCards');
-            const bBox = document.getElementById('bankerCards');
-            
-            pBox.innerHTML = pCards.map(c => `<div class="bac-card">${c.symbol}</div>`).join('');
-            bBox.innerHTML = bCards.map(c => `<div class="bac-card">${c.symbol}</div>`).join('');
+        function flipCard(cardId, cardData) {
+            return new Promise(resolve => {
+                const front = document.getElementById(`${cardId}-front`);
+                const container = document.getElementById(cardId);
+                front.innerText = cardData.symbol;
+                front.style.color = cardData.color;
+                setTimeout(() => {
+                    container.classList.add('flipped');
+                    setTimeout(resolve, 500);
+                }, 50);
+            });
+        }
 
-            document.getElementById('playerScore').innerText = `${calcBacScore(pCards)}점`;
-            document.getElementById('bankerScore').innerText = `${calcBacScore(bCards)}점`;
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
         }
 
         function finishBaccarat(pCards, bCards, pScore, bScore) {
@@ -695,21 +759,17 @@
 
             let totalPayout = 0;
 
-            // 1. 메인 베팅 정산
             if(winSide === 'player' && gameState.bacBets.player > 0) totalPayout += gameState.bacBets.player * 2;
             if(winSide === 'banker' && gameState.bacBets.banker > 0) totalPayout += gameState.bacBets.banker * 1.95;
             if(winSide === 'tie') {
                 if(gameState.bacBets.tie > 0) totalPayout += gameState.bacBets.tie * 9;
-                // 적중 실패한 플레이어/뱅커 원금 환불
                 totalPayout += gameState.bacBets.player;
                 totalPayout += gameState.bacBets.banker;
             }
 
-            // 2. 페어 정산
             if(pCards[0].num === pCards[1].num && gameState.bacBets.pPair > 0) totalPayout += gameState.bacBets.pPair * 12;
             if(bCards[0].num === bCards[1].num && gameState.bacBets.bPair > 0) totalPayout += gameState.bacBets.bPair * 12;
 
-            // 3. 보너스 베팅 정산
             const isNatural = (pCards.length === 2 && pScore >= 8) || (bCards.length === 2 && bScore >= 8);
             const diff = Math.abs(pScore - bScore);
 
@@ -735,17 +795,16 @@
         }
 
         function calcBonusPayout(bet, isNatural, diff) {
-            if(isNatural) return bet * 2; // 1:1
-            if(diff === 9) return bet * 31; // 30:1
-            if(diff === 8) return bet * 11; // 10:1
-            if(diff === 7) return bet * 7;  // 6:1
-            if(diff === 6) return bet * 5;  // 4:1
-            if(diff === 5) return bet * 3;  // 2:1
-            if(diff === 4) return bet * 2;  // 1:1
+            if(isNatural) return bet * 2;
+            if(diff === 9) return bet * 31;
+            if(diff === 8) return bet * 11;
+            if(diff === 7) return bet * 7;
+            if(diff === 6) return bet * 5;
+            if(diff === 5) return bet * 3;
+            if(diff === 4) return bet * 2;
             return 0;
         }
 
-        /* ---------------- 보상 및 기타 ---------------- */
         function watchAd() {
             const modal = document.getElementById('adModal');
             const timerEl = document.getElementById('adTimer');
@@ -776,7 +835,7 @@
             list.innerHTML = mock.map((item, i) => `
                 <div class="rank-card">
                     <span><b>${i + 1}위</b> ${item.name}</span>
-                    <span style="color:var(--accent-gold); font-weight:bold;">${item.gold.toLocaleString()} G</span>
+                    <span style="color:var(--accent-gold-light); font-weight:bold;">${item.gold.toLocaleString()} G</span>
                 </div>
             `).join('');
         }
