@@ -68,10 +68,13 @@
         .cat-btn.active { background: var(--gold-btn-grad); border-color: var(--accent-gold); color: #000; }
         .section-title { padding: 0 14px 8px 14px; font-size: 0.9rem; font-weight: bold; color: var(--accent-gold-light); }
         .game-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 0 12px 16px 12px; }
+        
+        /* 스크린샷과 정확히 일치하는 썸네일 카드 스타일 */
         .game-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; overflow: hidden; cursor: pointer; transition: transform 0.2s; position: relative; }
         .game-card:active { transform: scale(0.97); }
-        .game-thumb { height: 100px; background: linear-gradient(135deg, #1e1b2e, #311042); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; position: relative; }
-        .game-badge { position: absolute; top: 6px; left: 6px; background: #ef4444; color: #fff; font-size: 0.65rem; font-weight: bold; padding: 2px 6px; border-radius: 4px; }
+        .game-thumb { height: 110px; position: relative; overflow: hidden; }
+        .game-thumb img { width: 100%; height: 100%; object-fit: cover; }
+        .game-badge { position: absolute; top: 6px; left: 6px; background: #ef4444; color: #fff; font-size: 0.65rem; font-weight: bold; padding: 2px 6px; border-radius: 4px; z-index: 2; }
         .game-info { padding: 10px; }
         .game-name { font-size: 0.85rem; font-weight: bold; margin-bottom: 2px; }
         .game-provider { font-size: 0.7rem; color: var(--text-sub); }
@@ -81,19 +84,16 @@
         .page-panel.active { display: block; }
         .back-lobby-btn { background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-sub); padding: 6px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: bold; margin-bottom: 12px; cursor: pointer; }
 
-        /* ---------------- [진짜 바카라 스타일] ---------------- */
+        /* 바카라 UI */
         .bac-screen { background: #0c1a13; border-radius: 16px; border: 2px solid #15803d; overflow: hidden; margin-bottom: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.6); }
         .bac-video-area { height: 110px; background: radial-gradient(circle, #166534 0%, #052e16 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; border-bottom: 1px solid #15803d; }
         .bac-dealer-circle { width: 52px; height: 52px; background: rgba(0,0,0,0.75); border: 3px solid #ef4444; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 900; color: #fff; box-shadow: 0 0 15px rgba(239,68,68,0.7); }
-        
         .bac-scoreboard { background: #ffffff; padding: 4px; display: grid; grid-template-columns: repeat(14, 1fr); grid-template-rows: repeat(6, 1fr); gap: 2px; height: 75px; border-bottom: 1px solid #15803d; }
         .score-cell { border: 1px solid #cbd5e1; border-radius: 2px; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: bold; background: #f8fafc; }
-
         .bac-deal-cards-box { background: rgba(4, 47, 26, 0.95); padding: 8px; display: flex; justify-content: space-around; align-items: center; border-bottom: 1px solid #15803d; }
         .bac-side-box { text-align: center; width: 45%; }
         .bac-side-label { font-size: 0.8rem; font-weight: 800; margin-bottom: 4px; }
         .cards-row { display: flex; justify-content: center; gap: 4px; min-height: 52px; }
-        
         .card-item { width: 34px; height: 48px; background: #fff; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800; color: #000; box-shadow: 0 2px 6px rgba(0,0,0,0.5); border: 1px solid #cbd5e1; }
 
         .bac-bet-table-box { background: radial-gradient(circle, #065f46 0%, #022c22 100%); border: 3px solid var(--accent-gold); border-radius: 16px; padding: 12px; box-shadow: inset 0 0 20px rgba(0,0,0,0.8); }
@@ -103,7 +103,6 @@
         .b-title { font-size: 0.72rem; font-weight: bold; }
         .b-odds { font-size: 0.65rem; color: var(--accent-gold); margin-top: 2px; }
         .b-amt { font-size: 0.65rem; color: #34d399; font-weight: bold; margin-top: 2px; }
-
         .bac-main-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 12px; }
         .b-main-player { background: #1e3a8a; border: 2px solid #3b82f6; border-radius: 12px; padding: 14px 6px; text-align: center; cursor: pointer; }
         .b-main-player.active { border-color: #fef08a; background: #2563eb; box-shadow: 0 0 15px rgba(59,130,246,0.8); }
@@ -111,13 +110,6 @@
         .b-main-banker.active { border-color: #fef08a; background: #dc2626; box-shadow: 0 0 15px rgba(239,68,68,0.8); }
         .b-main-tie { background: #047857; border: 2px solid #10b981; border-radius: 12px; padding: 14px 6px; text-align: center; cursor: pointer; }
         .b-main-tie.active { border-color: #fef08a; background: #059669; box-shadow: 0 0 15px rgba(16,185,129,0.8); }
-
-        /* 칩 선택 바 */
-        .chip-flex { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin-bottom: 10px; }
-        .chip-btn { background: #2e2417; border: 1px solid var(--border-color); color: var(--accent-gold-light); padding: 9px 0; border-radius: 8px; font-size: 0.75rem; font-weight: bold; cursor: pointer; }
-        .chip-btn.reset-btn { background: #7f1d1d; border-color: #ef4444; color: #fff; }
-        .start-race-btn { width: 100%; padding: 14px; background: var(--gold-btn-grad); border: none; border-radius: 12px; color: #000; font-size: 1.1rem; font-weight: 800; cursor: pointer; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3); }
-        .start-race-btn:disabled { background: #334155; color: #94a3b8; cursor: not-allowed; }
 
         /* 하이로우 화면 (JILI 블루톤) */
         .hilo-screen {
@@ -135,34 +127,12 @@
         .hilo-btn-low { background: linear-gradient(180deg, #7c3aed, #5b21b6); border: 2px solid #c084fc; border-radius: 12px; padding: 12px; color: #fff; font-weight: 800; cursor: pointer; text-align: center; }
         .hilo-btn-high span, .hilo-btn-low span { display: block; font-size: 0.7rem; color: #f8fafc; font-weight: normal; margin-top: 2px; }
 
-        /* 기타 게임 UI */
-        .track-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 14px 12px; margin-bottom: 12px; }
-        .lane-row { display: flex; align-items: center; background: var(--bg-input); border-radius: 10px; padding: 6px 10px; margin-bottom: 8px; height: 40px; position: relative; }
-        .suit-icon { width: 24px; font-size: 1.1rem; font-weight: bold; text-align: center; }
-        .spade-color { color: #38bdf8; } .diamond-color { color: #f87171; } .heart-color { color: #f43f5e; } .club-color { color: #4ade80; }
-        .horse-field { flex: 1; position: relative; height: 100%; margin: 0 10px; display: flex; align-items: center; }
-        .horse-runner { position: absolute; left: 0%; transition: left 0.3s; font-size: 1.3rem; }
-        .goal-line { width: 2px; height: 100%; background: #ef4444; position: absolute; right: 0; }
-        .card-status-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-        .card-display-box { width: 48px; height: 64px; background: #ffffff; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 800; color: #000; }
-        .race-mode-select { display: flex; gap: 6px; margin-bottom: 12px; }
-        .mode-btn { flex: 1; padding: 8px 0; background: var(--bg-input); border: 1px solid var(--border-color); color: var(--text-sub); border-radius: 8px; font-size: 0.75rem; font-weight: bold; cursor: pointer; }
-        .mode-btn.active { background: rgba(245, 158, 11, 0.2); border-color: var(--accent-gold); color: var(--accent-gold-light); }
-        .horse-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 12px; }
-        .horse-select-card { background: var(--bg-input); border: 2px solid transparent; border-radius: 12px; padding: 10px 4px; text-align: center; cursor: pointer; position: relative; }
-        .horse-select-card.active { border-color: var(--accent-gold); background: rgba(245, 158, 11, 0.15); }
+        .chip-flex { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin-bottom: 10px; }
+        .chip-btn { background: #2e2417; border: 1px solid var(--border-color); color: var(--accent-gold-light); padding: 9px 0; border-radius: 8px; font-size: 0.75rem; font-weight: bold; cursor: pointer; }
+        .chip-btn.reset-btn { background: #7f1d1d; border-color: #ef4444; color: #fff; }
+        .start-race-btn { width: 100%; padding: 14px; background: var(--gold-btn-grad); border: none; border-radius: 12px; color: #000; font-size: 1.1rem; font-weight: 800; cursor: pointer; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3); }
         .input-row { display: flex; align-items: center; background: var(--bg-input); border-radius: 10px; padding: 8px 14px; margin-bottom: 8px; border: 1px solid var(--border-color); }
         .input-row input { background: transparent; border: none; color: #fff; font-size: 1.1rem; font-weight: bold; width: 100%; text-align: right; outline: none; padding-right: 6px; }
-
-        .roulette-board { background: radial-gradient(circle, #1e293b 0%, #0f172a 100%); border: 3px solid var(--accent-gold); border-radius: 20px; padding: 16px 12px; text-align: center; margin-bottom: 12px; position: relative; }
-        .wheel-container { position: relative; width: 180px; height: 180px; margin: 0 auto 10px auto; }
-        #rouletteCanvas { width: 100%; height: 100%; border-radius: 50%; border: 4px solid var(--accent-gold); box-shadow: 0 0 15px rgba(0,0,0,0.8); }
-        .roulette-pointer { position: absolute; top: -6px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 14px solid #ef4444; z-index: 10; }
-        .roulette-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 8px; }
-
-        .slot-board { background: var(--bg-card); border: 3px solid var(--accent-gold); border-radius: 20px; padding: 20px 12px; text-align: center; margin-bottom: 12px; }
-        .slot-reels-container { display: flex; justify-content: center; gap: 10px; margin-bottom: 14px; }
-        .slot-reel { width: 76px; height: 90px; background: #fff; border: 3px solid var(--accent-gold); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 2.8rem; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
 
         /* 하단 고정 네비바 */
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 480px; margin: 0 auto; background: #110d18; border-top: 1px solid var(--border-color); display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; }
@@ -218,12 +188,9 @@
             <div style="overflow:hidden; white-space:nowrap; text-overflow:ellipsis;">[공지] 평생 유효한 VIP 주간 보너스 최대 24,880,000 G 지급 이벤트 진행 중!</div>
         </div>
         <div class="category-scroll">
-            <button class="cat-btn active" onclick="filterGames('all', this)">🔥 전체 인기</button>
-            <button class="cat-btn" onclick="filterGames('baccarat', this)">🎴 바카라</button>
-            <button class="cat-btn" onclick="filterGames('hilo', this)">📈 하이로우</button>
-            <button class="cat-btn" onclick="filterGames('roulette', this)">🎡 룰렛</button>
-            <button class="cat-btn" onclick="filterGames('slot', this)">🎰 슬롯머신</button>
-            <button class="cat-btn" onclick="filterGames('race', this)">🏇 포커경마</button>
+            <button class="cat-btn active">🔥 인기 게임</button>
+            <button class="cat-btn" onclick="alert('바카라와 하이로우만 제공됩니다!')">🎴 라이브</button>
+            <button class="cat-btn" onclick="alert('바카라와 하이로우만 제공됩니다!')">📈 JILI</button>
         </div>
         <div class="section-title">✨ 실시간 인기 게임</div>
         <div class="game-grid" id="gameGridContainer"></div>
@@ -233,7 +200,7 @@
     <div id="gamePlayArea" class="page-panel">
         <button class="back-lobby-btn" onclick="returnToLobby()">⬅ 로비로 돌아가기</button>
         
-        <!-- 1. [진짜 바카라 규칙 반영] 스피드 바카라 패널 -->
+        <!-- 1. 스피드 바카라 패널 -->
         <div id="panel-baccarat" class="sub-game-panel" style="display:none;">
             <div class="bac-screen">
                 <div class="bac-video-area">
@@ -347,91 +314,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- 3. 경마 패널 -->
-        <div id="panel-race" class="sub-game-panel" style="display:none;">
-            <div class="track-box">
-                <div class="lane-row"><span class="suit-icon spade-color">♠</span><div class="horse-field"><div id="horse-spade" class="horse-runner">🏇</div><div class="goal-line"></div></div></div>
-                <div class="lane-row"><span class="suit-icon diamond-color">◆</span><div class="horse-field"><div id="horse-diamond" class="horse-runner">🏇</div><div class="goal-line"></div></div></div>
-                <div class="lane-row"><span class="suit-icon heart-color">♥</span><div class="horse-field"><div id="horse-heart" class="horse-runner">🏇</div><div class="goal-line"></div></div></div>
-                <div class="lane-row"><span class="suit-icon club-color">♣</span><div class="horse-field"><div id="horse-club" class="horse-runner">🏇</div><div class="goal-line"></div></div></div>
-            </div>
-            <div class="card-status-card">
-                <div><div style="font-size: 0.75rem; color: var(--text-sub);">최근 뽑힌 카드</div><div id="cardStatusText" style="font-weight:bold; font-size:0.9rem;">베팅 후 시작하세요</div></div>
-                <div id="drawnCardDisplay" class="card-display-box">?</div>
-            </div>
-            <div class="bet-container" style="background:var(--bg-card); border-radius:16px; padding:14px;">
-                <div class="race-mode-select">
-                    <button class="mode-btn active" id="mode-win" onclick="setRaceBetMode('win')">단승 (5배)</button>
-                    <button class="mode-btn" id="mode-quinella" onclick="setRaceBetMode('quinella')">복승 (12배)</button>
-                    <button class="mode-btn" id="mode-exacta" onclick="setRaceBetMode('exacta')">쌍승 (25배)</button>
-                </div>
-                <div class="horse-grid">
-                    <div class="horse-select-card" id="hcard-spade" onclick="selectHorse('spade')"><div class="spade-color" style="font-size:1.3rem;">♠</div><span>스페이드</span></div>
-                    <div class="horse-select-card" id="hcard-diamond" onclick="selectHorse('diamond')"><div class="diamond-color" style="font-size:1.3rem;">◆</div><span>다이아몬드</span></div>
-                    <div class="horse-select-card" id="hcard-heart" onclick="selectHorse('heart')"><div class="heart-color" style="font-size:1.3rem;">♥</div><span>하트</span></div>
-                    <div class="horse-select-card" id="hcard-club" onclick="selectHorse('club')"><div class="club-color" style="font-size:1.3rem;">♣</div><span>클로버</span></div>
-                </div>
-                <div class="input-row"><input type="number" id="betAmountInput" value="0" min="0" oninput="validateBetInput()"><span style="color:var(--accent-gold-light); font-weight:bold;">G</span></div>
-                <div class="chip-flex">
-                    <button class="chip-btn" onclick="addBet(1000)">+1K</button>
-                    <button class="chip-btn" onclick="addBet(5000)">+5K</button>
-                    <button class="chip-btn" onclick="addBet(10000)">+10K</button>
-                    <button class="chip-btn" onclick="addBet(50000)">+50K</button>
-                    <button class="chip-btn" onclick="addBetAll()">ALL</button>
-                    <button class="chip-btn reset-btn" onclick="resetBet()">리셋</button>
-                </div>
-                <button id="raceStartBtn" class="start-race-btn" onclick="startRace()">경기 시작</button>
-            </div>
-        </div>
-
-        <!-- 4. 룰렛 패널 -->
-        <div id="panel-roulette" class="sub-game-panel" style="display:none;">
-            <div class="roulette-board">
-                <div class="wheel-container"><div class="roulette-pointer"></div><canvas id="rouletteCanvas" width="300" height="300"></canvas></div>
-                <div id="rouletteResultText" style="color:var(--accent-gold-light); font-weight:bold; font-size:0.95rem;">베팅 후 SPIN을 누르세요</div>
-            </div>
-            <div class="bet-container" style="background:var(--bg-card); border-radius:16px; padding:14px;">
-                <div class="roulette-grid">
-                    <div class="b-card" id="btn-rRed" onclick="selectRouletteBet('red')"><div class="b-title" style="color:#ef4444;">레드</div><div class="b-odds">2:1</div><div class="b-amt" id="amt-rRed">0 G</div></div>
-                    <div class="b-card" id="btn-rGreen" onclick="selectRouletteBet('green')"><div class="b-title" style="color:#10b981;">그린 0</div><div class="b-odds">36:1</div><div class="b-amt" id="amt-rGreen">0 G</div></div>
-                    <div class="b-card" id="btn-rBlack" onclick="selectRouletteBet('black')"><div class="b-title" style="color:#38bdf8;">블랙</div><div class="b-odds">2:1</div><div class="b-amt" id="amt-rBlack">0 G</div></div>
-                </div>
-                <div class="chip-flex">
-                    <button class="chip-btn" onclick="addRouletteBet(1000)">+1K</button>
-                    <button class="chip-btn" onclick="addRouletteBet(5000)">+5K</button>
-                    <button class="chip-btn" onclick="addRouletteBet(10000)">+10K</button>
-                    <button class="chip-btn" onclick="addRouletteBet(50000)">+50K</button>
-                    <button class="chip-btn" onclick="addRouletteBetAll()">ALL</button>
-                    <button class="chip-btn reset-btn" onclick="resetRouletteBets()">리셋</button>
-                </div>
-                <button id="rouletteSpinBtn" class="start-race-btn" onclick="startRoulette()">🎡 룰렛 스핀 (SPIN)</button>
-            </div>
-        </div>
-
-        <!-- 5. 슬롯 패널 -->
-        <div id="panel-slot" class="sub-game-panel" style="display:none;">
-            <div class="slot-board">
-                <div class="slot-reels-container">
-                    <div class="slot-reel" id="reel0">🎰</div>
-                    <div class="slot-reel" id="reel1">🎰</div>
-                    <div class="slot-reel" id="reel2">🎰</div>
-                </div>
-                <div id="slotResultText" style="color:var(--accent-gold-light); font-weight:bold; font-size:1rem;">잭팟(777) 도전! 베팅 후 SPIN을 누르세요</div>
-            </div>
-            <div class="bet-container" style="background:var(--bg-card); border-radius:16px; padding:14px;">
-                <div class="input-row"><input type="number" id="slotBetInput" value="0" min="0" oninput="validateSlotBet()"><span style="color:var(--accent-gold-light); font-weight:bold;">G</span></div>
-                <div class="chip-flex">
-                    <button class="chip-btn" onclick="addSlotBet(1000)">+1K</button>
-                    <button class="chip-btn" onclick="addSlotBet(5000)">+5K</button>
-                    <button class="chip-btn" onclick="addSlotBet(10000)">+10K</button>
-                    <button class="chip-btn" onclick="addSlotBet(50000)">+50K</button>
-                    <button class="chip-btn" onclick="addSlotBetAll()">ALL</button>
-                    <button class="chip-btn reset-btn" onclick="resetSlotBet()">리셋</button>
-                </div>
-                <button id="slotSpinBtn" class="start-race-btn" onclick="spinSlot()">🎰 스핀 (SPIN)</button>
-            </div>
-        </div>
     </div>
 
     <!-- 기타 탭 -->
@@ -473,27 +355,31 @@
     <script>
         let gameState = {
             username: '', gold: 10000,
-            raceMode: 'win', selectedHorse1: null, selectedHorse2: null, betAmount: 0, isRacing: false,
-            horsePositions: { spade: 0, diamond: 0, heart: 0, club: 0 }, finishOrder: [],
             bacBets: { player: 0, banker: 0, tie: 0, pPair: 0, bPair: 0, pBonus: 0, bBonus: 0 },
             selectedBacTarget: 'player', isBaccaratPlaying: false,
-            rouletteBets: { red: 0, black: 0, green: 0 }, selectedRouletteTarget: 'red', isRouletteSpinning: false,
-            hiloBet: 1000, hiloCurrentCard: { val: 7, num: 7, symbol: '♠7', color: '#000' }, hiloAccumulatedPrize: 0, isHiloPlaying: false,
-            slotBet: 0, isSlotSpinning: false
+            hiloBet: 1000, hiloCurrentCard: { val: 7, num: 7, symbol: '♠7', color: '#000' }, hiloAccumulatedPrize: 0, isHiloPlaying: false
         };
 
+        // 스크린샷과 정확히 동일한 표지(이미지 및 색감)를 가진 바카라와 하이로우만 남김
         const gamesList = [
-            { id: 'baccarat', name: '한국 스피드 바카라 C', provider: 'EVO', thumb: '🎴', badge: '인기' },
-            { id: 'hilo', name: '높음 낮음 (Hi-Lo)', provider: 'JDB', thumb: '📈', badge: 'HOT' },
-            { id: 'roulette', name: '유러피언 원형 룰렛', provider: 'EVO', thumb: '🎡', badge: '추천' },
-            { id: 'slot', name: '골드 잭팟 슬롯머신', provider: 'PG', thumb: '🎰', badge: '잭팟' },
-            { id: 'race', name: '포커 경마 챔피언십', provider: 'KRVIP', thumb: '🏇', badge: 'NEW' }
+            { 
+                id: 'baccarat', 
+                name: '한국 스피드 바카라 C', 
+                provider: 'EVO', 
+                thumbHtml: `<img src="https://images.unsplash.com/photo-1511193311914-0346f16efe90?auto=format&fit=crop&w=400&q=80" alt="바카라">`, 
+                badge: '인기' 
+            },
+            { 
+                id: 'hilo', 
+                name: '높음 낮음', 
+                provider: 'JDB', 
+                thumbHtml: `<div style="width:100%; height:100%; background:linear-gradient(135deg,#0d2b55,#041428); display:flex; align-items:center; justify-content:center; font-weight:900; font-size:1.4rem; color:#fef08a; letter-spacing:1px;">HiLo</div>`, 
+                badge: 'HOT' 
+            }
         ];
 
         const suits = ['spade', 'diamond', 'heart', 'club'];
         const suitSymbols = { spade: '♠', diamond: '◆', heart: '♥', club: '♣' };
-        const slotSymbols = ['7️⃣', '💎', '👑', '🪙', '🍒', '🍇', '🔔'];
-        const wheelNumbers = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26];
 
         function initBacScoreboard() {
             const grid = document.getElementById('bacScoreboardGrid');
@@ -508,7 +394,6 @@
         window.addEventListener('DOMContentLoaded', () => {
             renderGameGrid(gamesList);
             initBacScoreboard();
-            drawRouletteWheel(0);
             updateHiloOddsDisplay();
         });
 
@@ -535,27 +420,16 @@
                 const el = document.getElementById(`amt-${key}`);
                 if(el) el.innerText = `${(gameState.bacBets[key] || 0).toLocaleString()} G`;
             }
-            for(let key in gameState.rouletteBets) {
-                const el = document.getElementById(`amt-r${key.charAt(0).toUpperCase() + key.slice(1)}`);
-                if(el) el.innerText = `${(gameState.rouletteBets[key] || 0).toLocaleString()} G`;
-            }
             saveRealRanking();
         }
 
         function renderGameGrid(list) {
             document.getElementById('gameGridContainer').innerHTML = list.map(g => `
                 <div class="game-card" onclick="openGame('${g.id}')">
-                    <div class="game-thumb"><div class="game-badge">${g.badge}</div>${g.thumb}</div>
+                    <div class="game-thumb"><div class="game-badge">${g.badge}</div>${g.thumbHtml}</div>
                     <div class="game-info"><div class="game-name">${g.name}</div><div class="game-provider">${g.provider}</div></div>
                 </div>
             `).join('');
-        }
-
-        function filterGames(cat, btn) {
-            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            if(cat === 'all') renderGameGrid(gamesList);
-            else renderGameGrid(gamesList.filter(g => g.id === cat));
         }
 
         function openGame(gameId) {
@@ -563,7 +437,6 @@
             document.getElementById('gamePlayArea').classList.add('active');
             document.querySelectorAll('.sub-game-panel').forEach(p => p.style.display = 'none');
             document.getElementById(`panel-${gameId}`).style.display = 'block';
-            if(gameId === 'roulette') drawRouletteWheel(currentRotation);
             if(gameId === 'hilo') updateHiloOddsDisplay();
         }
 
@@ -605,7 +478,7 @@
             `).join('');
         }
 
-        /* ---------------- [진짜 바카라 규칙 구현] ---------------- */
+        /* 바카라 로직 */
         function selectBacBet(t) {
             if(gameState.isBaccaratPlaying) return;
             gameState.selectedBacTarget = t;
@@ -636,7 +509,6 @@
             return { val, num, symbol: `${suitSymbols[s]}${sym}`, color: (s==='diamond'||s==='heart')?'#ef4444':'#000' };
         }
 
-        // 10초 타이머 후 실제 바카라 딜링 시작
         async function startBaccaratTimer() {
             let total = Object.values(gameState.bacBets).reduce((a,b)=>a+b, 0);
             if(total <= 0) return alert('베팅 구역을 선택하세요!');
@@ -658,14 +530,13 @@
                     clearInterval(timerInterval);
                     executeBaccaratDeal();
                 }
-            }, 500); // 실제 체감 빠르게 0.5초씩 감소
+            }, 400);
         }
 
         async function executeBaccaratDeal() {
             document.getElementById('bacTimerCircle').innerText = '0';
             document.getElementById('bacResultText').innerText = '🎴 딜링 중...';
 
-            // 플레이어와 뱅커 기본 2장씩 드로우
             let pCards = [drawCard(), drawCard()];
             let bCards = [drawCard(), drawCard()];
 
@@ -673,30 +544,25 @@
             let pScore = (pCards[0].val + pCards[1].val) % 10;
             let bScore = (bCards[0].val + bCards[1].val) % 10;
             updateBacScores(pScore, bScore);
-            await sleep(800);
+            await sleep(600);
 
-            // 바카라 3번째 카드 드로우 규칙 적용
             let pThirdVal = null;
             if(pScore <= 5 && bScore <= 7) {
-                // 플레이어가 3번째 카드 받음
                 let thirdP = drawCard();
                 pCards.push(thirdP);
                 pThirdVal = thirdP.val;
                 pScore = (pCards[0].val + pCards[1].val + pCards[2].val) % 10;
                 renderBacCards(pCards, bCards);
                 updateBacScores(pScore, bScore);
-                await sleep(800);
+                await sleep(600);
             }
 
-            // 뱅커의 3번째 카드 규칙
             if(pThirdVal === null) {
-                // 플레이어가 스탠드(3장 안 받음)인 경우: 뱅커가 0~5이면 뽑음
                 if(bScore <= 5) {
                     bCards.push(drawCard());
                     bScore = (bCards[0].val + bCards[1].val + bCards[2].val) % 10;
                 }
             } else {
-                // 플레이어가 3번째 카드를 받았을 때 뱅커의 조건부 드로우
                 let drawBanker = false;
                 if(bScore <= 2) drawBanker = true;
                 else if(bScore === 3 && pThirdVal !== 8) drawBanker = true;
@@ -712,9 +578,8 @@
 
             renderBacCards(pCards, bCards);
             updateBacScores(pScore, bScore);
-            await sleep(600);
+            await sleep(400);
 
-            // 승패 판정 및 배당 지급
             let payout = 0;
             let resultMsg = '';
 
@@ -722,15 +587,14 @@
                 if(gameState.bacBets.player > 0) payout += gameState.bacBets.player * 2;
                 resultMsg = '🔵 PLAYER 승리!';
             } else if(bScore > pScore) {
-                if(gameState.bacBets.banker > 0) payout += gameState.bacBets.banker * 1.95; // 뱅커 5% 수수료
+                if(gameState.bacBets.banker > 0) payout += gameState.bacBets.banker * 1.95;
                 resultMsg = '🔴 BANKER 승리!';
             } else {
                 if(gameState.bacBets.tie > 0) payout += gameState.bacBets.tie * 9;
-                payout += (gameState.bacBets.player + gameState.bacBets.banker); // 타이 시 메인 베팅 반환
+                payout += (gameState.bacBets.player + gameState.bacBets.banker);
                 resultMsg = '👔 TIE 무승부 (베팅금 반환)!';
             }
 
-            // 페어(Pair) 사이드 베팅 정산 (처음 2장이 같은 숫자면 당첨 11배)
             if(pCards[0].num === pCards[1].num && gameState.bacBets.pPair > 0) payout += gameState.bacBets.pPair * 12;
             if(bCards[0].num === bCards[1].num && gameState.bacBets.bPair > 0) payout += gameState.bacBets.bPair * 12;
 
@@ -825,89 +689,6 @@
         function endHiloGame() {
             document.getElementById('hiloBetControls').style.display = 'block';
             document.getElementById('hiloGameControls').style.display = 'none';
-            updateUI();
-        }
-
-        /* 기타 게임 로직 유지 */
-        function setRaceBetMode(m) { gameState.raceMode = m; document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active')); document.getElementById(`mode-${m}`).classList.add('active'); }
-        function selectHorse(h) { gameState.selectedHorse1 = h; document.querySelectorAll('.horse-select-card').forEach(c=>c.classList.remove('active')); document.getElementById(`hcard-${h}`).classList.add('active'); }
-        function addBet(amt) { gameState.betAmount += amt; document.getElementById('betAmountInput').value = gameState.betAmount; }
-        function addBetAll() { gameState.betAmount = gameState.gold; document.getElementById('betAmountInput').value = gameState.betAmount; }
-        function resetBet() { gameState.betAmount = 0; document.getElementById('betAmountInput').value = 0; }
-        function validateBetInput() { let v = parseInt(document.getElementById('betAmountInput').value)||0; if(v>gameState.gold) v=gameState.gold; gameState.betAmount=v; }
-
-        function startRace() {
-            if(!gameState.selectedHorse1) return alert('말을 선택하세요!');
-            if(gameState.betAmount <= 0) return alert('베팅액을 입력하세요!');
-            gameState.isRacing = true; gameState.gold -= gameState.betAmount; updateUI();
-            document.getElementById('raceStartBtn').disabled = true;
-            gameState.horsePositions = { spade: 0, diamond: 0, heart: 0, club: 0 };
-            gameState.finishOrder = [];
-            suits.forEach(s => document.getElementById(`horse-${s}`).style.left = '0%');
-
-            const iv = setInterval(() => {
-                const s = suits[Math.floor(Math.random()*suits.length)];
-                gameState.horsePositions[s] += 1;
-                document.getElementById(`horse-${s}`).style.left = `${(gameState.horsePositions[s]/10)*88}%`;
-                if(gameState.horsePositions[s] >= 10 && !gameState.finishOrder.includes(s)) gameState.finishOrder.push(s);
-                if(gameState.finishOrder.length === 4) {
-                    clearInterval(iv);
-                    const win = gameState.finishOrder[0];
-                    if(gameState.selectedHorse1 === win) {
-                        let p = gameState.betAmount * 5; gameState.gold += p;
-                        alert(`🎉 우승 적중! +${p.toLocaleString()} G 획득!`);
-                    } else { alert(`아쉽습니다! 우승마: ${suitSymbols[win]}`); }
-                    gameState.isRacing = false; document.getElementById('raceStartBtn').disabled = false; updateUI();
-                }
-            }, 400);
-        }
-
-        let currentRotation = 0;
-        function drawRouletteWheel(angle = 0) {
-            const canvas = document.getElementById('rouletteCanvas');
-            if(!canvas) return;
-            const ctx = canvas.getContext('2d'), center = canvas.width/2, radius = center - 10;
-            const slice = (Math.PI*2)/wheelNumbers.length;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.save(); ctx.translate(center, center); ctx.rotate(angle);
-            wheelNumbers.forEach((num, i) => {
-                let sa = i*slice - Math.PI/2, ea = sa + slice;
-                ctx.beginPath(); ctx.moveTo(0,0); ctx.arc(0,0,radius,sa,ea); ctx.closePath();
-                ctx.fillStyle = num===0?'#10b981':([1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36].includes(num)?'#ef4444':'#1e293b');
-                ctx.fill(); ctx.strokeStyle='#3f321d'; ctx.stroke();
-            });
-            ctx.restore();
-        }
-        function selectRouletteBet(t) { gameState.selectedRouletteTarget = t; document.querySelectorAll('#rouletteTab .b-card').forEach(c=>c.classList.remove('active')); document.getElementById(`btn-r${t.charAt(0).toUpperCase()+t.slice(1)}`).classList.add('active'); }
-        function addRouletteBet(amt) { gameState.rouletteBets[gameState.selectedRouletteTarget] += amt; updateUI(); }
-        function resetRouletteBets() { for(let k in gameState.rouletteBets) gameState.rouletteBets[k] = 0; updateUI(); }
-        async function startRoulette() {
-            let total = Object.values(gameState.rouletteBets).reduce((a,b)=>a+b,0);
-            if(total<=0) return alert('베팅 구역을 선택하세요!');
-            gameState.gold -= total; updateUI();
-            const winIdx = Math.floor(Math.random()*wheelNumbers.length);
-            const winNum = wheelNumbers[winIdx];
-            let payout = 0;
-            if(winNum!==0 && [1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36].includes(winNum) && gameState.rouletteBets.red>0) payout += gameState.rouletteBets.red*2;
-            gameState.gold += payout;
-            document.getElementById('rouletteResultText').innerText = `🎯 당첨 번호: ${winNum} ${payout>0?`(+${payout}G 적중!)`:'꽝!'}`;
-            for(let k in gameState.rouletteBets) gameState.rouletteBets[k] = 0;
-            updateUI();
-        }
-
-        function addSlotBet(amt) { gameState.slotBet += amt; document.getElementById('slotBetInput').value = gameState.slotBet; }
-        function resetSlotBet() { gameState.slotBet = 0; document.getElementById('slotBetInput').value = 0; }
-        function validateSlotBet() { let v = parseInt(document.getElementById('slotBetInput').value)||0; if(v>gameState.gold) v=gameState.gold; gameState.slotBet=v; }
-        async function spinSlot() {
-            if(gameState.slotBet<=0) return alert('베팅액을 입력하세요!');
-            gameState.gold -= gameState.slotBet; updateUI();
-            let r0 = slotSymbols[Math.floor(Math.random()*slotSymbols.length)];
-            let r1 = slotSymbols[Math.floor(Math.random()*slotSymbols.length)];
-            let r2 = slotSymbols[Math.floor(Math.random()*slotSymbols.length)];
-            document.getElementById('reel0').innerText = r0; document.getElementById('reel1').innerText = r1; document.getElementById('reel2').innerText = r2;
-            let mult = (r0===r1 && r1===r2)?50:((r0===r1||r1===r2)?2:0);
-            if(mult>0) { let p = gameState.slotBet*mult; gameState.gold += p; alert(`잭팟! +${p} G`); }
-            else alert('아쉽습니다!');
             updateUI();
         }
 
