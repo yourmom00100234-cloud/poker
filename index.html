@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>골드 카지노</title>
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -21,7 +21,7 @@
             --gold-btn-grad: linear-gradient(180deg, #f59e0b, #d97706);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; touch-action: auto; }
+        * { box-sizing: border-box; margin: 0; padding: 0; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -175,10 +175,10 @@
             <div>
                 <input type="text" id="authId" class="auth-input" placeholder="아이디" maxlength="12" autocomplete="off">
                 <input type="password" id="authPw" class="auth-input" placeholder="비밀번호" maxlength="16" autocomplete="off">
-                <button type="button" id="authSubmitBtn" class="auth-submit-btn">로그인 / 회원가입</button>
+                <button type="button" id="authSubmitBtn" class="auth-submit-btn" onclick="executeAuth()">로그인</button>
             </div>
 
-            <span id="authToggleBtn" class="auth-toggle-btn">계정이 없으신가요? 회원가입 모드로 전환</span>
+            <span id="authToggleBtn" class="auth-toggle-btn" onclick="toggleAuthMode()">계정이 없으신가요? 회원가입</span>
         </div>
     </div>
 
@@ -440,28 +440,6 @@
         var suitSymbols = { spade: '♠', diamond: '◆', heart: '♥', club: '♣' };
         var slotSymbols = ['7️⃣', '💎', '👑', '🪙', '🍒', '🍇', '🔔'];
 
-        // 자바스크립트가 로드되자마자 버튼 이벤트 리스너를 직접 강제 부착 (인라인 onclick 무력화 방지)
-        window.addEventListener('DOMContentLoaded', function() {
-            var submitBtn = document.getElementById('authSubmitBtn');
-            var toggleBtn = document.getElementById('authToggleBtn');
-
-            if(submitBtn) {
-                submitBtn.addEventListener('click', executeAuth);
-                submitBtn.addEventListener('touchend', function(e) {
-                    e.preventDefault();
-                    executeAuth();
-                });
-            }
-
-            if(toggleBtn) {
-                toggleBtn.addEventListener('click', toggleAuthMode);
-                toggleBtn.addEventListener('touchend', function(e) {
-                    e.preventDefault();
-                    toggleAuthMode();
-                });
-            }
-        });
-
         function toggleAuthMode() {
             isSignUpMode = !isSignUpMode;
             var subText = document.getElementById('authSubText');
@@ -471,11 +449,11 @@
             if(isSignUpMode) {
                 subText.innerText = '새로운 계정을 만드세요';
                 submitBtn.innerText = '회원가입 완료하기';
-                toggleBtn.innerText = '이미 계정이 있으신가요? 로그인 모드로 전환';
+                toggleBtn.innerText = '이미 계정이 있으신가요? 로그인';
             } else {
                 subText.innerText = '아이디와 비밀번호를 입력하세요';
                 submitBtn.innerText = '로그인';
-                toggleBtn.innerText = '계정이 없으신가요? 회원가입 모드로 전환';
+                toggleBtn.innerText = '계정이 없으신가요? 회원가입';
             }
         }
 
@@ -774,7 +752,7 @@
             updateUI();
         }
 
-        /* 하이로우 로직 */
+        /* 하이로우 로직 (배율 완화: 1.25배로 조정) */
         function addHiloBet(amt) {
             if(gameState.hiloBet + amt <= gameState.gold) gameState.hiloBet += amt;
             else gameState.hiloBet = gameState.gold;
@@ -814,13 +792,14 @@
             document.getElementById('hiloCardDisplay').innerText = nextNum;
 
             var win = false;
-            if(nextNum === gameState.hiloCurrentNum) win = true;
+            if(nextNum === gameState.hiloCurrentNum) win = true; // 동점은 승리 처리
             else if(choice === 'HIGH' && nextNum > gameState.hiloCurrentNum) win = true;
             else if(choice === 'LOW' && nextNum < gameState.hiloCurrentNum) win = true;
 
             if(win) {
                 gameState.hiloStreak++;
-                gameState.hiloAccumulated = Math.floor(gameState.hiloAccumulated * 1.6);
+                // 배율을 기존 1.6배에서 1.25배로 완화하여 안정적인 상승 도모
+                gameState.hiloAccumulated = Math.floor(gameState.hiloAccumulated * 1.25);
                 gameState.hiloCurrentNum = nextNum;
                 document.getElementById('hiloStatusText').innerText = '🎉 ' + gameState.hiloStreak + '연승 성공! 계속 도전하세요.';
                 document.getElementById('hiloMultiplierText').innerText = '누적 예정금: ' + gameState.hiloAccumulated.toLocaleString() + ' G';
