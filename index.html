@@ -36,16 +36,15 @@
             padding-bottom: 50px;
         }
 
-        /* 로그인 / 회원가입 모달 */
+        /* 로그인 / 회원가입 모달 (z-index 최상위 확보) */
         #authModal {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(5, 4, 8, 0.98);
+            background: rgba(5, 4, 8, 0.96);
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 2000;
-            overflow-y: auto;
+            z-index: 99999;
             padding: 20px;
         }
         .modal-card {
@@ -57,11 +56,30 @@
             max-width: 340px;
             text-align: center;
             box-shadow: 0 0 25px rgba(245, 158, 11, 0.25);
+            position: relative;
+            z-index: 100000;
         }
         .modal-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 6px; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .modal-sub { color: var(--text-sub); font-size: 0.85rem; margin-bottom: 16px; }
         .modal-input { width: 100%; padding: 14px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--bg-input); color: #fff; font-size: 1rem; text-align: center; margin-bottom: 12px; outline: none; }
-        .modal-btn { width: 100%; padding: 15px; border-radius: 10px; border: none; background: var(--gold-btn-grad); color: #000; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 6px; box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4); }
+        
+        /* 주황색 버튼 절대 클릭 가능하도록 수정 */
+        .modal-btn { 
+            width: 100%; 
+            padding: 16px; 
+            border-radius: 10px; 
+            border: none; 
+            background: var(--gold-btn-grad); 
+            color: #000; 
+            font-size: 1.1rem; 
+            font-weight: 800; 
+            cursor: pointer; 
+            margin-top: 6px; 
+            box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4);
+            position: relative;
+            z-index: 100001;
+            pointer-events: auto;
+        }
         .auth-toggle { margin-top: 14px; font-size: 0.85rem; color: var(--accent-gold-light); cursor: pointer; text-decoration: underline; padding: 6px; display: inline-block; }
 
         /* 네비게이션 탭 */
@@ -188,8 +206,9 @@
             <div id="authSub" class="modal-sub">아이디와 비밀번호로 로그인하세요</div>
             <input type="text" id="authId" class="modal-input" placeholder="아이디" maxlength="12">
             <input type="password" id="authPw" class="modal-input" placeholder="비밀번호" maxlength="16">
-            <button id="authSubmitBtn" class="modal-btn">로그인</button>
-            <div id="authToggleText" class="auth-toggle">계정이 없으신가요? 회원가입</div>
+            <!-- onclick 직접 삽입으로 터치 씹힘 원천 차단 -->
+            <button id="authSubmitBtn" class="modal-btn" onclick="handleLogin()">로그인</button>
+            <div id="authToggleText" class="auth-toggle" onclick="toggleAuthMode()">계정이 없으신가요? 회원가입</div>
         </div>
     </div>
 
@@ -529,28 +548,6 @@
         const suitSymbols = { spade: '♠', diamond: '◆', heart: '♥', club: '♣' };
         const suitNames = { spade: '스페이드', diamond: '다이아몬드', heart: '하트', club: '클로버' };
         const slotSymbols = ['7️⃣', '💎', '👑', '🪙', '🍒', '🍇', '🔔'];
-
-        // 터치 및 클릭 이벤트 강제 연동 (모바일에서 버튼이 안 눌리는 문제 해결)
-        document.addEventListener("DOMContentLoaded", () => {
-            const submitBtn = document.getElementById('authSubmitBtn');
-            const toggleText = document.getElementById('authToggleText');
-
-            if(submitBtn) {
-                submitBtn.addEventListener('click', handleLogin);
-                submitBtn.addEventListener('touchend', (e) => {
-                    e.preventDefault();
-                    handleLogin();
-                });
-            }
-
-            if(toggleText) {
-                toggleText.addEventListener('click', toggleAuthMode);
-                toggleText.addEventListener('touchend', (e) => {
-                    e.preventDefault();
-                    toggleAuthMode();
-                });
-            }
-        });
 
         function toggleAuthMode() {
             isSignUpMode = !isSignUpMode;
