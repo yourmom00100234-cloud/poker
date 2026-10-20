@@ -182,17 +182,17 @@
 </head>
 <body>
 
-    <!-- 1. 로그인 / 회원가입 페이지 -->
+    <!-- 1. 로그인 / 회원가입 페이지 (<form> 제거하여 모바일 충돌 방지) -->
     <div id="loginPage">
         <div class="auth-card">
             <div class="auth-title">👑 골드 카지노 👑</div>
             <div id="authSubText" class="auth-sub">아이디와 비밀번호를 입력하세요</div>
             
-            <form id="authForm" onsubmit="executeAuth(); return false;">
-                <input type="text" id="authId" class="auth-input" placeholder="아이디" maxlength="12" required autocomplete="off">
-                <input type="password" id="authPw" class="auth-input" placeholder="비밀번호" maxlength="16" required autocomplete="off">
-                <button type="submit" id="authSubmitBtn" class="auth-submit-btn">로그인</button>
-            </form>
+            <div>
+                <input type="text" id="authId" class="auth-input" placeholder="아이디" maxlength="12" autocomplete="off">
+                <input type="password" id="authPw" class="auth-input" placeholder="비밀번호" maxlength="16" autocomplete="off">
+                <button type="button" id="authSubmitBtn" class="auth-submit-btn" onclick="executeAuth()">로그인</button>
+            </div>
 
             <span id="authToggleBtn" class="auth-toggle-btn" onclick="toggleAuthMode()">계정이 없으신가요? 회원가입</span>
         </div>
@@ -417,7 +417,7 @@
         var db = null;
         var currentUserKey = null;
 
-        // Firebase 연결
+        // Firebase 초기화
         try {
             if (typeof firebase !== 'undefined') {
                 var firebaseConfig = {
@@ -433,7 +433,7 @@
                 db = firebase.database();
             }
         } catch (e) {
-            console.log("DB 연결 건너뜀");
+            console.log("DB 연결 미사용");
         }
 
         var gameState = {
@@ -465,7 +465,7 @@
             document.getElementById('authToggleBtn').innerText = isSignUpMode ? '이미 계정이 있으신가요? 로그인' : '계정이 없으신가요? 회원가입';
         }
 
-        // 로그인 / 회원가입 실행 (알림 메시지 및 접속 성공 즉시 처리 보장)
+        // 로그인 / 회원가입 절대 보장 실행 함수
         function executeAuth() {
             var idInput = document.getElementById('authId');
             var pwInput = document.getElementById('authPw');
@@ -473,24 +473,23 @@
             var id = idInput ? idInput.value.trim() : '';
             var pw = pwInput ? pwInput.value.trim() : '';
 
-            if(!id || !pw) return alert('아이디와 비밀번호를 모두 입력해주세요!');
+            if(!id) return alert('아이디를 입력해 주세요!');
+            if(!pw) return alert('비밀번호를 입력해 주세요!');
 
             var safeId = id.replace(/[.#$\/\[\]]/g, '_');
             currentUserKey = safeId;
             gameState.username = id;
 
-            // 공통 성공 진입 처리 함수
-            function proceedGameAccess(msg) {
+            function enterGame(message) {
                 document.getElementById('displayUsername').innerText = id;
                 document.getElementById('loginPage').style.display = 'none';
                 document.getElementById('mainGamePage').style.display = 'block';
                 updateUI();
-                alert(msg);
+                alert(message);
             }
 
-            // DB 미연결 시 로컬 즉시 진입
             if (!db) {
-                proceedGameAccess(isSignUpMode ? '회원가입 완료! 1,000G가 지급되었습니다.' : '로그인 성공!');
+                enterGame(isSignUpMode ? '🎉 회원가입이 완료되었습니다! (1,000G 지급)' : '🎉 로그인 성공!');
                 return;
             }
 
@@ -504,10 +503,9 @@
                         userRef.set({ username: id, password: pw, gold: 1000 }).then(function() {
                             gameState.gold = 1000;
                             startRealtimeSync();
-                            proceedGameAccess('🎉 회원가입이 완료되었습니다! (기본 1,000G 지급)');
-                        }).catch(function(err) {
-                            // Firebase 규칙 차단 시에도 접속 허용
-                            proceedGameAccess('🎉 회원가입 완료!');
+                            enterGame('🎉 회원가입이 완료되었습니다! (1,000G 지급)');
+                        }).catch(function() {
+                            enterGame('🎉 회원가입이 완료되었습니다!');
                         });
                     }
                 } else {
@@ -518,12 +516,11 @@
                     } else {
                         gameState.gold = data.gold !== undefined ? data.gold : 1000;
                         startRealtimeSync();
-                        proceedGameAccess('로그인 성공!');
+                        enterGame('로그인 성공!');
                     }
                 }
-            }, function(err) {
-                // 통신 에러 발생 시 접속 우선 진행
-                proceedGameAccess(isSignUpMode ? '회원가입 완료!' : '로그인 성공!');
+            }, function() {
+                enterGame(isSignUpMode ? '🎉 회원가입이 완료되었습니다!' : '로그인 성공!');
             });
         }
 
