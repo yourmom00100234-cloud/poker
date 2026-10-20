@@ -4,9 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>골드 카지노</title>
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <style>
         :root {
             --bg-main: #0a080d;
@@ -33,69 +30,8 @@
             padding-bottom: 60px;
         }
 
-        #loginPage {
-            min-height: 80vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px 10px;
-        }
-
-        .auth-card {
-            background: var(--bg-card);
-            border: 2px solid var(--accent-gold);
-            padding: 28px 20px;
-            border-radius: 20px;
-            width: 100%;
-            max-width: 340px;
-            text-align: center;
-            box-shadow: 0 0 25px rgba(245, 158, 11, 0.3);
-        }
-
-        .auth-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 6px; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .auth-sub { color: var(--text-sub); font-size: 0.85rem; margin-bottom: 20px; }
-        
-        .auth-input { 
-            width: 100%; 
-            padding: 14px; 
-            border-radius: 10px; 
-            border: 1px solid var(--border-color); 
-            background: var(--bg-input); 
-            color: #fff; 
-            font-size: 1rem; 
-            text-align: center; 
-            margin-bottom: 12px; 
-            outline: none;
-            -webkit-user-select: text;
-            user-select: text;
-        }
-        
-        .auth-submit-btn { 
-            width: 100%; 
-            padding: 16px; 
-            border-radius: 10px; 
-            border: none; 
-            background: var(--gold-btn-grad); 
-            color: #000; 
-            font-size: 1.1rem; 
-            font-weight: 800; 
-            cursor: pointer; 
-            margin-top: 6px;
-            box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4);
-        }
-
-        .auth-toggle-btn {
-            margin-top: 18px;
-            font-size: 0.9rem;
-            color: var(--accent-gold-light);
-            cursor: pointer;
-            text-decoration: underline;
-            padding: 8px;
-            display: inline-block;
-        }
-
-        #mainGamePage { display: none; }
+        /* 게임 메인 화면 (로그인 없이 바로 표시) */
+        #mainGamePage { display: block; }
 
         .nav-container { display: flex; background: var(--bg-card); border-radius: 14px; padding: 4px; margin-bottom: 12px; border: 1px solid var(--border-color); }
         .nav-btn { flex: 1; padding: 10px 4px; border: none; background: transparent; color: var(--text-sub); font-size: 0.75rem; font-weight: bold; border-radius: 10px; cursor: pointer; white-space: nowrap; }
@@ -120,6 +56,7 @@
         .action-btn { width: 100%; padding: 15px; background: var(--gold-btn-grad); border: none; border-radius: 12px; color: #000; font-size: 1.1rem; font-weight: 800; cursor: pointer; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3); }
         .action-btn:disabled { background: #334155; color: #94a3b8; cursor: not-allowed; box-shadow: none; }
 
+        /* 경마 */
         .track-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 14px 12px; margin-bottom: 12px; }
         .lane-row { display: flex; align-items: center; background: var(--bg-input); border-radius: 10px; padding: 6px 10px; margin-bottom: 8px; height: 40px; position: relative; }
         .suit-icon { width: 24px; font-size: 1.1rem; font-weight: bold; text-align: center; }
@@ -136,6 +73,7 @@
         .horse-select-card.active-2nd { border-color: #38bdf8; background: rgba(56, 189, 248, 0.15); }
         .horse-select-card span { display: block; font-size: 0.75rem; color: var(--text-sub); margin-top: 2px; }
 
+        /* 바카라 */
         .baccarat-board { background: radial-gradient(circle, #0e5a38 0%, #042e1b 100%); border: 3px solid var(--accent-gold); border-radius: 20px; padding: 16px 12px; margin-bottom: 12px; }
         .baccarat-cards-container { display: flex; justify-content: space-between; margin-bottom: 12px; }
         .baccarat-side { width: 48%; background: rgba(0,0,0,0.45); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 12px; padding: 10px 4px; text-align: center; }
@@ -146,6 +84,7 @@
         .bac-bet-card { background: var(--bg-input); border: 2px solid transparent; border-radius: 10px; padding: 8px 4px; text-align: center; cursor: pointer; }
         .bac-bet-card.active { border-color: var(--accent-gold); background: rgba(245, 158, 11, 0.2); }
 
+        /* 하이로우 */
         .hilo-board { background: var(--bg-card); border: 2px solid var(--accent-gold); border-radius: 20px; padding: 20px; text-align: center; margin-bottom: 12px; }
         .hilo-card-box { width: 90px; height: 130px; background: #fff; color: #000; border-radius: 12px; margin: 0 auto 12px auto; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; font-weight: 800; border: 3px solid var(--accent-gold); box-shadow: 0 0 15px rgba(245, 158, 11, 0.3); }
         .hilo-btn-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 10px; }
@@ -153,6 +92,7 @@
         .btn-high { background: #38bdf8; } .btn-low { background: #f87171; }
         .btn-cashout { width: 100%; padding: 14px; background: #10b981; border: none; border-radius: 12px; color: white; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 6px; }
 
+        /* 슬롯머신 */
         .slot-board { background: var(--bg-card); border: 3px solid var(--accent-gold); border-radius: 20px; padding: 20px 12px; text-align: center; margin-bottom: 12px; }
         .slot-reels-container { display: flex; justify-content: center; gap: 10px; margin-bottom: 14px; }
         .slot-reel { width: 76px; height: 90px; background: #fff; border: 3px solid var(--accent-gold); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 2.8rem; }
@@ -166,23 +106,7 @@
 </head>
 <body>
 
-    <!-- 1. 로그인 / 회원가입 페이지 -->
-    <div id="loginPage">
-        <div class="auth-card">
-            <div class="auth-title">👑 골드 카지노 👑</div>
-            <div id="authSubText" class="auth-sub">아이디와 비밀번호를 입력하세요</div>
-            
-            <div>
-                <input type="text" id="authId" class="auth-input" placeholder="아이디" maxlength="12" autocomplete="off">
-                <input type="password" id="authPw" class="auth-input" placeholder="비밀번호" maxlength="16" autocomplete="off">
-                <button type="button" id="authSubmitBtn" class="auth-submit-btn">로그인</button>
-            </div>
-
-            <span id="authToggleBtn" class="auth-toggle-btn">계정이 없으신가요? 회원가입</span>
-        </div>
-    </div>
-
-    <!-- 2. 본 게임 전체 화면 -->
+    <!-- 본 게임 전체 화면 (로그인 없이 바로 실행) -->
     <div id="mainGamePage">
         <div class="nav-container">
             <button class="nav-btn active" data-tab="gameTab">경마</button>
@@ -194,11 +118,11 @@
 
         <div class="profile-bar">
             <div>
-                <span id="displayUsername" class="user-name">-</span>
+                <span id="displayUsername" class="user-name">VIP 플레이어</span>
                 <span id="userTier" class="user-tier">BRONZE</span>
             </div>
             <div>
-                <span id="userGold" class="gold-info">1,000</span> <span style="font-size:0.8rem; color:var(--accent-gold-light);">G</span>
+                <span id="userGold" class="gold-info">10,000</span> <span style="font-size:0.8rem; color:var(--accent-gold-light);">G</span>
                 <button class="ad-recharge-btn" id="adBtn">+1K 광고</button>
             </div>
         </div>
@@ -376,8 +300,10 @@
 
         <!-- 랭킹 탭 -->
         <div id="rankTab" class="tab-panel">
-            <h3 style="margin-bottom: 12px; font-size: 1rem; color: var(--text-main);">🏆 실시간 서버 랭킹</h3>
-            <div id="rankList">데이터를 불러오는 중...</div>
+            <h3 style="margin-bottom: 12px; font-size: 1rem; color: var(--text-main);">🏆 로컬 랭킹</h3>
+            <div id="rankList">
+                <div class="rank-card"><span><b>1위</b> VIP 플레이어</span><span style="color:var(--accent-gold-light); font-weight:bold;">10,000 G</span></div>
+            </div>
         </div>
 
         <footer>
@@ -395,35 +321,8 @@
     </div>
 
     <script>
-        var isSignUpMode = false;
-        var db = null;
-        var currentUserKey = null;
-
-        // [안전한 Firebase 초기화] 에러가 나도 게임 실행에 절대 지장을 주지 않도록 분리
-        try {
-            if (typeof firebase !== 'undefined') {
-                var firebaseConfig = {
-                    apiKey: "AIzaSyDqyhJ0KUej2LHCDDOu0W1",
-                    authDomain: "gold-poker-d6dd0.firebaseapp.com",
-                    databaseURL: "https://gold-poker-d6dd0-default-rtdb.firebaseio.com",
-                    projectId: "gold-poker-d6dd0",
-                    storageBucket: "gold-poker-d6dd0.appspot.com",
-                    messagingSenderId: "130430532601",
-                    appId: "1:130430532601:web:010a55ed2"
-                };
-                if (!firebase.apps.length) {
-                    firebase.initializeApp(firebaseConfig);
-                }
-                db = firebase.database();
-            }
-        } catch (e) {
-            console.log("Firebase 연결 우회 (오프라인 모드 작동)", e);
-            db = null;
-        }
-
         var gameState = {
-            username: '',
-            gold: 1000,
+            gold: 10000,
             raceMode: 'win',
             selectedHorse1: null,
             selectedHorse2: null,
@@ -446,19 +345,12 @@
         function bindSafeClick(elemId, callback) {
             var el = document.getElementById(elemId);
             if (!el) return;
-            el.addEventListener('click', function(e) {
-                e.preventDefault();
-                callback();
-            });
-            el.addEventListener('touchend', function(e) {
-                e.preventDefault();
-                callback();
-            });
+            el.addEventListener('click', function(e) { e.preventDefault(); callback(); });
+            el.addEventListener('touchend', function(e) { e.preventDefault(); callback(); });
         }
 
         window.addEventListener('DOMContentLoaded', function() {
-            bindSafeClick('authSubmitBtn', executeAuth);
-            bindSafeClick('authToggleBtn', toggleAuthMode);
+            updateUI();
 
             document.querySelectorAll('.nav-btn').forEach(function(btn) {
                 var tabId = btn.getAttribute('data-tab');
@@ -529,131 +421,6 @@
             document.getElementById('slotBetInput').addEventListener('input', validateSlotBet);
         });
 
-        function toggleAuthMode() {
-            isSignUpMode = !isSignUpMode;
-            var subText = document.getElementById('authSubText');
-            var submitBtn = document.getElementById('authSubmitBtn');
-            var toggleBtn = document.getElementById('authToggleBtn');
-
-            if(isSignUpMode) {
-                subText.innerText = '새로운 계정을 만드세요';
-                submitBtn.innerText = '회원가입 완료하기';
-                toggleBtn.innerText = '이미 계정이 있으신가요? 로그인';
-            } else {
-                subText.innerText = '아이디와 비밀번호를 입력하세요';
-                submitBtn.innerText = '로그인';
-                toggleBtn.innerText = '계정이 없으신가요? 회원가입';
-            }
-        }
-
-        function executeAuth() {
-            var idInput = document.getElementById('authId');
-            var pwInput = document.getElementById('authPw');
-
-            var id = idInput ? idInput.value.trim() : '';
-            var pw = pwInput ? pwInput.value.trim() : '';
-
-            if(!id) {
-                alert('아이디를 입력해 주세요!');
-                return;
-            }
-            if(!pw) {
-                alert('비밀번호를 입력해 주세요!');
-                return;
-            }
-
-            var safeId = id.replace(/[.#$\/\[\]]/g, '_');
-            currentUserKey = safeId;
-            gameState.username = id;
-
-            function enterGame(message) {
-                document.getElementById('displayUsername').innerText = id;
-                document.getElementById('loginPage').style.display = 'none';
-                document.getElementById('mainGamePage').style.display = 'block';
-                updateUI();
-                alert(message);
-            }
-
-            if (!db) {
-                enterGame(isSignUpMode ? '🎉 회원가입 성공! (1,000G 지급)' : '🎉 로그인 성공!');
-                return;
-            }
-
-            try {
-                var userRef = db.ref('users/' + safeId);
-                userRef.once('value', function(snapshot) {
-                    var data = snapshot.val();
-                    if(isSignUpMode) {
-                        if(data) {
-                            alert('이미 존재하는 아이디입니다!');
-                        } else {
-                            userRef.set({ username: id, password: pw, gold: 1000 }).then(function() {
-                                gameState.gold = 1000;
-                                startRealtimeSync();
-                                enterGame('🎉 회원가입 성공! (1,000G 지급)');
-                            }).catch(function() {
-                                enterGame('🎉 회원가입 성공!');
-                            });
-                        }
-                    } else {
-                        if(!data) {
-                            if(confirm('존재하지 않는 아이디입니다.\n회원가입으로 전환하시겠습니까?')) toggleAuthMode();
-                        } else if(data.password !== pw) {
-                            alert('비밀번호가 올바르지 않습니다!');
-                        } else {
-                            gameState.gold = data.gold !== undefined ? data.gold : 1000;
-                            startRealtimeSync();
-                            enterGame('로그인 성공!');
-                        }
-                    }
-                }, function(err) {
-                    enterGame(isSignUpMode ? '🎉 회원가입 성공!' : '로그인 성공!');
-                });
-            } catch (err) {
-                enterGame(isSignUpMode ? '🎉 회원가입 성공!' : '로그인 성공!');
-            }
-        }
-
-        function startRealtimeSync() {
-            if(!currentUserKey || !db) return;
-            try {
-                db.ref('users/' + currentUserKey + '/gold').on('value', function(snapshot) {
-                    var val = snapshot.val();
-                    if(val !== null && val !== gameState.gold) {
-                        gameState.gold = val;
-                        updateUIOnly();
-                    }
-                });
-
-                db.ref('users').on('value', function(snapshot) {
-                    var users = snapshot.val();
-                    if(!users) return;
-                    var rankArr = [];
-                    for(var key in users) {
-                        if(users[key].username && users[key].gold !== undefined) {
-                            rankArr.push({ name: users[key].username, gold: users[key].gold });
-                        }
-                    }
-                    rankArr.sort(function(a,b) { return b.gold - a.gold; });
-                    var rankListEl = document.getElementById('rankList');
-                    if(rankListEl) {
-                        rankListEl.innerHTML = rankArr.map(function(item, i) {
-                            return '<div class="rank-card"><span><b>' + (i + 1) + '위</b> ' + item.name + '</span><span style="color:var(--accent-gold-light); font-weight:bold;">' + item.gold.toLocaleString() + ' G</span></div>';
-                        }).join('');
-                    }
-                });
-            } catch (e) {
-                console.log("Sync error ignored");
-            }
-        }
-
-        function syncGoldToServer() {
-            if(!currentUserKey || !db) return;
-            try {
-                db.ref('users/' + currentUserKey).update({ gold: gameState.gold });
-            } catch (e) {}
-        }
-
         function switchTab(tabId, btn) {
             document.querySelectorAll('.tab-panel').forEach(function(el) { el.classList.remove('active'); });
             document.querySelectorAll('.nav-btn').forEach(function(el) { el.classList.remove('active'); });
@@ -661,7 +428,7 @@
             btn.classList.add('active');
         }
 
-        function updateUIOnly() {
+        function updateUI() {
             document.getElementById('userGold').innerText = gameState.gold.toLocaleString();
             var tier = 'BRONZE', color = '#94a3b8';
             if (gameState.gold >= 1000000) { tier = 'DIAMOND'; color = '#38bdf8'; }
@@ -671,11 +438,7 @@
             var tierEl = document.getElementById('userTier');
             tierEl.innerText = tier;
             tierEl.style.color = color;
-        }
 
-        function updateUI() {
-            updateUIOnly();
-            syncGoldToServer();
             for(var key in gameState.bacBets) {
                 var el = document.getElementById('amt-' + key);
                 if(el) el.innerText = gameState.bacBets[key].toLocaleString() + ' G';
