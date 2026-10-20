@@ -3,223 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>골드 카지노 - 실시간 랭킹 & 로그인</title>
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <title>골드 카지노</title>
     <style>
-        :root {
-            --bg-main: #0a080d;
-            --bg-card: #14101d;
-            --bg-input: #1c1829;
-            --accent-gold: #f59e0b;
-            --accent-gold-light: #fef08a;
-            --text-main: #f8fafc;
-            --text-sub: #a1a1aa;
-            --border-color: #3f321d;
-            --gold-gradient: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
-            --gold-btn-grad: linear-gradient(180deg, #f59e0b, #d97706);
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
-
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--bg-main);
-            color: var(--text-main);
-            max-width: 480px;
-            margin: 0 auto;
-            padding: 12px;
-            padding-bottom: 50px;
-        }
-
-        /* 로그인 / 회원가입 모달 */
-        #authModal {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(5, 4, 8, 0.98);
+            background-color: #0a080d;
+            color: #f8fafc;
+            font-family: sans-serif;
             display: flex;
-            align-items: center;
             justify-content: center;
-            z-index: 999999;
-            padding: 20px;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 15px;
+            box-sizing: border-box;
         }
-        .modal-card {
-            background: var(--bg-card);
-            border: 2px solid var(--accent-gold);
-            padding: 28px 20px;
+        #authModal {
+            background: #14101d;
+            border: 2px solid #f59e0b;
+            padding: 30px 20px;
             border-radius: 20px;
             width: 100%;
             max-width: 340px;
             text-align: center;
-            box-shadow: 0 0 25px rgba(245, 158, 11, 0.25);
+            box-shadow: 0 0 25px rgba(245, 158, 11, 0.3);
         }
-        .modal-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 6px; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .modal-sub { color: var(--text-sub); font-size: 0.85rem; margin-bottom: 16px; }
-        .modal-input { width: 100%; padding: 14px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--bg-input); color: #fff; font-size: 1rem; text-align: center; margin-bottom: 12px; outline: none; }
-        
-        /* 버튼 반응 최우선 보장 */
-        .modal-btn { 
-            width: 100%; 
-            padding: 16px; 
-            border-radius: 10px; 
-            border: none; 
-            background: var(--gold-btn-grad); 
-            color: #000; 
-            font-size: 1.1rem; 
-            font-weight: 800; 
-            cursor: pointer; 
-            margin-top: 6px; 
-            box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4);
-            touch-action: manipulation;
+        .modal-input {
+            width: 100%;
+            padding: 14px;
+            border-radius: 10px;
+            border: 1px solid #3f321d;
+            background: #1c1829;
+            color: #fff;
+            font-size: 1rem;
+            text-align: center;
+            margin-bottom: 12px;
+            outline: none;
+            box-sizing: border-box;
         }
-        .auth-toggle { margin-top: 14px; font-size: 0.85rem; color: var(--accent-gold-light); cursor: pointer; text-decoration: underline; padding: 6px; display: inline-block; }
-
-        .nav-container { display: flex; background: var(--bg-card); border-radius: 14px; padding: 4px; margin-bottom: 12px; border: 1px solid var(--border-color); }
-        .nav-btn { flex: 1; padding: 10px 0; border: none; background: transparent; color: var(--text-sub); font-size: 0.7rem; font-weight: bold; border-radius: 10px; cursor: pointer; }
-        .nav-btn.active { background: var(--gold-btn-grad); color: #000; font-weight: 800; }
-
-        .profile-bar { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .user-name { font-weight: bold; font-size: 0.95rem; }
-        .user-tier { font-size: 0.75rem; font-weight: bold; padding: 3px 8px; border-radius: 6px; background: #2a2012; margin-left: 6px; color: var(--accent-gold); border: 1px solid var(--border-color); }
-        .gold-info { font-size: 1.1rem; font-weight: 800; color: var(--accent-gold-light); }
-
-        .tab-panel { display: none; }
-        .tab-panel.active { display: block; }
-        .bet-container { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 14px; text-align: center; }
+        .modal-btn {
+            width: 100%;
+            padding: 16px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(180deg, #f59e0b, #d97706);
+            color: #000;
+            font-size: 1.1rem;
+            font-weight: 800;
+            cursor: pointer;
+            margin-top: 6px;
+        }
+        /* 폼 바깥으로 빼내어 충돌 원천 차단된 토글 버튼 */
+        .auth-toggle {
+            margin-top: 16px;
+            font-size: 0.9rem;
+            color: #fef08a;
+            cursor: pointer;
+            text-decoration: underline;
+            display: inline-block;
+            padding: 6px;
+        }
     </style>
 </head>
 <body>
 
-    <!-- 로그인 / 회원가입 모달 -->
     <div id="authModal">
-        <form class="modal-card" action="javascript:void(0);" onsubmit="handleLogin(); return false;">
-            <div class="modal-title">👑 골드 카지노 👑</div>
-            <div id="authSub" class="modal-sub">아이디와 비밀번호로 로그인하세요</div>
-            <input type="text" id="authId" class="modal-input" placeholder="아이디" maxlength="12" required>
-            <input type="password" id="authPw" class="modal-input" placeholder="비밀번호" maxlength="16" required>
-            <!-- 폼 전송 방식(type=submit) 적용으로 모바일 완료 버튼 및 터치 완벽 대응 -->
-            <button id="authSubmitBtn" class="modal-btn" type="submit">로그인</button>
-            <div id="authToggleText" class="auth-toggle" onclick="toggleAuthMode()">계정이 없으신가요? 회원가입</div>
+        <h2 style="color: #f59e0b; margin-bottom: 5px;">👑 골드 카지노 👑</h2>
+        <p id="authSub" style="color: #a1a1aa; font-size: 0.85rem; margin-bottom: 20px;">아이디와 비밀번호를 입력하세요</p>
+        
+        <!-- 로그인/회원가입 입력 폼 -->
+        <form id="authForm" onsubmit="processAuth(); return false;">
+            <input type="text" id="authId" class="modal-input" placeholder="아이디" required>
+            <input type="password" id="authPw" class="modal-input" placeholder="비밀번호" required>
+            <button type="submit" class="modal-btn" id="submitBtn">로그인</button>
         </form>
-    </div>
 
-    <!-- 메인 게임 영역 -->
-    <div class="nav-container">
-        <button class="nav-btn active">카지노 메인</button>
-    </div>
-
-    <div class="profile-bar">
+        <!-- 폼 바깥에 위치하여 절대 취소되지 않고 잘 눌리는 회원가입 전환 버튼 -->
         <div>
-            <span id="displayUsername" class="user-name">-</span>
-            <span id="userTier" class="user-tier">BRONZE</span>
-        </div>
-        <div>
-            <span id="userGold" class="gold-info">1,000</span> <span style="font-size:0.8rem; color:var(--accent-gold-light);">G</span>
+            <span id="authToggleText" class="auth-toggle" onclick="toggleMode()">계정이 없으신가요? 회원가입</span>
         </div>
     </div>
 
-    <div class="bet-container">
-        <h3 style="color:var(--accent-gold); margin-bottom:10px;">🎮 게임 입장을 환영합니다!</h3>
-        <p style="font-size:0.9rem; color:var(--text-sub);">상단 탭을 이용하여 게임을 이용해보세요.</p>
+    <div id="gameScreen" style="display:none; text-align:center;">
+        <h1 style="color: #f59e0b;">환영합니다! 접속 성공!</h1>
+        <p id="welcomeMsg" style="font-size: 1.2rem;"></p>
     </div>
 
     <script>
-        var isSignUpMode = false;
-        var db = null;
+        let isSignup = false;
 
-        // Firebase 예외 처리 완비
-        try {
-            if (typeof firebase !== 'undefined') {
-                var firebaseConfig = {
-                    apiKey: "AIzaSyDqyhJ0KUej2LHCDDOu0W1",
-                    authDomain: "gold-poker-d6dd0.firebaseapp.com",
-                    databaseURL: "https://gold-poker-d6dd0-default-rtdb.firebaseio.com",
-                    projectId: "gold-poker-d6dd0",
-                    storageBucket: "gold-poker-d6dd0.appspot.com",
-                    messagingSenderId: "130430532601",
-                    appId: "1:130430532601:web:010a55ed2"
-                };
-                if (!firebase.apps.length) {
-                    firebase.initializeApp(firebaseConfig);
-                }
-                db = firebase.database();
-            }
-        } catch (e) {
-            console.log("DB 연결 건너뜀 (오프라인 모드)");
+        function toggleMode() {
+            isSignup = !isSignup;
+            document.getElementById('authSub').innerText = isSignup ? '새로운 계정을 만드세요' : '아이디와 비밀번호를 입력하세요';
+            document.getElementById('submitBtn').innerText = isSignup ? '회원가입' : '로그인';
+            document.getElementById('authToggleText').innerText = isSignup ? '이미 계정이 있으신가요? 로그인' : '계정이 없으신가요? 회원가입';
         }
 
-        // 회원가입 / 로그인 모드 전환
-        function toggleAuthMode() {
-            isSignUpMode = !isSignUpMode;
-            document.getElementById('authSub').innerText = isSignUpMode ? '새로운 계정을 생성하세요' : '아이디와 비밀번호로 로그인하세요';
-            document.getElementById('authSubmitBtn').innerText = isSignUpMode ? '회원가입' : '로그인';
-            document.getElementById('authToggleText').innerText = isSignUpMode ? '이미 계정이 있으신가요? 로그인' : '계정이 없으신가요? 회원가입';
-        }
-
-        // 로그인 / 회원가입 실행 함수
-        function handleLogin() {
-            var idInput = document.getElementById('authId');
-            var pwInput = document.getElementById('authPw');
-
-            var id = idInput ? idInput.value.trim() : '';
-            var pw = pwInput ? pwInput.value.trim() : '';
+        function processAuth() {
+            const id = document.getElementById('authId').value.trim();
+            const pw = document.getElementById('authPw').value.trim();
 
             if (!id || !pw) {
-                alert('아이디와 비밀번호를 모두 입력해주세요!');
-                return false;
+                alert('아이디와 비밀번호를 입력해주세요!');
+                return;
             }
 
-            var safeId = id.replace(/[.#$\/\[\]]/g, '_');
-
-            // DB 미연결 시 로컬 즉시 로그인
-            if (!db) {
-                document.getElementById('displayUsername').innerText = id;
-                document.getElementById('authModal').style.display = 'none';
-                alert((isSignUpMode ? '회원가입' : '로그인') + ' 성공!');
-                return false;
-            }
-
-            // DB 정상 연결 시 처리
-            var userRef = db.ref('users/' + safeId);
-            userRef.once('value', function(snapshot) {
-                var data = snapshot.val();
-                if (isSignUpMode) {
-                    if (data) {
-                        alert('이미 존재하는 아이디입니다!');
-                    } else {
-                        userRef.set({ username: id, password: pw, gold: 1000 }).then(function() {
-                            document.getElementById('displayUsername').innerText = id;
-                            document.getElementById('authModal').style.display = 'none';
-                            alert('회원가입 완료 및 로그인 되었습니다!');
-                        }).catch(function(err) {
-                            // Firebase 규칙 에러 시에도 창은 닫히도록 예외 처리
-                            document.getElementById('displayUsername').innerText = id;
-                            document.getElementById('authModal').style.display = 'none';
-                            alert('로그인 성공!');
-                        });
-                    }
-                } else {
-                    if (!data) {
-                        if (confirm('존재하지 않는 아이디입니다.\n회원가입으로 전환하시겠습니까?')) {
-                            toggleAuthMode();
-                        }
-                    } else if (data.password !== pw) {
-                        alert('비밀번호가 올바르지 않습니다!');
-                    } else {
-                        document.getElementById('displayUsername').innerText = data.username;
-                        document.getElementById('authModal').style.display = 'none';
-                        alert('로그인 성공!');
-                    }
-                }
-            }, function(err) {
-                // DB 읽기 에러 발생 시 접속 우선 보장
-                document.getElementById('displayUsername').innerText = id;
-                document.getElementById('authModal').style.display = 'none';
-                alert('로그인되었습니다.');
-            });
-
-            return false;
+            const actionName = isSignup ? '회원가입' : '로그인';
+            
+            // 모달창 숨기고 게임 화면 표시
+            document.getElementById('authModal').style.display = 'none';
+            document.getElementById('gameScreen').style.display = 'block';
+            document.getElementById('welcomeMsg').innerText = `${id}님 ${actionName} 성공! (골드: 1,000G)`;
         }
     </script>
 </body>
