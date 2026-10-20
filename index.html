@@ -79,13 +79,15 @@
         .side-player { color: #38bdf8; } .side-banker { color: #f87171; }
         .cards-row { display: flex; justify-content: center; gap: 6px; min-height: 45px; align-items: center; font-size: 1rem; font-weight: bold; }
         .bac-bet-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 8px; }
-        .bac-bet-grid-sub { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-bottom: 12px; }
+        .bac-bet-grid-sub { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-bottom: 8px; }
         .bac-bet-card { background: var(--bg-input); border: 2px solid transparent; border-radius: 10px; padding: 8px 4px; text-align: center; cursor: pointer; }
         .bac-bet-card.active { border-color: var(--accent-gold); background: rgba(245, 158, 11, 0.2); }
 
         /* 하이로우 */
         .hilo-board { background: var(--bg-card); border: 2px solid var(--accent-gold); border-radius: 20px; padding: 20px; text-align: center; margin-bottom: 12px; }
-        .hilo-card-box { width: 100px; height: 140px; background: #fff; color: #000; border-radius: 12px; margin: 0 auto 12px auto; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 2rem; font-weight: 800; border: 3px solid var(--accent-gold); box-shadow: 0 0 15px rgba(245, 158, 11, 0.3); }
+        .hilo-card-box { width: 100px; height: 140px; background: #fff; color: #000; border-radius: 12px; margin: 0 auto 12px auto; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 2rem; font-weight: 800; border: 3px solid var(--accent-gold); box-shadow: 0 0 15px rgba(245, 158, 11, 0.3); transform: translateX(0); transition: transform 0.3s ease, opacity 0.3s ease; }
+        .hilo-card-box.slide-out { transform: translateX(80px) rotate(15deg); opacity: 0; }
+        .hilo-card-box.slide-in { transform: translateX(-80px) rotate(-15deg); opacity: 0; }
         .hilo-btn-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 10px; }
         .hilo-btn { padding: 16px; border-radius: 12px; border: none; font-size: 1.1rem; font-weight: 800; cursor: pointer; color: white; }
         .btn-high { background: #38bdf8; } .btn-low { background: #f87171; }
@@ -204,6 +206,7 @@
                     </div>
                 </div>
 
+                <div class="sub-header">사이드 페어 베팅</div>
                 <div class="bac-bet-grid-sub">
                     <div class="bac-bet-card" id="btn-pPair" data-bac="pPair">
                         <div style="color:#38bdf8; font-weight:bold;">플레이어 페어 (11:1)</div>
@@ -232,7 +235,7 @@
         <!-- 하이로우 탭 -->
         <div id="hiloTab" class="tab-panel">
             <div class="hilo-board">
-                <div id="hiloCardDisplay" class="hilo-card-box">
+                <div id="hiloCardBox" class="hilo-card-box">
                     <span id="hiloCardSuit" style="font-size: 1.5rem;">🎴</span>
                     <span id="hiloCardVal">?</span>
                 </div>
@@ -333,7 +336,6 @@
             selectedBacTarget: 'player',
             hiloBet: 0,
             hiloCurrentNum: null,
-            hiloCurrentCard: null,
             hiloAccumulated: 0,
             hiloStreak: 0,
             isHiloPlaying: false,
@@ -345,12 +347,11 @@
         var slotSymbols = ['7️⃣', '💎', '👑', '🪙', '🍒', '🍇', '🔔'];
 
         function getCardDisplay(num) {
-            var valStr = num;
-            if (num === 1) valStr = 'A';
-            else if (num === 11) valStr = 'J';
-            else if (num === 12) valStr = 'Q';
-            else if (num === 13) valStr = 'K';
-            return valStr;
+            if (num === 1) return 'A';
+            if (num === 11) return 'J';
+            if (num === 12) return 'Q';
+            if (num === 13) return 'K';
+            return num;
         }
 
         function bindSafeClick(elemId, callback) {
@@ -413,7 +414,7 @@
                 btn.addEventListener('click', function() { addHiloBet(amt); });
                 btn.addEventListener('touchend', function() { addHiloBet(amt); });
             });
-            bindSafeClick('hiloAllBtn', addHiloBetAll);
+            bindSafeClick('hiloAllBtn', addHiloAllBet);
             bindSafeClick('hiloResetBtn', resetHiloBet);
             bindSafeClick('hiloStartBtn', startHiloGame);
             bindSafeClick('hiloHighBtn', function() { guessHilo('HIGH'); });
@@ -628,13 +629,13 @@
             updateUI();
         }
 
-        /* 하이로우 로직 (카드 모양 및 A, J, Q, K 적용) */
+        /* 하이로우 로직 */
         function addHiloBet(amt) {
             if(gameState.hiloBet + amt <= gameState.gold) gameState.hiloBet += amt;
             else gameState.hiloBet = gameState.gold;
             document.getElementById('hiloBetInput').value = gameState.hiloBet;
         }
-        function addHiloBetAll() { gameState.hiloBet = gameState.gold; document.getElementById('hiloBetInput').value = gameState.hiloBet; }
+        function addHiloAllBet() { gameState.hiloBet = gameState.gold; document.getElementById('hiloBetInput').value = gameState.hiloBet; }
         function resetHiloBet() { gameState.hiloBet = 0; document.getElementById('hiloBetInput').value = 0; }
         function validateHiloBet() {
             var val = parseInt(document.getElementById('hiloBetInput').value) || 0;
@@ -659,35 +660,49 @@
             gameState.hiloCurrentNum = Math.floor(Math.random() * 13) + 1;
             var rSuit = suits[Math.floor(Math.random() * suits.length)];
             
-            document.getElementById('hiloCardSuit').innerText = suitSymbols[rSuit];
-            document.getElementById('hiloCardVal').innerText = getCardDisplay(gameState.hiloCurrentNum);
+            var cardBox = document.getElementById('hiloCardBox');
+            cardBox.classList.add('slide-in');
+            setTimeout(function() {
+                document.getElementById('hiloCardSuit').innerText = suitSymbols[rSuit];
+                document.getElementById('hiloCardVal').innerText = getCardDisplay(gameState.hiloCurrentNum);
+                cardBox.classList.remove('slide-in');
+            }, 200);
+
             document.getElementById('hiloStatusText').innerText = '다음 카드가 높을까 낮을까?';
             document.getElementById('hiloMultiplierText').innerText = '누적 예정금: ' + gameState.hiloAccumulated.toLocaleString() + ' G';
         }
 
         function guessHilo(choice) {
             if(!gameState.isHiloPlaying) return;
-            var nextNum = Math.floor(Math.random() * 13) + 1;
-            var rSuit = suits[Math.floor(Math.random() * suits.length)];
+            var cardBox = document.getElementById('hiloCardBox');
+            cardBox.classList.add('slide-out');
 
-            document.getElementById('hiloCardSuit').innerText = suitSymbols[rSuit];
-            document.getElementById('hiloCardVal').innerText = getCardDisplay(nextNum);
+            setTimeout(function() {
+                var nextNum = Math.floor(Math.random() * 13) + 1;
+                var rSuit = suits[Math.floor(Math.random() * suits.length)];
 
-            var win = false;
-            if(nextNum === gameState.hiloCurrentNum) win = true;
-            else if(choice === 'HIGH' && nextNum > gameState.hiloCurrentNum) win = true;
-            else if(choice === 'LOW' && nextNum < gameState.hiloCurrentNum) win = true;
+                document.getElementById('hiloCardSuit').innerText = suitSymbols[rSuit];
+                document.getElementById('hiloCardVal').innerText = getCardDisplay(nextNum);
+                cardBox.classList.remove('slide-out');
+                cardBox.classList.add('slide-in');
+                setTimeout(function() { cardBox.classList.remove('slide-in'); }, 200);
 
-            if(win) {
-                gameState.hiloStreak++;
-                gameState.hiloAccumulated = Math.floor(gameState.hiloAccumulated * 1.25);
-                gameState.hiloCurrentNum = nextNum;
-                document.getElementById('hiloStatusText').innerText = '🎉 ' + gameState.hiloStreak + '연승 성공! 계속 도전하세요.';
-                document.getElementById('hiloMultiplierText').innerText = '누적 예정금: ' + gameState.hiloAccumulated.toLocaleString() + ' G';
-            } else {
-                alert('틀렸습니다! (나온 카드: ' + getCardDisplay(nextNum) + ')\n베팅금을 잃었습니다.');
-                endHiloGame();
-            }
+                var win = false;
+                if(nextNum === gameState.hiloCurrentNum) win = true;
+                else if(choice === 'HIGH' && nextNum > gameState.hiloCurrentNum) win = true;
+                else if(choice === 'LOW' && nextNum < gameState.hiloCurrentNum) win = true;
+
+                if(win) {
+                    gameState.hiloStreak++;
+                    gameState.hiloAccumulated = Math.floor(gameState.hiloAccumulated * 1.25);
+                    gameState.hiloCurrentNum = nextNum;
+                    document.getElementById('hiloStatusText').innerText = '🎉 ' + gameState.hiloStreak + '연승 성공! 계속 도전하세요.';
+                    document.getElementById('hiloMultiplierText').innerText = '누적 예정금: ' + gameState.hiloAccumulated.toLocaleString() + ' G';
+                } else {
+                    alert('틀렸습니다! (나온 카드: ' + getCardDisplay(nextNum) + ')\n베팅금을 잃었습니다.');
+                    endHiloGame();
+                }
+            }, 300);
         }
 
         function cashoutHilo() {
