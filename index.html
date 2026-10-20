@@ -168,11 +168,11 @@
 </head>
 <body>
 
-    <!-- 닉네임 모달 -->
+    <!-- 닉네임 모달 (힌트 문구 제거 완료) -->
     <div id="nameModal">
         <div class="modal-card">
             <div class="modal-title">👑 WANT.BET 👑</div>
-            <div class="modal-sub">닉네임을 입력하고 입장하세요<br>(이스터에그: 오연성바보 = 1억G)</div>
+            <div class="modal-sub">닉네임을 입력하고 입장하세요</div>
             <input type="text" id="usernameInput" class="modal-input" placeholder="닉네임 (최대 8자)" maxlength="8">
             <button class="modal-btn" onclick="startGameWithNickname()">입장하기</button>
         </div>
@@ -221,11 +221,11 @@
     <div id="gamePlayArea" class="page-panel">
         <button class="back-lobby-btn" onclick="returnToLobby()">⬅ 로비로 돌아가기</button>
         
-        <!-- 1. 스피드 바카라 (고급 타일 패널) -->
+        <!-- 1. 스피드 바카라 -->
         <div id="panel-baccarat" class="sub-game-panel" style="display:none;">
             <div class="baccarat-wrapper">
                 <div class="bac-top-header">
-                    <div class="bac-title-box">VIP VIP SPEED BACCARAT</div>
+                    <div class="bac-title-box">VIP SPEED BACCARAT</div>
                     <div class="bac-timer-ring" id="bacTimerCircle">3</div>
                 </div>
                 <div class="bac-dealer-cards-area">
@@ -497,14 +497,14 @@
             renderGameGrid(gamesList);
         });
 
-        /* 이스터에그: 오연성바보 입력 시 1억 지급 */
+        /* 이스터에그 로직: '오연성바보' 입력 시 비밀리에 1억G 지급 */
         function startGameWithNickname() {
             const val = document.getElementById('usernameInput').value.trim();
             if(!val) { alert('닉네임을 입력하세요!'); return; }
             gameState.username = val;
             if (val === '오연성바보') {
                 gameState.gold = 100000000;
-                alert('👑 [특별 보너스] 1억 골드 지급 완료!');
+                alert('👑 [VIP 보너스] 1억 골드가 지급되었습니다!');
             } else {
                 gameState.gold = 10000;
             }
@@ -612,13 +612,13 @@
 
         function drawCard() {
             const num = Math.floor(Math.random() * 13) + 1;
-            let val = num >= 10 ? 0 : num; // 바카라 기본 점수
+            let val = num >= 10 ? 0 : num;
             let sym = num === 1 ? 'A' : (num === 11 ? 'J' : (num === 12 ? 'Q' : (num === 13 ? 'K' : num)));
             const s = suits[Math.floor(Math.random() * suits.length)];
             return { val, num, suit: s, symbol: `${suitSymbols[s]}${sym}`, color: (s==='diamond'||s==='heart')?'#ef4444':'#000' };
         }
 
-        /* 1. 정통 바카라 룰 적용 (페어, 드래곤 보너스, 3번째 카드 딜링) */
+        /* 1. 바카라 로직 */
         function selectBacBet(t) {
             if(gameState.isBaccaratPlaying) return;
             gameState.selectedBacTarget = t;
@@ -670,7 +670,6 @@
             let pCards = [drawCard(), drawCard()];
             let bCards = [drawCard(), drawCard()];
 
-            // 1, 2번째 카드 오픈
             await appendBacCard('playerCards', pCards[0]);
             let pScore = pCards[0].val;
             document.getElementById('playerScore').innerText = `${pScore}점`;
@@ -691,10 +690,8 @@
             document.getElementById('bankerScore').innerText = `${bScore}점`;
             await sleep(400);
 
-            // 3번째 카드 조건 판정 (Natural 8, 9점이 아닐 경우)
             let p3rd = null;
             if (pScore < 8 && bScore < 8) {
-                // 플레이어 3번째 카드 딜링 조건 (0~5점)
                 if (pScore <= 5) {
                     p3rd = drawCard();
                     pCards.push(p3rd);
@@ -704,7 +701,6 @@
                     await sleep(400);
                 }
 
-                // 뱅커 3번째 카드 딜링 조건
                 let drawBanker = false;
                 if (!p3rd) {
                     if (bScore <= 5) drawBanker = true;
@@ -727,7 +723,6 @@
                 }
             }
 
-            // 페어 및 보너스 판정
             let isPPair = (pCards[0].num === pCards[1].num);
             let isBPair = (bCards[0].num === bCards[1].num);
             let isPerfect = (isPPair && pCards[0].suit === pCards[1].suit) || (isBPair && bCards[0].suit === bCards[1].suit);
@@ -736,7 +731,6 @@
             let payout = 0;
             let winDetails = [];
 
-            // 메인 베팅 처리
             if (pScore > bScore) {
                 if (gameState.bacBets.player > 0) payout += gameState.bacBets.player * 2;
                 winDetails.push("🔵 PLAYER 승");
@@ -745,17 +739,15 @@
                 winDetails.push("🔴 BANKER 승");
             } else {
                 if (gameState.bacBets.tie > 0) payout += gameState.bacBets.tie * 9;
-                payout += (gameState.bacBets.player + gameState.bacBets.banker); // 무승부 시 환불
+                payout += (gameState.bacBets.player + gameState.bacBets.banker);
                 winDetails.push("👔 TIE 무승부");
             }
 
-            // 페어 배당 지급
             if (isPPair && gameState.bacBets.pPair > 0) payout += gameState.bacBets.pPair * 12;
             if (isBPair && gameState.bacBets.bPair > 0) payout += gameState.bacBets.bPair * 12;
             if (isPerfect && gameState.bacBets.perfect > 0) payout += gameState.bacBets.perfect * 26;
             if (isEither && gameState.bacBets.either > 0) payout += gameState.bacBets.either * 6;
 
-            // 드래곤 보너스 계산 (점수 차이에 따른 배당)
             let diff = Math.abs(pScore - bScore);
             if (pScore > bScore && gameState.bacBets.pBonus > 0) {
                 let mult = getBonusMultiplier(diff, pCards.length === 2);
@@ -778,15 +770,14 @@
             updateUI();
         }
 
-        // 드래곤 보너스 배당 계산기
         function getBonusMultiplier(diff, isNatural) {
-            if (isNatural) return diff >= 8 ? 1 : 0; // 내추럴 승리시 1:1
-            if (diff === 9) return 30; // 9점 차 승리 30배
-            if (diff === 8) return 10; // 8점 차 승리 10배
-            if (diff === 7) return 6;  // 7점 차 승리 6배
-            if (diff === 6) return 4;  // 6점 차 승리 4배
-            if (diff === 5) return 2;  // 5점 차 승리 2배
-            if (diff === 4) return 1;  // 4점 차 승리 1배
+            if (isNatural) return diff >= 8 ? 1 : 0;
+            if (diff === 9) return 30;
+            if (diff === 8) return 10;
+            if (diff === 7) return 6;
+            if (diff === 6) return 4;
+            if (diff === 5) return 2;
+            if (diff === 4) return 1;
             return 0;
         }
 
