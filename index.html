@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>골드 카지노 - 실시간 랭킹 & 로그인</title>
-    <!-- Firebase SDK 로드 -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <!-- Firebase SDK (v8 호환 모드) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <style>
         :root {
             --bg-main: #0a080d;
@@ -45,22 +45,24 @@
             align-items: center;
             justify-content: center;
             z-index: 2000;
+            overflow-y: auto;
+            padding: 20px;
         }
         .modal-card {
             background: var(--bg-card);
             border: 2px solid var(--accent-gold);
             padding: 28px 20px;
             border-radius: 20px;
-            width: 88%;
+            width: 100%;
             max-width: 340px;
             text-align: center;
             box-shadow: 0 0 25px rgba(245, 158, 11, 0.25);
         }
         .modal-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 6px; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .modal-sub { color: var(--text-sub); font-size: 0.85rem; margin-bottom: 16px; }
-        .modal-input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--bg-input); color: #fff; font-size: 0.95rem; text-align: center; margin-bottom: 10px; outline: none; }
-        .modal-btn { width: 100%; padding: 13px; border-radius: 10px; border: none; background: var(--gold-btn-grad); color: #000; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 6px; box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4); }
-        .auth-toggle { margin-top: 12px; font-size: 0.8rem; color: var(--accent-gold-light); cursor: pointer; text-decoration: underline; }
+        .modal-input { width: 100%; padding: 14px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--bg-input); color: #fff; font-size: 1rem; text-align: center; margin-bottom: 12px; outline: none; }
+        .modal-btn { width: 100%; padding: 15px; border-radius: 10px; border: none; background: var(--gold-btn-grad); color: #000; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 6px; box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4); }
+        .auth-toggle { margin-top: 14px; font-size: 0.85rem; color: var(--accent-gold-light); cursor: pointer; text-decoration: underline; padding: 6px; display: inline-block; }
 
         /* 네비게이션 탭 */
         .nav-container { display: flex; background: var(--bg-card); border-radius: 14px; padding: 4px; margin-bottom: 12px; border: 1px solid var(--border-color); }
@@ -170,7 +172,7 @@
         footer { margin-top: 20px; text-align: center; font-size: 0.75rem; color: var(--text-sub); }
         footer a { color: var(--accent-gold-light); text-decoration: underline; cursor: pointer; }
 
-        #privacyModal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 3000; }
+        #privacyModal { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.85); display:none; align-items:center; justify-content:center; z-index:3000; }
         .privacy-box { background: var(--bg-card); border: 1px solid var(--accent-gold); padding: 20px; border-radius: 16px; width: 90%; max-width: 400px; max-height: 80vh; overflow-y: auto; font-size: 0.8rem; line-height: 1.5; color: var(--text-sub); }
 
         #adModal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 2000; }
@@ -186,8 +188,8 @@
             <div id="authSub" class="modal-sub">아이디와 비밀번호로 로그인하세요</div>
             <input type="text" id="authId" class="modal-input" placeholder="아이디" maxlength="12">
             <input type="password" id="authPw" class="modal-input" placeholder="비밀번호" maxlength="16">
-            <button id="authSubmitBtn" class="modal-btn" onclick="handleLogin()">로그인</button>
-            <div id="authToggleText" class="auth-toggle" onclick="toggleAuthMode()">계정이 없으신가요? 회원가입</div>
+            <button id="authSubmitBtn" class="modal-btn">로그인</button>
+            <div id="authToggleText" class="auth-toggle">계정이 없으신가요? 회원가입</div>
         </div>
     </div>
 
@@ -485,10 +487,10 @@
     </div>
 
     <script>
-        // 사용자가 보여주신 Firebase 설정 데이터 연동 완료
         const firebaseConfig = {
             apiKey: "AIzaSyDqyhJ0KUej2LHCDDOu0W1",
             authDomain: "gold-poker-d6dd0.firebaseapp.com",
+            databaseURL: "https://gold-poker-d6dd0-default-rtdb.firebaseio.com",
             projectId: "gold-poker-d6dd0",
             storageBucket: "gold-poker-d6dd0.appspot.com",
             messagingSenderId: "130430532601",
@@ -528,6 +530,28 @@
         const suitNames = { spade: '스페이드', diamond: '다이아몬드', heart: '하트', club: '클로버' };
         const slotSymbols = ['7️⃣', '💎', '👑', '🪙', '🍒', '🍇', '🔔'];
 
+        // 터치 및 클릭 이벤트 강제 연동 (모바일에서 버튼이 안 눌리는 문제 해결)
+        document.addEventListener("DOMContentLoaded", () => {
+            const submitBtn = document.getElementById('authSubmitBtn');
+            const toggleText = document.getElementById('authToggleText');
+
+            if(submitBtn) {
+                submitBtn.addEventListener('click', handleLogin);
+                submitBtn.addEventListener('touchend', (e) => {
+                    e.preventDefault();
+                    handleLogin();
+                });
+            }
+
+            if(toggleText) {
+                toggleText.addEventListener('click', toggleAuthMode);
+                toggleText.addEventListener('touchend', (e) => {
+                    e.preventDefault();
+                    toggleAuthMode();
+                });
+            }
+        });
+
         function toggleAuthMode() {
             isSignUpMode = !isSignUpMode;
             document.getElementById('authSub').innerText = isSignUpMode ? '새로운 계정을 생성하세요' : '아이디와 비밀번호로 로그인하세요';
@@ -559,6 +583,8 @@
                             startRealtimeSync();
                             updateUI();
                             alert('회원가입 및 로그인 성공!');
+                        }).catch(err => {
+                            alert('저장 실패! Firebase 데이터베이스 [규칙(Rules)]을 확인하세요: ' + err.message);
                         });
                     }
                 } else {
@@ -577,12 +603,13 @@
                         alert('로그인 성공!');
                     }
                 }
+            }, err => {
+                alert('DB 읽기 오류! Firebase 규칙 설정을 확인해주세요: ' + err.message);
             });
         }
 
         function startRealtimeSync() {
             if(!currentUserKey) return;
-            // 내 골드 서버 동기화
             db.ref('users/' + currentUserKey + '/gold').on('value', snapshot => {
                 const val = snapshot.val();
                 if(val !== null && val !== gameState.gold) {
@@ -591,7 +618,6 @@
                 }
             });
 
-            // 실시간 전체 랭킹 동기화
             db.ref('users').on('value', snapshot => {
                 const users = snapshot.val();
                 if(!users) return;
@@ -796,7 +822,7 @@
             updateUI();
         }
 
-        /* ---------------- 바카라 로직 ---------------- */
+        /* ---------------- 바카라 ---------------- */
         function selectBacBet(target) {
             if(gameState.isBaccaratPlaying) return;
             gameState.selectedBacTarget = target;
@@ -1137,4 +1163,105 @@
             document.getElementById('slotBetInput').value = gameState.slotBet;
         }
         function resetSlotBet() {
-            if(gameState.isSlotSpinning
+            if(gameState.isSlotSpinning) return;
+            gameState.slotBet = 0;
+            document.getElementById('slotBetInput').value = 0;
+        }
+        function validateSlotBet() {
+            let val = parseInt(document.getElementById('slotBetInput').value) || 0;
+            if(val < 0) val = 0;
+            if(val > gameState.gold) val = gameState.gold;
+            gameState.slotBet = val;
+            document.getElementById('slotBetInput').value = val;
+        }
+
+        async function spinSlot() {
+            if(gameState.slotBet <= 0) return alert('베팅 금액을 설정하세요!');
+            if(gameState.slotBet > gameState.gold) return alert('골드가 부족합니다!');
+
+            gameState.isSlotSpinning = true;
+            gameState.gold -= gameState.slotBet;
+            updateUI();
+            document.getElementById('slotSpinBtn').disabled = true;
+            document.getElementById('slotResultText').innerText = '슬롯 회전 중... 🎰';
+
+            const res = [
+                slotSymbols[Math.floor(Math.random() * slotSymbols.length)],
+                slotSymbols[Math.floor(Math.random() * slotSymbols.length)],
+                slotSymbols[Math.floor(Math.random() * slotSymbols.length)]
+            ];
+
+            for(let i=0; i<12; i++) {
+                document.getElementById('reel0').innerText = slotSymbols[Math.floor(Math.random() * slotSymbols.length)];
+                document.getElementById('reel1').innerText = slotSymbols[Math.floor(Math.random() * slotSymbols.length)];
+                document.getElementById('reel2').innerText = slotSymbols[Math.floor(Math.random() * slotSymbols.length)];
+                await sleep(80);
+            }
+
+            document.getElementById('reel0').innerText = res[0];
+            await sleep(200);
+            document.getElementById('reel1').innerText = res[1];
+            await sleep(200);
+            document.getElementById('reel2').innerText = res[2];
+            await sleep(200);
+
+            let multiplier = 0;
+            let msg = '';
+
+            if(res[0] === '7️⃣' && res[1] === '7️⃣' && res[2] === '7️⃣') {
+                multiplier = 100;
+                msg = '🚨 [JACKPOT 777!!] 100배 대박 적중!';
+            } else if(res[0] === '💎' && res[1] === '💎' && res[2] === '💎') {
+                multiplier = 50;
+                msg = '💎 [다이아몬드 트리플!] 50배 적중!';
+            } else if(res[0] === '👑' && res[1] === '👑' && res[2] === '👑') {
+                multiplier = 30;
+                msg = '👑 [크라운 트리플!] 30배 적중!';
+            } else if(res[0] === res[1] && res[1] === res[2]) {
+                multiplier = 15;
+                msg = '🎉 [트리플 적중!] 15배 획득!';
+            } else if(res[0] === res[1] || res[1] === res[2] || res[0] === res[2]) {
+                multiplier = 2;
+                msg = '✨ [더블 적중!] 2배 획득!';
+            } else {
+                msg = '아쉽습니다! 꽝입니다.';
+            }
+
+            if(multiplier > 0) {
+                const prize = gameState.slotBet * multiplier;
+                gameState.gold += prize;
+                document.getElementById('slotResultText').innerText = `${msg} (+${prize.toLocaleString()} G)`;
+            } else {
+                document.getElementById('slotResultText').innerText = msg;
+            }
+
+            gameState.isSlotSpinning = false;
+            document.getElementById('slotSpinBtn').disabled = false;
+            updateUI();
+        }
+
+        /* ---------------- 보상 및 기타 ---------------- */
+        function watchAd() {
+            const modal = document.getElementById('adModal');
+            const timerEl = document.getElementById('adTimer');
+            let cnt = 5;
+            modal.style.display = 'flex';
+            timerEl.innerText = cnt;
+            const t = setInterval(() => {
+                cnt--;
+                timerEl.innerText = cnt;
+                if(cnt <= 0) {
+                    clearInterval(t);
+                    modal.style.display = 'none';
+                    gameState.gold += 1000;
+                    updateUI();
+                    alert('🎬 +1,000 Gold 지급 완료!');
+                }
+            }, 1000);
+        }
+
+        function openPrivacy() { document.getElementById('privacyModal').style.display = 'flex'; }
+        function closePrivacy() { document.getElementById('privacyModal').style.display = 'none'; }
+    </script>
+</body>
+</html>
