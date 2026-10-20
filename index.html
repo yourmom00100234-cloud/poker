@@ -29,7 +29,7 @@
             padding-bottom: 75px;
         }
 
-        /* 닉네임 입력 모달 */
+        /* 닉네임 모달 */
         #nameModal {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(5, 4, 8, 0.96);
@@ -81,22 +81,20 @@
         .page-panel.active { display: block; }
         .back-lobby-btn { background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-sub); padding: 6px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: bold; margin-bottom: 12px; cursor: pointer; }
 
-        /* 스피드 바카라 UI */
+        /* ---------------- [진짜 바카라 스타일] ---------------- */
         .bac-screen { background: #0c1a13; border-radius: 16px; border: 2px solid #15803d; overflow: hidden; margin-bottom: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.6); }
-        .bac-video-area { height: 120px; background: radial-gradient(circle, #166534 0%, #052e16 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; border-bottom: 1px solid #15803d; }
-        .bac-dealer-circle { width: 56px; height: 56px; background: rgba(0,0,0,0.7); border: 3px solid #ef4444; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 900; color: #fff; box-shadow: 0 0 15px rgba(239,68,68,0.6); }
-        .bac-scoreboard { background: #ffffff; padding: 4px; display: grid; grid-template-columns: repeat(14, 1fr); grid-template-rows: repeat(6, 1fr); gap: 2px; height: 85px; border-bottom: 1px solid #15803d; }
+        .bac-video-area { height: 110px; background: radial-gradient(circle, #166534 0%, #052e16 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; border-bottom: 1px solid #15803d; }
+        .bac-dealer-circle { width: 52px; height: 52px; background: rgba(0,0,0,0.75); border: 3px solid #ef4444; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 900; color: #fff; box-shadow: 0 0 15px rgba(239,68,68,0.7); }
+        
+        .bac-scoreboard { background: #ffffff; padding: 4px; display: grid; grid-template-columns: repeat(14, 1fr); grid-template-rows: repeat(6, 1fr); gap: 2px; height: 75px; border-bottom: 1px solid #15803d; }
         .score-cell { border: 1px solid #cbd5e1; border-radius: 2px; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: bold; background: #f8fafc; }
+
         .bac-deal-cards-box { background: rgba(4, 47, 26, 0.95); padding: 8px; display: flex; justify-content: space-around; align-items: center; border-bottom: 1px solid #15803d; }
         .bac-side-box { text-align: center; width: 45%; }
         .bac-side-label { font-size: 0.8rem; font-weight: 800; margin-bottom: 4px; }
-        .cards-row { display: flex; justify-content: center; gap: 4px; min-height: 48px; perspective: 1000px; }
-        .card-flip-container { width: 32px; height: 44px; perspective: 1000px; display: inline-block; }
-        .card-flip-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; }
-        .card-flip-container.flipped .card-flip-inner { transform: rotateY(180deg); }
-        .card-front, .card-back { position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem; box-shadow: 0 2px 6px rgba(0,0,0,0.5); }
-        .card-back { background: linear-gradient(135deg, #7f1d1d, #991b1b); border: 1px solid var(--accent-gold); color: var(--accent-gold); }
-        .card-front { background: #fff; color: #000; transform: rotateY(180deg); border: 1px solid #ccc; }
+        .cards-row { display: flex; justify-content: center; gap: 4px; min-height: 52px; }
+        
+        .card-item { width: 34px; height: 48px; background: #fff; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800; color: #000; box-shadow: 0 2px 6px rgba(0,0,0,0.5); border: 1px solid #cbd5e1; }
 
         .bac-bet-table-box { background: radial-gradient(circle, #065f46 0%, #022c22 100%); border: 3px solid var(--accent-gold); border-radius: 16px; padding: 12px; box-shadow: inset 0 0 20px rgba(0,0,0,0.8); }
         .bac-top-side-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-bottom: 8px; }
@@ -105,6 +103,7 @@
         .b-title { font-size: 0.72rem; font-weight: bold; }
         .b-odds { font-size: 0.65rem; color: var(--accent-gold); margin-top: 2px; }
         .b-amt { font-size: 0.65rem; color: #34d399; font-weight: bold; margin-top: 2px; }
+
         .bac-main-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 12px; }
         .b-main-player { background: #1e3a8a; border: 2px solid #3b82f6; border-radius: 12px; padding: 14px 6px; text-align: center; cursor: pointer; }
         .b-main-player.active { border-color: #fef08a; background: #2563eb; box-shadow: 0 0 15px rgba(59,130,246,0.8); }
@@ -113,32 +112,28 @@
         .b-main-tie { background: #047857; border: 2px solid #10b981; border-radius: 12px; padding: 14px 6px; text-align: center; cursor: pointer; }
         .b-main-tie.active { border-color: #fef08a; background: #059669; box-shadow: 0 0 15px rgba(16,185,129,0.8); }
 
-        /* ---------------- [JILI 완벽 스타일] 하이로우 배경 블루톤 적용 ---------------- */
-        .hilo-screen {
-            background: linear-gradient(135deg, #0d2b55, #041428);
-            border: 3px solid #1d4ed8;
-            border-radius: 20px;
-            padding: 16px;
-            text-align: center;
-            margin-bottom: 12px;
-            position: relative;
-            box-shadow: 0 0 25px rgba(29, 78, 216, 0.4), inset 0 0 20px rgba(0,0,0,0.6);
-        }
-        .hilo-jackpot-title { font-size: 0.8rem; color: #38bdf8; font-weight: bold; letter-spacing: 1px; }
-        .hilo-jackpot-amount { font-size: 1.5rem; font-weight: 900; background: linear-gradient(135deg, #fef08a, #f59e0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; }
-        
-        .hilo-play-layout { display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 14px; }
-        .hilo-deck-box { width: 100px; height: 140px; background: linear-gradient(135deg, #991b1b, #7f1d1d); border: 3px solid var(--accent-gold); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; box-shadow: 0 8px 20px rgba(0,0,0,0.6); position: relative; }
-        
-        .hilo-action-buttons { display: flex; flex-direction: column; gap: 8px; width: 160px; }
-        .hilo-btn-high { background: linear-gradient(180deg, #d97706, #b45309); border: 2px solid #fef08a; border-radius: 12px; padding: 12px; color: #fff; font-weight: 800; cursor: pointer; text-align: center; box-shadow: 0 4px 10px rgba(217,119,6,0.4); }
-        .hilo-btn-low { background: linear-gradient(180deg, #7c3aed, #5b21b6); border: 2px solid #c084fc; border-radius: 12px; padding: 12px; color: #fff; font-weight: 800; cursor: pointer; text-align: center; box-shadow: 0 4px 10px rgba(124,58,237,0.4); }
-        .hilo-btn-high span, .hilo-btn-low span { display: block; font-size: 0.7rem; color: #f8fafc; font-weight: normal; margin-top: 2px; }
-
+        /* 칩 선택 바 */
         .chip-flex { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin-bottom: 10px; }
         .chip-btn { background: #2e2417; border: 1px solid var(--border-color); color: var(--accent-gold-light); padding: 9px 0; border-radius: 8px; font-size: 0.75rem; font-weight: bold; cursor: pointer; }
         .chip-btn.reset-btn { background: #7f1d1d; border-color: #ef4444; color: #fff; }
         .start-race-btn { width: 100%; padding: 14px; background: var(--gold-btn-grad); border: none; border-radius: 12px; color: #000; font-size: 1.1rem; font-weight: 800; cursor: pointer; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3); }
+        .start-race-btn:disabled { background: #334155; color: #94a3b8; cursor: not-allowed; }
+
+        /* 하이로우 화면 (JILI 블루톤) */
+        .hilo-screen {
+            background: linear-gradient(135deg, #0d2b55, #041428);
+            border: 3px solid #1d4ed8;
+            border-radius: 20px; padding: 16px; text-align: center; margin-bottom: 12px;
+            box-shadow: 0 0 25px rgba(29, 78, 216, 0.4), inset 0 0 20px rgba(0,0,0,0.6);
+        }
+        .hilo-jackpot-title { font-size: 0.8rem; color: #38bdf8; font-weight: bold; letter-spacing: 1px; }
+        .hilo-jackpot-amount { font-size: 1.5rem; font-weight: 900; background: linear-gradient(135deg, #fef08a, #f59e0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; }
+        .hilo-play-layout { display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 14px; }
+        .hilo-deck-box { width: 100px; height: 140px; background: linear-gradient(135deg, #991b1b, #7f1d1d); border: 3px solid var(--accent-gold); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; box-shadow: 0 8px 20px rgba(0,0,0,0.6); color: #fff; }
+        .hilo-action-buttons { display: flex; flex-direction: column; gap: 8px; width: 160px; }
+        .hilo-btn-high { background: linear-gradient(180deg, #d97706, #b45309); border: 2px solid #fef08a; border-radius: 12px; padding: 12px; color: #fff; font-weight: 800; cursor: pointer; text-align: center; }
+        .hilo-btn-low { background: linear-gradient(180deg, #7c3aed, #5b21b6); border: 2px solid #c084fc; border-radius: 12px; padding: 12px; color: #fff; font-weight: 800; cursor: pointer; text-align: center; }
+        .hilo-btn-high span, .hilo-btn-low span { display: block; font-size: 0.7rem; color: #f8fafc; font-weight: normal; margin-top: 2px; }
 
         /* 기타 게임 UI */
         .track-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 14px 12px; margin-bottom: 12px; }
@@ -183,7 +178,7 @@
 </head>
 <body>
 
-    <!-- 닉네임 입력 모달 -->
+    <!-- 닉네임 모달 -->
     <div id="nameModal">
         <div class="modal-card">
             <div class="modal-title">👑 KRVIP CASINO 👑</div>
@@ -238,11 +233,11 @@
     <div id="gamePlayArea" class="page-panel">
         <button class="back-lobby-btn" onclick="returnToLobby()">⬅ 로비로 돌아가기</button>
         
-        <!-- 1. 스피드 바카라 게임 패널 -->
+        <!-- 1. [진짜 바카라 규칙 반영] 스피드 바카라 패널 -->
         <div id="panel-baccarat" class="sub-game-panel" style="display:none;">
             <div class="bac-screen">
                 <div class="bac-video-area">
-                    <div class="bac-dealer-circle" id="bacTimerCircle">3</div>
+                    <div class="bac-dealer-circle" id="bacTimerCircle">10</div>
                 </div>
                 <div class="bac-scoreboard" id="bacScoreboardGrid"></div>
                 <div class="bac-deal-cards-box">
@@ -303,11 +298,11 @@
                 </div>
 
                 <div id="bacResultText" style="text-align:center; font-weight:bold; color:var(--accent-gold-light); font-size:0.85rem; margin-bottom:8px;">베팅 구역 선택 후 DEAL을 누르세요</div>
-                <button id="bacDealBtn" class="start-race-btn" onclick="startBaccarat()">DEAL (카드 딜링)</button>
+                <button id="bacDealBtn" class="start-race-btn" onclick="startBaccaratTimer()">DEAL (베팅 및 딜링)</button>
             </div>
         </div>
 
-        <!-- 2. [파란색 배경 적용] 하이로우 패널 -->
+        <!-- 2. 하이로우 패널 -->
         <div id="panel-hilo" class="sub-game-panel" style="display:none;">
             <div class="hilo-screen">
                 <div class="hilo-jackpot-title">HILO JACKPOT</div>
@@ -483,7 +478,7 @@
             bacBets: { player: 0, banker: 0, tie: 0, pPair: 0, bPair: 0, pBonus: 0, bBonus: 0 },
             selectedBacTarget: 'player', isBaccaratPlaying: false,
             rouletteBets: { red: 0, black: 0, green: 0 }, selectedRouletteTarget: 'red', isRouletteSpinning: false,
-            hiloBet: 1000, hiloCurrentCard: { val: 13, num: 13, symbol: '♠K', color: '#000' }, hiloAccumulatedPrize: 0, isHiloPlaying: false,
+            hiloBet: 1000, hiloCurrentCard: { val: 7, num: 7, symbol: '♠7', color: '#000' }, hiloAccumulatedPrize: 0, isHiloPlaying: false,
             slotBet: 0, isSlotSpinning: false
         };
 
@@ -610,7 +605,7 @@
             `).join('');
         }
 
-        /* 바카라 로직 */
+        /* ---------------- [진짜 바카라 규칙 구현] ---------------- */
         function selectBacBet(t) {
             if(gameState.isBaccaratPlaying) return;
             gameState.selectedBacTarget = t;
@@ -632,6 +627,7 @@
             for(let k in gameState.bacBets) gameState.bacBets[k] = 0;
             updateUI();
         }
+
         function drawCard() {
             const num = Math.floor(Math.random() * 13) + 1;
             let val = num >= 10 ? 0 : num;
@@ -639,47 +635,126 @@
             const s = suits[Math.floor(Math.random() * suits.length)];
             return { val, num, symbol: `${suitSymbols[s]}${sym}`, color: (s==='diamond'||s==='heart')?'#ef4444':'#000' };
         }
-        async function startBaccarat() {
+
+        // 10초 타이머 후 실제 바카라 딜링 시작
+        async function startBaccaratTimer() {
             let total = Object.values(gameState.bacBets).reduce((a,b)=>a+b, 0);
             if(total <= 0) return alert('베팅 구역을 선택하세요!');
             if(total > gameState.gold) return alert('보유 골드가 부족합니다!');
 
-            gameState.isBaccaratPlaying = true; gameState.gold -= total; updateUI();
+            gameState.isBaccaratPlaying = true;
+            gameState.gold -= total;
+            updateUI();
             document.getElementById('bacDealBtn').disabled = true;
 
-            document.getElementById('playerCards').innerHTML = `<div class="card-flip-container" id="pc0"><div class="card-flip-inner"><div class="card-back">👑</div><div class="card-front" id="pc0-f">?</div></div></div>`;
-            document.getElementById('bankerCards').innerHTML = `<div class="card-flip-container" id="bc0"><div class="card-flip-inner"><div class="card-back">👑</div><div class="card-front" id="bc0-f">?</div></div></div>`;
-            await sleep(400);
+            let countdown = 10;
+            const timerEl = document.getElementById('bacTimerCircle');
+            document.getElementById('bacResultText').innerText = '⏰ 베팅 마감 중... 카드를 섞고 있습니다.';
 
-            const p = drawCard(), b = drawCard();
-            document.getElementById('pc0-f').innerText = p.symbol; document.getElementById('pc0-f').style.color = p.color; document.getElementById('pc0').classList.add('flipped');
-            await sleep(300);
-            document.getElementById('bc0-f').innerText = b.symbol; document.getElementById('bc0-f').style.color = b.color; document.getElementById('bc0').classList.add('flipped');
+            let timerInterval = setInterval(() => {
+                countdown--;
+                timerEl.innerText = countdown;
+                if(countdown <= 0) {
+                    clearInterval(timerInterval);
+                    executeBaccaratDeal();
+                }
+            }, 500); // 실제 체감 빠르게 0.5초씩 감소
+        }
 
-            let pScore = p.val, bScore = b.val;
-            document.getElementById('playerScore').innerText = `${pScore}점`;
-            document.getElementById('bankerScore').innerText = `${bScore}점`;
+        async function executeBaccaratDeal() {
+            document.getElementById('bacTimerCircle').innerText = '0';
+            document.getElementById('bacResultText').innerText = '🎴 딜링 중...';
 
-            let payout = 0;
-            if(pScore > bScore) {
-                if(gameState.bacBets.player > 0) payout += gameState.bacBets.player * 2;
-                document.getElementById('bacResultText').innerText = '🔵 PLAYER 승리!';
-            } else if(bScore > pScore) {
-                if(gameState.bacBets.banker > 0) payout += gameState.bacBets.banker * 1.95;
-                document.getElementById('bacResultText').innerText = '🔴 BANKER 승리!';
-            } else {
-                if(gameState.bacBets.tie > 0) payout += gameState.bacBets.tie * 9;
-                payout += gameState.bacBets.player + gameState.bacBets.banker;
-                document.getElementById('bacResultText').innerText = '👔 TIE 무승부 (베팅금 반환)!';
+            // 플레이어와 뱅커 기본 2장씩 드로우
+            let pCards = [drawCard(), drawCard()];
+            let bCards = [drawCard(), drawCard()];
+
+            renderBacCards(pCards, bCards);
+            let pScore = (pCards[0].val + pCards[1].val) % 10;
+            let bScore = (bCards[0].val + bCards[1].val) % 10;
+            updateBacScores(pScore, bScore);
+            await sleep(800);
+
+            // 바카라 3번째 카드 드로우 규칙 적용
+            let pThirdVal = null;
+            if(pScore <= 5 && bScore <= 7) {
+                // 플레이어가 3번째 카드 받음
+                let thirdP = drawCard();
+                pCards.push(thirdP);
+                pThirdVal = thirdP.val;
+                pScore = (pCards[0].val + pCards[1].val + pCards[2].val) % 10;
+                renderBacCards(pCards, bCards);
+                updateBacScores(pScore, bScore);
+                await sleep(800);
             }
 
+            // 뱅커의 3번째 카드 규칙
+            if(pThirdVal === null) {
+                // 플레이어가 스탠드(3장 안 받음)인 경우: 뱅커가 0~5이면 뽑음
+                if(bScore <= 5) {
+                    bCards.push(drawCard());
+                    bScore = (bCards[0].val + bCards[1].val + bCards[2].val) % 10;
+                }
+            } else {
+                // 플레이어가 3번째 카드를 받았을 때 뱅커의 조건부 드로우
+                let drawBanker = false;
+                if(bScore <= 2) drawBanker = true;
+                else if(bScore === 3 && pThirdVal !== 8) drawBanker = true;
+                else if(bScore === 4 && [2,3,4,5,6,7].includes(pThirdVal)) drawBanker = true;
+                else if(bScore === 5 && [4,5,6,7].includes(pThirdVal)) drawBanker = true;
+                else if(bScore === 6 && [6,7].includes(pThirdVal)) drawBanker = true;
+
+                if(drawBanker) {
+                    bCards.push(drawCard());
+                    bScore = (bCards[0].val + bCards[1].val + bCards[2].val) % 10;
+                }
+            }
+
+            renderBacCards(pCards, bCards);
+            updateBacScores(pScore, bScore);
+            await sleep(600);
+
+            // 승패 판정 및 배당 지급
+            let payout = 0;
+            let resultMsg = '';
+
+            if(pScore > bScore) {
+                if(gameState.bacBets.player > 0) payout += gameState.bacBets.player * 2;
+                resultMsg = '🔵 PLAYER 승리!';
+            } else if(bScore > pScore) {
+                if(gameState.bacBets.banker > 0) payout += gameState.bacBets.banker * 1.95; // 뱅커 5% 수수료
+                resultMsg = '🔴 BANKER 승리!';
+            } else {
+                if(gameState.bacBets.tie > 0) payout += gameState.bacBets.tie * 9;
+                payout += (gameState.bacBets.player + gameState.bacBets.banker); // 타이 시 메인 베팅 반환
+                resultMsg = '👔 TIE 무승부 (베팅금 반환)!';
+            }
+
+            // 페어(Pair) 사이드 베팅 정산 (처음 2장이 같은 숫자면 당첨 11배)
+            if(pCards[0].num === pCards[1].num && gameState.bacBets.pPair > 0) payout += gameState.bacBets.pPair * 12;
+            if(bCards[0].num === bCards[1].num && gameState.bacBets.bPair > 0) payout += gameState.bacBets.bPair * 12;
+
             gameState.gold += Math.floor(payout);
+            document.getElementById('bacResultText').innerText = resultMsg + (payout > 0 ? ` (+${Math.floor(payout).toLocaleString()} G 획득!)` : ' (꽝)');
+
             for(let k in gameState.bacBets) gameState.bacBets[k] = 0;
-            gameState.isBaccaratPlaying = false; document.getElementById('bacDealBtn').disabled = false;
+            gameState.isBaccaratPlaying = false;
+            document.getElementById('bacDealBtn').disabled = false;
+            document.getElementById('bacTimerCircle').innerText = '10';
             updateUI();
         }
 
-        /* 하이로우 로직 수정 (NaN 오류 해결) */
+        function renderBacCards(pCards, bCards) {
+            document.getElementById('playerCards').innerHTML = pCards.map(c => `<div class="card-item" style="color:${c.color};">${c.symbol}</div>`).join('');
+            document.getElementById('bankerCards').innerHTML = bCards.map(c => `<div class="card-item" style="color:${c.color};">${c.symbol}</div>`).join('');
+        }
+
+        function updateBacScores(p, b) {
+            document.getElementById('playerScore').innerText = `${p}점`;
+            document.getElementById('bankerScore').innerText = `${b}점`;
+        }
+
+        /* 하이로우 로직 */
         function getHiloOdds(num, type) {
             let prob = (type === 'HIGH') ? (13 - num) / 13 : (num - 1) / 13;
             if (prob <= 0.05) prob = 0.05;
@@ -711,7 +786,7 @@
             gameState.hiloAccumulatedPrize = gameState.hiloBet;
             updateUI();
             document.getElementById('hiloBetControls').style.display = 'none';
-            document.getElementById('hiloGameControls').style.display = 'flex';
+            document.getElementById('hiloGameControls').style.display = 'block';
             gameState.hiloCurrentCard = drawCard();
             document.getElementById('hiloCardDisplay').innerText = gameState.hiloCurrentCard.symbol;
             document.getElementById('hiloCardDisplay').style.color = gameState.hiloCurrentCard.color;
