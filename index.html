@@ -68,7 +68,7 @@
 
         /* 탭 네비게이션 */
         .nav-container { display: flex; background: var(--bg-card); border-radius: 14px; padding: 4px; margin-bottom: 12px; border: 1px solid var(--border-color); }
-        .nav-btn { flex: 1; padding: 10px 0; border: none; background: transparent; color: var(--text-sub); font-size: 0.85rem; font-weight: bold; border-radius: 10px; cursor: pointer; }
+        .nav-btn { flex: 1; padding: 10px 0; border: none; background: transparent; color: var(--text-sub); font-size: 0.8rem; font-weight: bold; border-radius: 10px; cursor: pointer; }
         .nav-btn.active { background: var(--gold-btn-grad); color: #000; font-weight: 800; }
 
         /* 프로필 바 */
@@ -124,104 +124,64 @@
             margin-bottom: 12px;
             box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 0 15px rgba(245, 158, 11, 0.2);
         }
-        .baccarat-cards-container {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 12px;
-        }
-        .baccarat-side {
-            width: 48%;
-            background: rgba(0,0,0,0.45);
-            border: 1px solid rgba(245, 158, 11, 0.3);
-            border-radius: 12px;
-            padding: 10px 4px;
-            text-align: center;
-        }
-        .baccarat-side-title {
-            font-size: 0.9rem;
-            font-weight: 800;
-            margin-bottom: 8px;
-            letter-spacing: 1px;
-        }
+        .baccarat-cards-container { display: flex; justify-content: space-between; margin-bottom: 12px; }
+        .baccarat-side { width: 48%; background: rgba(0,0,0,0.45); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 12px; padding: 10px 4px; text-align: center; }
+        .baccarat-side-title { font-size: 0.9rem; font-weight: 800; margin-bottom: 8px; letter-spacing: 1px; }
         .side-player { color: #38bdf8; text-shadow: 0 0 6px rgba(56, 189, 248, 0.5); }
         .side-banker { color: #f87171; text-shadow: 0 0 6px rgba(248, 113, 113, 0.5); }
-        .cards-row {
-            display: flex;
-            justify-content: center;
-            gap: 6px;
-            min-height: 56px;
-            perspective: 1000px; /* 3D 플립용 */
-        }
+        .cards-row { display: flex; justify-content: center; gap: 6px; min-height: 56px; perspective: 1000px; }
 
-        /* 3D 카드 플립 효과 */
-        .card-flip-container {
-            width: 38px;
-            height: 54px;
-            perspective: 1000px;
-        }
-        .card-flip-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
-            transform-style: preserve-3d;
-        }
-        .card-flip-container.flipped .card-flip-inner {
-            transform: rotateY(180deg);
-        }
-        .card-front, .card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
-        }
-        .card-back {
-            background: linear-gradient(135deg, #7f1d1d 25%, #991b1b 50%, #7f1d1d 75%);
-            border: 2px solid var(--accent-gold);
-            color: var(--accent-gold);
-            font-size: 0.8rem;
-        }
-        .card-front {
-            background: #ffffff;
-            color: #000;
-            transform: rotateY(180deg);
-            font-size: 0.95rem;
-            border: 1px solid #ccc;
-        }
+        /* 3D 카드 플립 효과 (공통) */
+        .card-flip-container { width: 38px; height: 54px; perspective: 1000px; display: inline-block; }
+        .card-flip-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; }
+        .card-flip-container.flipped .card-flip-inner { transform: rotateY(180deg); }
+        .card-front, .card-back { position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 800; box-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+        .card-back { background: linear-gradient(135deg, #7f1d1d 25%, #991b1b 50%, #7f1d1d 75%); border: 2px solid var(--accent-gold); color: var(--accent-gold); font-size: 0.8rem; }
+        .card-front { background: #ffffff; color: #000; transform: rotateY(180deg); font-size: 0.95rem; border: 1px solid #ccc; }
 
-        .bac-score {
-            margin-top: 6px;
-            font-size: 0.85rem;
-            font-weight: bold;
-            color: var(--accent-gold-light);
-        }
+        /* 하이로우 전용 큰 카드 플립 */
+        .hilo-card-flip-container { width: 90px; height: 130px; margin: 0 auto 12px auto; perspective: 1000px; }
+        .hilo-card-flip-container .card-back { font-size: 2rem; border-width: 3px; }
+        .hilo-card-flip-container .card-front { font-size: 2.2rem; border-radius: 12px; }
+        .hilo-card-flip-container .card-front.gold-card { background: var(--gold-gradient); border: 3px solid #fff; box-shadow: 0 0 20px var(--accent-gold); }
+
+        .bac-score { margin-top: 6px; font-size: 0.85rem; font-weight: bold; color: var(--accent-gold-light); }
 
         .bac-bet-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 8px; }
         .bac-bet-grid-sub { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-bottom: 12px; }
-        .bac-bet-card {
-            background: var(--bg-input);
-            border: 2px solid transparent;
-            border-radius: 10px;
-            padding: 8px 4px;
-            text-align: center;
-            cursor: pointer;
-        }
-        .bac-bet-card.active {
-            border-color: var(--accent-gold);
-            background: rgba(245, 158, 11, 0.2);
-            box-shadow: 0 0 10px rgba(245, 158, 11, 0.2);
-        }
+        .bac-bet-card { background: var(--bg-input); border: 2px solid transparent; border-radius: 10px; padding: 8px 4px; text-align: center; cursor: pointer; }
+        .bac-bet-card.active { border-color: var(--accent-gold); background: rgba(245, 158, 11, 0.2); box-shadow: 0 0 10px rgba(245, 158, 11, 0.2); }
         .bac-bet-card .title { font-size: 0.8rem; font-weight: bold; }
         .bac-bet-card .odds { font-size: 0.7rem; color: var(--accent-gold); margin-top: 2px; }
         .bac-bet-card .amount { font-size: 0.7rem; color: var(--accent-green); font-weight: bold; margin-top: 2px; }
+
+        /* 하이로우 게임 디자인 */
+        .hilo-board {
+            background: var(--bg-card);
+            border: 2px solid var(--accent-gold);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        .gold-badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #ef4444;
+            color: #fff;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-weight: bold;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+            z-index: 10;
+        }
+        .hilo-btn-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 10px; }
+        .hilo-btn { padding: 16px; border-radius: 12px; border: none; font-size: 1.1rem; font-weight: 800; cursor: pointer; color: white; }
+        .btn-high { background: #38bdf8; }
+        .btn-low { background: #f87171; }
+        .btn-cashout { width: 100%; padding: 14px; background: #10b981; border: none; border-radius: 12px; color: white; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 6px; }
 
         .rank-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px 16px; display: flex; justify-content: space-between; margin-bottom: 8px; }
         .rule-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 18px; font-size: 0.88rem; line-height: 1.6; color: var(--text-sub); }
@@ -242,7 +202,7 @@
     <div id="nameModal">
         <div class="modal-card">
             <div class="modal-title">👑 골드 카지노 👑</div>
-            <div class="modal-sub">포커 경마 & 바카라 플레이어 닉네임 입력</div>
+            <div class="modal-sub">경마 / 바카라 / 하이로우 플레이어 닉네임 입력</div>
             <input type="text" id="usernameInput" class="modal-input" placeholder="닉네임 (최대 8자)" maxlength="8">
             <button class="modal-btn" onclick="startGameWithNickname()">게임 입장하기</button>
         </div>
@@ -250,8 +210,9 @@
 
     <!-- 네비게이션 탭 -->
     <div class="nav-container">
-        <button class="nav-btn active" onclick="switchTab('gameTab', this)">포커 경마</button>
+        <button class="nav-btn active" onclick="switchTab('gameTab', this)">경마</button>
         <button class="nav-btn" onclick="switchTab('baccaratTab', this)">바카라</button>
+        <button class="nav-btn" onclick="switchTab('hiloTab', this)">하이로우</button>
         <button class="nav-btn" onclick="switchTab('rankTab', this)">랭킹</button>
         <button class="nav-btn" onclick="switchTab('ruleTab', this)">규칙</button>
     </div>
@@ -411,31 +372,77 @@
         </div>
     </div>
 
-    <!-- 3. 랭킹 탭 -->
+    <!-- 3. 하이로우 탭 -->
+    <div id="hiloTab" class="tab-panel">
+        <div class="hilo-board">
+            <div id="hiloCardContainer" class="card-flip-container hilo-card-flip-container">
+                <div class="card-flip-inner">
+                    <div class="card-back">👑</div>
+                    <div class="card-front" id="hiloCardFront">?</div>
+                </div>
+            </div>
+            <div id="hiloStatusText" style="color:var(--text-main); font-weight:bold; margin-bottom: 6px;">베팅 후 첫 카드를 뽑으세요</div>
+            <div id="hiloMultiplierText" style="color:var(--accent-gold-light); font-size: 0.9rem; font-weight: bold;">누적 획득 예정: 0 G</div>
+        </div>
+
+        <div class="bet-container">
+            <div id="hiloBetControls">
+                <div class="sub-header">1. 하이로우 베팅 금액 설정</div>
+                <div class="input-row">
+                    <input type="number" id="hiloBetInput" value="0" min="0" oninput="validateHiloBet()">
+                    <span style="color:var(--accent-gold-light); font-weight:bold;">G</span>
+                </div>
+
+                <div class="chip-flex">
+                    <button class="chip-btn" onclick="addHiloBet(1000)">+1K</button>
+                    <button class="chip-btn" onclick="addHiloBet(5000)">+5K</button>
+                    <button class="chip-btn" onclick="addHiloBet(10000)">+10K</button>
+                    <button class="chip-btn" onclick="addHiloBet(50000)">+50K</button>
+                    <button class="chip-btn" onclick="addHiloBetAll()">ALL</button>
+                    <button class="chip-btn reset-btn" onclick="resetHiloBet()">리셋</button>
+                </div>
+
+                <button class="start-race-btn" onclick="startHiloGame()">하이로우 게임 시작</button>
+            </div>
+
+            <div id="hiloGameControls" style="display:none;">
+                <div class="hilo-btn-grid">
+                    <button id="btnHigh" class="hilo-btn btn-high" onclick="guessHilo('HIGH')">HIGH (높음)</button>
+                    <button id="btnLow" class="hilo-btn btn-low" onclick="guessHilo('LOW')">LOW (낮음)</button>
+                </div>
+                <button id="btnCashout" class="btn-cashout" onclick="cashoutHilo()">💰 지금 적중금 수령하기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. 랭킹 탭 -->
     <div id="rankTab" class="tab-panel">
-        <h3 style="margin-bottom: 12px; font-size: 1rem; color: var(--text-main);">🏆 카지노 실시간 랭킹</h3>
+        <h3 style="margin-bottom: 12px; font-size: 1rem; color: var(--text-main);">🏆 실시간 리얼 랭킹</h3>
         <div id="rankList"></div>
     </div>
 
-    <!-- 4. 규칙 탭 -->
+    <!-- 5. 규칙 탭 -->
     <div id="ruleTab" class="tab-panel">
         <div class="rule-card">
             <h3 style="margin-top:0;">📖 포커 경마 규칙</h3>
             <ul>
-                <li>카드를 뽑아 해당 문양의 말이 전진하며 우승을 겨룹니다.</li>
-                <li>우승 말에 베팅 시 <b>3배 배당</b>이 지급됩니다.</li>
+                <li>카드를 뽑아 해당 문양의 말이 전진하며 우승을 겨룹니다. (3배 배당)</li>
             </ul>
-            <h3>🃏 바카라 규칙 & 배당</h3>
+            <h3>🃏 바카라 규칙</h3>
             <ul>
-                <li><b>플레이어 (1:1) / 뱅커 (0.95:1) / 타이 (8:1)</b></li>
-                <li><b>P/B 페어 (11:1):</b> 처음 2장의 숫자가 같을 때</li>
-                <li><b>P/B 보너스 (최대 30:1):</b> 내츄럴 승리 또는 점수차(4~9점차) 승리 시 차등 지급</li>
+                <li><b>P/B/Tie 메인 베팅</b> 및 <b>페어(11배), 보너스(최대 30배)</b> 지원</li>
+            </ul>
+            <h3>📈 하이로우 & 골드 카드 룰</h3>
+            <ul>
+                <li>다음 카드가 현재 카드보다 높은지(HIGH) 낮은지(LOW) 예측합니다.</li>
+                <li>연속 맞힐 때마다 누적 배당금이 기하급수적으로 늘어납니다.</li>
+                <li><b>✨ 골드 카드 (Gold Card):</b> 3% 확률로 극적으로 등장하며, 맞힐 경우 **2배의 추가 보너스 배당**이 적용됩니다!</li>
             </ul>
         </div>
     </div>
 
     <footer>
-        <p>© Gold Casino - Baccarat & Poker Horse Racing. All rights reserved.</p>
+        <p>© Gold Casino - Baccarat & Poker Racing & Hi-Lo. All rights reserved.</p>
         <p><a onclick="openPrivacy()">개인정보처리방침 (Privacy Policy)</a></p>
     </footer>
 
@@ -467,7 +474,12 @@
             horsePositions: { spade: 0, diamond: 0, heart: 0, club: 0 },
             bacBets: { player: 0, banker: 0, tie: 0, pPair: 0, bPair: 0, pBonus: 0, bBonus: 0 },
             selectedBacTarget: 'player',
-            isBaccaratPlaying: false
+            isBaccaratPlaying: false,
+            hiloBet: 0,
+            hiloCurrentCard: null,
+            hiloAccumulatedPrize: 0,
+            hiloStreak: 0,
+            isHiloPlaying: false
         };
 
         const suits = ['spade', 'diamond', 'heart', 'club'];
@@ -479,6 +491,7 @@
             gameState.username = val;
             document.getElementById('displayUsername').innerText = val;
             document.getElementById('nameModal').style.display = 'none';
+            saveRealRanking();
             updateUI();
         }
 
@@ -505,6 +518,44 @@
                 const el = document.getElementById(`amt-${key}`);
                 if(el) el.innerText = `${gameState.bacBets[key].toLocaleString()} G`;
             }
+
+            if(gameState.username) saveRealRanking();
+        }
+
+        /* ---------------- 실제 유저 랭킹 로직 ---------------- */
+        function saveRealRanking() {
+            if(!gameState.username) return;
+            let ranks = JSON.parse(localStorage.getItem('real_ranks') || '[]');
+            let found = ranks.find(r => r.name === gameState.username);
+            if(found) {
+                if(gameState.gold > found.gold) found.gold = gameState.gold;
+            } else {
+                ranks.push({ name: gameState.username, gold: gameState.gold });
+            }
+            localStorage.setItem('real_ranks', JSON.stringify(ranks));
+        }
+
+        function renderRanking() {
+            const list = document.getElementById('rankList');
+            let ranks = JSON.parse(localStorage.getItem('real_ranks') || '[]');
+            
+            if(ranks.length === 0 && gameState.username) {
+                ranks = [{ name: gameState.username, gold: gameState.gold }];
+            }
+
+            ranks.sort((a,b) => b.gold - a.gold);
+
+            if(ranks.length === 0) {
+                list.innerHTML = `<div style="text-align:center; color:var(--text-sub); padding:20px;">등록된 플레이어가 없습니다.</div>`;
+                return;
+            }
+
+            list.innerHTML = ranks.map((item, i) => `
+                <div class="rank-card">
+                    <span><b>${i + 1}위</b> ${item.name}</span>
+                    <span style="color:var(--accent-gold-light); font-weight:bold;">${item.gold.toLocaleString()} G</span>
+                </div>
+            `).join('');
         }
 
         /* ---------------- 경마 로직 ---------------- */
@@ -643,7 +694,8 @@
             if(num === 13) symbol = 'K';
             const randomSuit = suits[Math.floor(Math.random() * suits.length)];
             const color = (randomSuit === 'diamond' || randomSuit === 'heart') ? '#ef4444' : '#000000';
-            return { val, num, symbol: `${suitSymbols[randomSuit]}${symbol}`, color };
+            const isGold = Math.random() < 0.03; // 3% 확률 골드카드
+            return { val, num, symbol: `${suitSymbols[randomSuit]}${symbol}`, color, isGold };
         }
 
         function calcBacScore(cards) {
@@ -680,7 +732,6 @@
             const pCards = [drawCard(), drawCard()];
             const bCards = [drawCard(), drawCard()];
 
-            // 1. 순차적 3D 카드 플립 연출
             await flipCard('pCard0', pCards[0]);
             await sleep(250);
             await flipCard('bCard0', bCards[0]);
@@ -695,7 +746,6 @@
             document.getElementById('playerScore').innerText = `${pScore}점`;
             document.getElementById('bankerScore').innerText = `${bScore}점`;
 
-            // 2. 3번째 카드 조건 판정
             if(pScore < 8 && bScore < 8) {
                 let p3rd = null;
                 if(pScore <= 5) {
@@ -740,6 +790,9 @@
                 const container = document.getElementById(cardId);
                 front.innerText = cardData.symbol;
                 front.style.color = cardData.color;
+                if(cardData.isGold) front.classList.add('gold-card');
+                else front.classList.remove('gold-card');
+
                 setTimeout(() => {
                     container.classList.add('flipped');
                     setTimeout(resolve, 500);
@@ -747,9 +800,7 @@
             });
         }
 
-        function sleep(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
-        }
+        function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
 
         function finishBaccarat(pCards, bCards, pScore, bScore) {
             let winSide = '';
@@ -805,6 +856,133 @@
             return 0;
         }
 
+        /* ---------------- 하이로우 (Hi-Lo) 스르륵 플립 로직 ---------------- */
+        function addHiloBet(amt) {
+            if(gameState.isHiloPlaying) return;
+            if(gameState.hiloBet + amt <= gameState.gold) gameState.hiloBet += amt;
+            else gameState.hiloBet = gameState.gold;
+            document.getElementById('hiloBetInput').value = gameState.hiloBet;
+        }
+        function addHiloBetAll() {
+            if(gameState.isHiloPlaying) return;
+            gameState.hiloBet = gameState.gold;
+            document.getElementById('hiloBetInput').value = gameState.hiloBet;
+        }
+        function resetHiloBet() {
+            if(gameState.isHiloPlaying) return;
+            gameState.hiloBet = 0;
+            document.getElementById('hiloBetInput').value = 0;
+        }
+        function validateHiloBet() {
+            let val = parseInt(document.getElementById('hiloBetInput').value) || 0;
+            if(val < 0) val = 0;
+            if(val > gameState.gold) val = gameState.gold;
+            gameState.hiloBet = val;
+            document.getElementById('hiloBetInput').value = val;
+        }
+
+        async function setAndFlipHiloCard(cardData) {
+            const container = document.getElementById('hiloCardContainer');
+            const front = document.getElementById('hiloCardFront');
+            
+            container.classList.remove('flipped');
+            await sleep(300);
+
+            front.innerText = cardData.symbol;
+            front.style.color = cardData.color;
+
+            let badge = container.querySelector('.gold-badge');
+            if(badge) badge.remove();
+
+            if(cardData.isGold) {
+                front.classList.add('gold-card');
+                container.insertAdjacentHTML('beforeend', '<div class="gold-badge">GOLD 2x</div>');
+            } else {
+                front.classList.remove('gold-card');
+            }
+
+            await sleep(100);
+            container.classList.add('flipped');
+            await sleep(500);
+        }
+
+        async function startHiloGame() {
+            if(gameState.hiloBet <= 0) return alert('베팅 금액을 설정하세요!');
+            if(gameState.hiloBet > gameState.gold) return alert('골드가 부족합니다!');
+
+            gameState.isHiloPlaying = true;
+            gameState.gold -= gameState.hiloBet;
+            gameState.hiloStreak = 0;
+            gameState.hiloAccumulatedPrize = gameState.hiloBet;
+            updateUI();
+
+            document.getElementById('hiloBetControls').style.display = 'none';
+            document.getElementById('hiloGameControls').style.display = 'block';
+
+            gameState.hiloCurrentCard = drawCard();
+            await setAndFlipHiloCard(gameState.hiloCurrentCard);
+
+            document.getElementById('hiloStatusText').innerText = '다음 카드가 HIGH일까요, LOW일까요?';
+            document.getElementById('hiloMultiplierText').innerText = `누적 예정금: ${gameState.hiloAccumulatedPrize.toLocaleString()} G`;
+        }
+
+        async function guessHilo(choice) {
+            if(!gameState.isHiloPlaying) return;
+
+            document.getElementById('btnHigh').disabled = true;
+            document.getElementById('btnLow').disabled = true;
+            document.getElementById('btnCashout').disabled = true;
+
+            const nextCard = drawCard();
+            await setAndFlipHiloCard(nextCard);
+
+            const currNum = gameState.hiloCurrentCard.num;
+            const nextNum = nextCard.num;
+
+            let win = false;
+            if(choice === 'HIGH' && nextNum > currNum) win = true;
+            if(choice === 'LOW' && nextNum < currNum) win = true;
+
+            if(win) {
+                gameState.hiloStreak++;
+                let multiplier = 1.6;
+                if(nextCard.isGold) multiplier *= 2;
+
+                gameState.hiloAccumulatedPrize = Math.floor(gameState.hiloAccumulatedPrize * multiplier);
+                gameState.hiloCurrentCard = nextCard;
+
+                document.getElementById('hiloStatusText').innerText = `🎉 적중 성공! (${gameState.hiloStreak}연승 ${nextCard.isGold ? '✨골드카드 2배!' : ''})`;
+                document.getElementById('hiloMultiplierText').innerText = `누적 예정금: ${gameState.hiloAccumulatedPrize.toLocaleString()} G`;
+
+                document.getElementById('btnHigh').disabled = false;
+                document.getElementById('btnLow').disabled = false;
+                document.getElementById('btnCashout').disabled = false;
+            } else {
+                alert(`아쉽게도 틀렸습니다! (현재: ${currNum} / 다음: ${nextNum})\n베팅금을 잃었습니다.`);
+                endHiloGame(false);
+            }
+        }
+
+        function cashoutHilo() {
+            if(!gameState.isHiloPlaying) return;
+            gameState.gold += gameState.hiloAccumulatedPrize;
+            alert(`💰 성공적으로 ${gameState.hiloAccumulatedPrize.toLocaleString()} G를 수령했습니다!`);
+            endHiloGame(true);
+        }
+
+        function endHiloGame(isWin) {
+            gameState.isHiloPlaying = false;
+            document.getElementById('hiloBetControls').style.display = 'block';
+            document.getElementById('hiloGameControls').style.display = 'none';
+            document.getElementById('btnHigh').disabled = false;
+            document.getElementById('btnLow').disabled = false;
+            document.getElementById('btnCashout').disabled = false;
+            gameState.hiloBet = 0;
+            document.getElementById('hiloBetInput').value = 0;
+            updateUI();
+        }
+
+        /* ---------------- 보상 및 기타 ---------------- */
         function watchAd() {
             const modal = document.getElementById('adModal');
             const timerEl = document.getElementById('adTimer');
@@ -822,22 +1000,6 @@
                     alert('🎬 +1,000 Gold 지급 완료!');
                 }
             }, 1000);
-        }
-
-        function renderRanking() {
-            const list = document.getElementById('rankList');
-            const mock = [
-                { name: '경마왕', gold: 5400000 },
-                { name: '타짜', gold: 1200000 },
-                { name: gameState.username || '나', gold: gameState.gold },
-                { name: '초보자', gold: 1000 }
-            ].sort((a,b) => b.gold - a.gold);
-            list.innerHTML = mock.map((item, i) => `
-                <div class="rank-card">
-                    <span><b>${i + 1}위</b> ${item.name}</span>
-                    <span style="color:var(--accent-gold-light); font-weight:bold;">${item.gold.toLocaleString()} G</span>
-                </div>
-            `).join('');
         }
 
         function openPrivacy() { document.getElementById('privacyModal').style.display = 'flex'; }
