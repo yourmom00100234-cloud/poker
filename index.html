@@ -96,8 +96,22 @@
 
         .bac-dealer-cards-area { background: #0f1218; padding: 6px 10px; display: flex; justify-content: space-around; align-items: center; border-bottom: 1px solid #334155; }
         .bac-side-box { text-align: center; width: 45%; }
-        .cards-row { display: flex; justify-content: center; gap: 4px; min-height: 40px; margin-top: 2px; }
-        .card-item { width: 30px; height: 42px; background: #fff; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 800; color: #000; box-shadow: 0 2px 4px rgba(0,0,0,0.4); border: 1px solid #cbd5e1; }
+        .cards-row { display: flex; justify-content: center; gap: 4px; min-height: 42px; margin-top: 2px; }
+
+        /* 카드 스르륵 애니메이션 적용 */
+        @keyframes cardSlideIn {
+            0% { opacity: 0; transform: translateY(-15px) scale(0.8) rotateY(90deg); }
+            100% { opacity: 1; transform: translateY(0) scale(1) rotateY(0deg); }
+        }
+
+        .card-item { 
+            width: 30px; height: 42px; background: #fff; border-radius: 4px; 
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 0.75rem; font-weight: 800; color: #000; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.4); border: 1px solid #cbd5e1;
+            animation: cardSlideIn 0.35s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+            perspective: 1000px;
+        }
 
         .bac-table-board { background: #221c18; border: 2px solid #b38728; border-radius: 14px; padding: 10px; }
         .table-top-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-bottom: 4px; }
@@ -133,7 +147,7 @@
         .start-race-btn { width: 100%; padding: 14px; background: var(--gold-btn-grad); border: none; border-radius: 12px; color: #000; font-size: 1.1rem; font-weight: 800; cursor: pointer; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3); }
 
         /* 하단 네비바 */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 480px; margin: 0 auto; background: #110d18; border-top: 1px solid var(--border-color); display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 480px; margin: 0 auto; background: #110d18; border-top: 1px solid var(--border-color); display: flex; justify-around; padding: 8px 0; z-index: 1000; }
         .nav-item { background: transparent; border: none; color: var(--text-sub); font-size: 0.7rem; font-weight: bold; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; flex: 1; }
         .nav-item span.icon { font-size: 1.2rem; }
         .nav-item.active { color: var(--accent-gold); }
@@ -324,7 +338,7 @@
                 <div id="bjBetControls">
                     <button class="start-race-btn" onclick="startBlackjackGame()">DEAL (카드 받기)</button>
                 </div>
-                <div id="bjActionControls" style="display:none; display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px;">
+                <div id="bjActionControls" style="display:none; grid-template-columns:1fr 1fr 1fr; gap:6px;">
                     <button class="cat-btn" onclick="bjHit()" style="background:#047857; color:#fff; font-weight:bold; padding:12px;">히트 (Hit)</button>
                     <button class="cat-btn" onclick="bjStand()" style="background:#b91c1c; color:#fff; font-weight:bold; padding:12px;">스탠드</button>
                     <button class="cat-btn" onclick="bjDouble()" style="background:#d97706; color:#fff; font-weight:bold; padding:12px;">더블 (2x)</button>
@@ -516,8 +530,6 @@
             document.getElementById('userGold').innerText = (gameState.gold || 0).toLocaleString();
             document.getElementById('profileGold').innerText = (gameState.gold || 0).toLocaleString();
             document.getElementById('profileName').innerText = gameState.username || '-';
-            const userIdEl = document.getElementById('bacUserId');
-            if(userIdEl) userIdEl.innerText = `ID: ${Math.floor(Math.random()*90000000000+10000000000)}`;
             
             for(let key in gameState.bacBets) {
                 const el = document.getElementById(`amt-${key}`);
@@ -588,20 +600,30 @@
             `).join('');
         }
 
-        /* 공통 칩 베팅 함수 */
+        /* 공통 칩 베팅 함수 (바카라와 기타 게임 완벽 분리) */
         function addBetGeneric(amt) {
             let curGame = gameState.activeGame;
-            if(amt === 'ALL') {
-                gameState.bets[curGame] = gameState.gold;
+            if (curGame === 'baccarat') {
+                addBacBet(amt);
             } else {
-                gameState.bets[curGame] = (gameState.bets[curGame] || 1000) + amt;
+                if(amt === 'ALL') {
+                    gameState.bets[curGame] = gameState.gold;
+                } else {
+                    gameState.bets[curGame] = (gameState.bets[curGame] || 0) + amt;
+                }
+                updateUI();
             }
-            updateUI();
         }
 
         function resetBetGeneric() {
-            gameState.bets[gameState.activeGame] = 1000;
-            updateUI();
+            if (gameState.activeGame === 'baccarat') {
+                if(gameState.isBaccaratPlaying) return;
+                for(let k in gameState.bacBets) gameState.bacBets[k] = 0;
+                updateUI();
+            } else {
+                gameState.bets[gameState.activeGame] = 1000;
+                updateUI();
+            }
         }
 
         /* 카드 뽑기 유틸 */
@@ -614,7 +636,7 @@
             return { val, num, symbol: `${suitSymbols[s]}${sym}`, color: (s==='diamond'||s==='heart')?'#ef4444':'#000' };
         }
 
-        /* 1. 바카라 로직 (천천히 딜링) */
+        /* 1. 바카라 로직 (정상 작동 수정 및 딜링 애니메이션 연출) */
         function selectBacBet(t) {
             if(gameState.isBaccaratPlaying) return;
             gameState.selectedBacTarget = t;
@@ -622,6 +644,7 @@
             const el = document.getElementById(`btn-${t}`);
             if(el) el.classList.add('active');
         }
+
         function addBacBet(amt) {
             if(gameState.isBaccaratPlaying) return;
             let chip = (amt === 'ALL') ? gameState.gold : amt;
@@ -655,16 +678,36 @@
 
         async function executeBaccaratDeal() {
             document.getElementById('bacTimerCircle').innerText = '0';
-            document.getElementById('bacResultText').innerText = '🎴 카드를 오픈합니다...';
+            document.getElementById('bacResultText').innerText = '🎴 카드를 순차적으로 오픈합니다...';
+
+            document.getElementById('playerCards').innerHTML = '';
+            document.getElementById('bankerCards').innerHTML = '';
+            document.getElementById('playerScore').innerText = '0점';
+            document.getElementById('bankerScore').innerText = '0점';
 
             let pCards = [drawCard(), drawCard()];
             let bCards = [drawCard(), drawCard()];
 
-            renderBacCards(pCards, bCards);
-            let pScore = (pCards[0].val + pCards[1].val) % 10;
-            let bScore = (bCards[0].val + bCards[1].val) % 10;
-            updateBacScores(pScore, bScore);
-            await sleep(800);
+            // 순차적 스르륵 카드 오픈 연출
+            await appendBacCard('playerCards', pCards[0]);
+            let pScore = pCards[0].val % 10;
+            document.getElementById('playerScore').innerText = `${pScore}점`;
+            await sleep(400);
+
+            await appendBacCard('bankerCards', bCards[0]);
+            let bScore = bCards[0].val % 10;
+            document.getElementById('bankerScore').innerText = `${bScore}점`;
+            await sleep(400);
+
+            await appendBacCard('playerCards', pCards[1]);
+            pScore = (pCards[0].val + pCards[1].val) % 10;
+            document.getElementById('playerScore').innerText = `${pScore}점`;
+            await sleep(400);
+
+            await appendBacCard('bankerCards', bCards[1]);
+            bScore = (bCards[0].val + bCards[1].val) % 10;
+            document.getElementById('bankerScore').innerText = `${bScore}점`;
+            await sleep(500);
 
             let payout = 0;
             let resultMsg = '';
@@ -691,14 +734,16 @@
             updateUI();
         }
 
-        function renderBacCards(pCards, bCards) {
-            document.getElementById('playerCards').innerHTML = pCards.map(c => `<div class="card-item" style="color:${c.color};">${c.symbol}</div>`).join('');
-            document.getElementById('bankerCards').innerHTML = bCards.map(c => `<div class="card-item" style="color:${c.color};">${c.symbol}</div>`).join('');
-        }
-
-        function updateBacScores(p, b) {
-            document.getElementById('playerScore').innerText = `${p}점`;
-            document.getElementById('bankerScore').innerText = `${b}점`;
+        function appendBacCard(containerId, card) {
+            return new Promise(resolve => {
+                const el = document.getElementById(containerId);
+                const cardDiv = document.createElement('div');
+                cardDiv.className = 'card-item';
+                cardDiv.style.color = card.color;
+                cardDiv.innerText = card.symbol;
+                el.appendChild(cardDiv);
+                setTimeout(resolve, 300);
+            });
         }
 
         /* 2. 하이로우 로직 */
@@ -709,8 +754,13 @@
 
             let next = drawCard();
             let currVal = gameState.hiloCard.num;
-            document.getElementById('hiloCardDisplay').innerText = next.symbol;
-            document.getElementById('hiloCardDisplay').style.color = next.color;
+            
+            const cardEl = document.getElementById('hiloCardDisplay');
+            cardEl.style.animation = 'none';
+            cardEl.offsetHeight; // reflow
+            cardEl.style.animation = 'cardSlideIn 0.35s ease forwards';
+            cardEl.innerText = next.symbol;
+            cardEl.style.color = next.color;
             gameState.hiloCard = { val: next.val, symbol: next.symbol, color: next.color, num: next.num };
 
             let win = (type === 'HIGH' && next.num > currVal) || (type === 'LOW' && next.num < currVal) || (next.num === currVal);
@@ -724,7 +774,7 @@
             updateUI();
         }
 
-        /* 3. 블랙잭 로직 (완전 수동 플레이) */
+        /* 3. 블랙잭 로직 */
         function startBlackjackGame() {
             let bet = gameState.bets.blackjack;
             if(bet > gameState.gold) return alert('골드가 부족합니다!');
@@ -837,15 +887,16 @@
             updateUI();
         }
 
-        /* 4, 5, 6, 7 기타 카드게임들 천천히 오픈 연출 */
+        /* 기타 카드게임 연출 및 로직 */
         function startRedDog() {
             let bet = gameState.bets.reddog;
             if(bet > gameState.gold) return alert('골드가 부족합니다!');
             gameState.gold -= bet;
             document.getElementById('reddogStatus').innerText = '🎴 딜링 중...';
+            document.getElementById('reddogCards').innerHTML = '';
             setTimeout(() => {
                 let c1 = drawCard(), c2 = drawCard(), c3 = drawCard();
-                document.getElementById('reddogCards').innerHTML = `<div class="card-item">${c1.symbol}</div><div class="card-item">${c2.symbol}</div><div class="card-item">${c3.symbol}</div>`;
+                document.getElementById('reddogCards').innerHTML = `<div class="card-item" style="color:${c1.color};">${c1.symbol}</div><div class="card-item" style="color:${c2.color};">${c2.symbol}</div><div class="card-item" style="color:${c3.color};">${c3.symbol}</div>`;
                 if(Math.random() > 0.45) {
                     gameState.gold += bet * 3;
                     document.getElementById('reddogStatus').innerText = `🎉 레드 독 승리! (+${(bet*3).toLocaleString()} G)`;
@@ -853,7 +904,7 @@
                     document.getElementById('reddogStatus').innerText = `😢 아쉽게 패배했습니다.`;
                 }
                 updateUI();
-            }, 600);
+            }, 500);
         }
 
         function startPokerGame() {
@@ -861,9 +912,10 @@
             if(bet > gameState.gold) return alert('골드가 부족합니다!');
             gameState.gold -= bet;
             document.getElementById('pokerStatus').innerText = '🎴 딜링 중...';
+            document.getElementById('pokerCards').innerHTML = '';
             setTimeout(() => {
                 let c1 = drawCard(), c2 = drawCard(), c3 = drawCard();
-                document.getElementById('pokerCards').innerHTML = `<div class="card-item">${c1.symbol}</div><div class="card-item">${c2.symbol}</div><div class="card-item">${c3.symbol}</div>`;
+                document.getElementById('pokerCards').innerHTML = `<div class="card-item" style="color:${c1.color};">${c1.symbol}</div><div class="card-item" style="color:${c2.color};">${c2.symbol}</div><div class="card-item" style="color:${c3.color};">${c3.symbol}</div>`;
                 if(Math.random() > 0.5) {
                     gameState.gold += bet * 4;
                     document.getElementById('pokerStatus').innerText = `🃏 3카드 포커 승리! (+${(bet*4).toLocaleString()} G)`;
@@ -871,7 +923,7 @@
                     document.getElementById('pokerStatus').innerText = `😢 딜러 승리.`;
                 }
                 updateUI();
-            }, 600);
+            }, 500);
         }
 
         function startHoldemGame() {
@@ -879,9 +931,10 @@
             if(bet > gameState.gold) return alert('골드가 부족합니다!');
             gameState.gold -= bet;
             document.getElementById('holdemStatus').innerText = '🎴 딜링 중...';
+            document.getElementById('holdemCards').innerHTML = '';
             setTimeout(() => {
                 let c1 = drawCard(), c2 = drawCard();
-                document.getElementById('holdemCards').innerHTML = `<div class="card-item">${c1.symbol}</div><div class="card-item">${c2.symbol}</div>`;
+                document.getElementById('holdemCards').innerHTML = `<div class="card-item" style="color:${c1.color};">${c1.symbol}</div><div class="card-item" style="color:${c2.color};">${c2.symbol}</div>`;
                 if(Math.random() > 0.45) {
                     gameState.gold += bet * 2.5;
                     document.getElementById('holdemStatus').innerText = `🤠 홀덤 미니 승리! (+${(bet*2.5).toLocaleString()} G)`;
@@ -889,7 +942,7 @@
                     document.getElementById('holdemStatus').innerText = `😢 패배했습니다.`;
                 }
                 updateUI();
-            }, 600);
+            }, 500);
         }
 
         function startCasinoWar() {
@@ -897,9 +950,10 @@
             if(bet > gameState.gold) return alert('골드가 부족합니다!');
             gameState.gold -= bet;
             document.getElementById('warStatus').innerText = '⚔️ 전투 중...';
+            document.getElementById('warCards').innerHTML = '';
             setTimeout(() => {
                 let pc = drawCard(), dc = drawCard();
-                document.getElementById('warCards').innerHTML = `<div style="text-align:center;"><div style="font-size:0.7rem; color:#38bdf8;">플레이어</div><div class="card-item">${pc.symbol}</div></div><div style="font-weight:900; color:var(--accent-gold);">VS</div><div style="text-align:center;"><div style="font-size:0.7rem; color:#f87171;">딜러</div><div class="card-item">${dc.symbol}</div></div>`;
+                document.getElementById('warCards').innerHTML = `<div style="text-align:center;"><div style="font-size:0.7rem; color:#38bdf8;">플레이어</div><div class="card-item" style="color:${pc.color};">${pc.symbol}</div></div><div style="font-weight:900; color:var(--accent-gold);">VS</div><div style="text-align:center;"><div style="font-size:0.7rem; color:#f87171;">딜러</div><div class="card-item" style="color:${dc.color};">${dc.symbol}</div></div>`;
                 if(pc.num >= dc.num) {
                     gameState.gold += bet * 2;
                     document.getElementById('warStatus').innerText = `⚔️ 카지노 워 승리! (+${(bet*2).toLocaleString()} G)`;
@@ -907,7 +961,7 @@
                     document.getElementById('warStatus').innerText = `😢 딜러 승리!`;
                 }
                 updateUI();
-            }, 600);
+            }, 500);
         }
 
         function watchAd() {
