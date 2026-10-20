@@ -68,9 +68,7 @@
         .cat-btn.active { background: var(--gold-btn-grad); border-color: var(--accent-gold); color: #000; }
         .section-title { padding: 0 14px 8px 14px; font-size: 0.9rem; font-weight: bold; color: var(--accent-gold-light); }
         
-        /* 사진처럼 3개씩 배치하는 그리드 레이아웃 */
         .game-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 0 12px 16px 12px; }
-        
         .game-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; overflow: hidden; cursor: pointer; transition: transform 0.2s; position: relative; }
         .game-card:active { transform: scale(0.97); }
         .game-thumb { height: 95px; position: relative; overflow: hidden; background: #000; display: flex; align-items: center; justify-content: center; }
@@ -99,7 +97,7 @@
         .bac-dealer-cards-area { background: #0f1218; padding: 6px 10px; display: flex; justify-content: space-around; align-items: center; border-bottom: 1px solid #334155; }
         .bac-side-box { text-align: center; width: 45%; }
         .cards-row { display: flex; justify-content: center; gap: 4px; min-height: 40px; margin-top: 2px; }
-        .card-item { width: 28px; height: 38px; background: #fff; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 800; color: #000; box-shadow: 0 2px 4px rgba(0,0,0,0.4); }
+        .card-item { width: 30px; height: 42px; background: #fff; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 800; color: #000; box-shadow: 0 2px 4px rgba(0,0,0,0.4); border: 1px solid #cbd5e1; }
 
         .bac-table-board { background: #221c18; border: 2px solid #b38728; border-radius: 14px; padding: 10px; }
         .table-top-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-bottom: 4px; }
@@ -116,6 +114,7 @@
         .t-banker { background: #7f1d1d; border: 2px solid #ef4444; border-radius: 10px; padding: 10px 4px; text-align: center; cursor: pointer; }
         .t-banker.active { background: #dc2626; box-shadow: 0 0 12px #ef4444; }
 
+        /* 공통 원형 칩 바 */
         .chip-bar { display: flex; justify-content: space-between; align-items: center; gap: 4px; margin-bottom: 10px; }
         .chip-circle { width: 36px; height: 36px; border-radius: 50%; border: 2px dashed #fff; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: bold; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.5); }
         .c-1k { background: #1e3a8a; color: #93c5fd; }
@@ -125,7 +124,6 @@
         .c-all { background: #991b1b; color: #fca5a5; }
         .c-reset { background: #334155; color: #cbd5e1; }
 
-        /* 공통 카드게임 스크린 패널 */
         .gen-game-screen {
             background: radial-gradient(circle, #1e1b2e 0%, #09070c 100%);
             border: 3px solid var(--border-color); border-radius: 20px; padding: 16px; text-align: center; margin-bottom: 12px;
@@ -194,7 +192,6 @@
             <button class="cat-btn">📈 JILI</button>
         </div>
         <div class="section-title">✨ 실시간 인기 게임 (7종)</div>
-        <!-- 3개씩 배치되는 그리드 컨테이너 -->
         <div class="game-grid" id="gameGridContainer"></div>
     </div>
 
@@ -264,12 +261,12 @@
                 </div>
 
                 <div class="chip-bar">
-                    <div class="chip-circle c-1k" onclick="addBacBet(1000)">1K</div>
-                    <div class="chip-circle c-5k" onclick="addBacBet(5000)">5K</div>
-                    <div class="chip-circle c-10k" onclick="addBacBet(10000)">10K</div>
-                    <div class="chip-circle c-50k" onclick="addBacBet(50000)">50K</div>
-                    <div class="chip-circle c-all" onclick="addBacBetAll()">ALL</div>
-                    <div class="chip-circle c-reset" onclick="resetBacBets()">초기화</div>
+                    <div class="chip-circle c-1k" onclick="addBetGeneric(1000)">1K</div>
+                    <div class="chip-circle c-5k" onclick="addBetGeneric(5000)">5K</div>
+                    <div class="chip-circle c-10k" onclick="addBetGeneric(10000)">10K</div>
+                    <div class="chip-circle c-50k" onclick="addBetGeneric(50000)">50K</div>
+                    <div class="chip-circle c-all" onclick="addBetGeneric('ALL')">ALL</div>
+                    <div class="chip-circle c-reset" onclick="resetBetGeneric()">초기화</div>
                 </div>
 
                 <div id="bacResultText" style="text-align:center; font-weight:bold; color:var(--accent-gold-light); font-size:0.75rem; margin-bottom:6px;">베팅 구역 선택 후 DEAL을 누르세요</div>
@@ -283,17 +280,24 @@
                 <div style="font-size:0.8rem; color:#38bdf8; font-weight:bold;">HILO JACKPOT</div>
                 <div style="font-size:1.4rem; font-weight:900; color:#fef08a; margin-bottom:10px;">159,296.57 G</div>
                 <div style="display:flex; justify-content:center; align-items:center; gap:16px; margin-bottom:12px;">
-                    <div id="hiloCardDisplay" style="width:90px; height:130px; background:#7f1d1d; border:2px solid var(--accent-gold); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:2rem; color:#fff;">♠K</div>
+                    <div id="hiloCardDisplay" class="card-item" style="width:70px; height:95px; font-size:1.6rem; background:#fff;">♠7</div>
                     <div style="display:flex; flex-direction:column; gap:6px; width:150px;">
-                        <button class="cat-btn" onclick="guessHilo('HIGH')" style="background:#d97706; color:#fff; font-weight:bold;">높은 (HIGH)</button>
-                        <button class="cat-btn" onclick="guessHilo('LOW')" style="background:#7c3aed; color:#fff; font-weight:bold;">낮은 (LOW)</button>
+                        <button class="cat-btn" onclick="playHiloGuess('HIGH')" style="background:#d97706; color:#fff; font-weight:bold;">높은 (HIGH)</button>
+                        <button class="cat-btn" onclick="playHiloGuess('LOW')" style="background:#7c3aed; color:#fff; font-weight:bold;">낮은 (LOW)</button>
                     </div>
                 </div>
-                <div id="hiloStatusText" style="font-size:0.75rem; color:#e2e8f0;">베팅 후 높음/낮음을 선택하세요</div>
+                <div id="hiloStatusText" style="font-size:0.75rem; color:#e2e8f0;">칩으로 베팅액 설정 후 HIGH/LOW를 누르세요</div>
             </div>
             <div class="card-box">
-                <input type="number" id="hiloBetInput" value="1000" style="width:100%; padding:10px; background:var(--bg-input); border:1px solid var(--border-color); color:#fff; text-align:right; font-weight:bold; border-radius:8px; margin-bottom:8px;">
-                <button class="start-race-btn" onclick="startHiloGame()">하이로우 시작</button>
+                <div style="text-align:right; font-size:0.85rem; margin-bottom:6px; color:var(--text-sub);">현재 베팅액: <b id="hiloCurrentBet" style="color:var(--accent-gold-light);">1,000</b> G</div>
+                <div class="chip-bar">
+                    <div class="chip-circle c-1k" onclick="addBetGeneric(1000)">1K</div>
+                    <div class="chip-circle c-5k" onclick="addBetGeneric(5000)">5K</div>
+                    <div class="chip-circle c-10k" onclick="addBetGeneric(10000)">10K</div>
+                    <div class="chip-circle c-50k" onclick="addBetGeneric(50000)">50K</div>
+                    <div class="chip-circle c-all" onclick="addBetGeneric('ALL')">ALL</div>
+                    <div class="chip-circle c-reset" onclick="resetBetGeneric()">초기화</div>
+                </div>
             </div>
         </div>
 
@@ -301,34 +305,51 @@
         <div id="panel-blackjack" class="sub-game-panel" style="display:none;">
             <div class="gen-game-screen" style="border-color:#059669;">
                 <div style="font-size:0.8rem; color:#6ee7b7; font-weight:bold;">딜러 핸드 (<span id="dealerScoreText">0</span>점)</div>
-                <div id="dealerCardsArea" style="display:flex; justify-content:center; gap:4px; min-height:45px; margin:6px 0;"></div>
+                <div id="dealerCardsArea" style="display:flex; justify-content:center; gap:4px; min-height:48px; margin:6px 0;"></div>
                 <div style="border-top:1px dashed rgba(255,255,255,0.2); margin:8px 0;"></div>
                 <div style="font-size:0.8rem; color:#6ee7b7; font-weight:bold;">플레이어 핸드 (<span id="playerScoreText">0</span>점)</div>
-                <div id="playerCardsArea" style="display:flex; justify-content:center; gap:4px; min-height:45px; margin:6px 0;"></div>
-                <div id="bjStatusMessage" style="font-size:0.8rem; color:var(--accent-gold-light); font-weight:bold; margin-top:6px;">대기 중</div>
+                <div id="playerCardsArea" style="display:flex; justify-content:center; gap:4px; min-height:48px; margin:6px 0;"></div>
+                <div id="bjStatusMessage" style="font-size:0.8rem; color:var(--accent-gold-light); font-weight:bold; margin-top:6px;">칩 베팅 후 DEAL을 누르세요</div>
             </div>
             <div class="card-box">
-                <div id="bjBetControls">
-                    <input type="number" id="bjBetInput" value="1000" style="width:100%; padding:10px; background:var(--bg-input); border:1px solid var(--border-color); color:#fff; text-align:right; font-weight:bold; border-radius:8px; margin-bottom:8px;">
-                    <button class="start-race-btn" onclick="startBlackjackGame()">블랙잭 시작 (DEAL)</button>
+                <div style="text-align:right; font-size:0.85rem; margin-bottom:6px; color:var(--text-sub);">현재 베팅액: <b id="bjCurrentBet" style="color:var(--accent-gold-light);">1,000</b> G</div>
+                <div class="chip-bar" style="margin-bottom:10px;">
+                    <div class="chip-circle c-1k" onclick="addBetGeneric(1000)">1K</div>
+                    <div class="chip-circle c-5k" onclick="addBetGeneric(5000)">5K</div>
+                    <div class="chip-circle c-10k" onclick="addBetGeneric(10000)">10K</div>
+                    <div class="chip-circle c-50k" onclick="addBetGeneric(50000)">50K</div>
+                    <div class="chip-circle c-all" onclick="addBetGeneric('ALL')">ALL</div>
+                    <div class="chip-circle c-reset" onclick="resetBetGeneric()">초기화</div>
                 </div>
-                <div id="bjActionControls" style="display:none; display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+                <div id="bjBetControls">
+                    <button class="start-race-btn" onclick="startBlackjackGame()">DEAL (카드 받기)</button>
+                </div>
+                <div id="bjActionControls" style="display:none; display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px;">
                     <button class="cat-btn" onclick="bjHit()" style="background:#047857; color:#fff; font-weight:bold; padding:12px;">히트 (Hit)</button>
-                    <button class="cat-btn" onclick="bjStand()" style="background:#b91c1c; color:#fff; font-weight:bold; padding:12px;">스탠드 (Stand)</button>
+                    <button class="cat-btn" onclick="bjStand()" style="background:#b91c1c; color:#fff; font-weight:bold; padding:12px;">스탠드</button>
+                    <button class="cat-btn" onclick="bjDouble()" style="background:#d97706; color:#fff; font-weight:bold; padding:12px;">더블 (2x)</button>
                 </div>
             </div>
         </div>
 
-        <!-- 4. 레드 독 (Red Dog) -->
+        <!-- 4. 레드 독 -->
         <div id="panel-reddog" class="sub-game-panel" style="display:none;">
             <div class="gen-game-screen" style="border-color:#b91c1c;">
                 <div style="font-size:0.9rem; color:#f87171; font-weight:bold; margin-bottom:8px;">🔴 레드 독 (Red Dog)</div>
                 <div id="reddogCards" style="display:flex; justify-content:center; gap:6px; min-height:50px; margin-bottom:10px;"></div>
-                <div id="reddogStatus" style="font-size:0.8rem; color:#e2e8f0;">두 카드 사이에 숫자가 포함되면 승리!</div>
+                <div id="reddogStatus" style="font-size:0.8rem; color:#e2e8f0;">칩 베팅 후 DEAL을 누르세요</div>
             </div>
             <div class="card-box">
-                <input type="number" id="rdBetInput" value="1000" style="width:100%; padding:10px; background:var(--bg-input); border:1px solid var(--border-color); color:#fff; text-align:right; font-weight:bold; border-radius:8px; margin-bottom:8px;">
-                <button class="start-race-btn" onclick="startRedDog()">레드 독 시작</button>
+                <div style="text-align:right; font-size:0.85rem; margin-bottom:6px; color:var(--text-sub);">현재 베팅액: <b id="rdCurrentBet" style="color:var(--accent-gold-light);">1,000</b> G</div>
+                <div class="chip-bar" style="margin-bottom:10px;">
+                    <div class="chip-circle c-1k" onclick="addBetGeneric(1000)">1K</div>
+                    <div class="chip-circle c-5k" onclick="addBetGeneric(5000)">5K</div>
+                    <div class="chip-circle c-10k" onclick="addBetGeneric(10000)">10K</div>
+                    <div class="chip-circle c-50k" onclick="addBetGeneric(50000)">50K</div>
+                    <div class="chip-circle c-all" onclick="addBetGeneric('ALL')">ALL</div>
+                    <div class="chip-circle c-reset" onclick="resetBetGeneric()">초기화</div>
+                </div>
+                <button class="start-race-btn" onclick="startRedDog()">DEAL (시작)</button>
             </div>
         </div>
 
@@ -337,11 +358,19 @@
             <div class="gen-game-screen" style="border-color:#7c3aed;">
                 <div style="font-size:0.9rem; color:#c084fc; font-weight:bold; margin-bottom:8px;">🃏 3카드 포커 (3-Card Poker)</div>
                 <div id="pokerCards" style="display:flex; justify-content:center; gap:6px; min-height:50px; margin-bottom:10px;"></div>
-                <div id="pokerStatus" style="font-size:0.8rem; color:#e2e8f0;">딜러보다 높은 족보를 완성하세요!</div>
+                <div id="pokerStatus" style="font-size:0.8rem; color:#e2e8f0;">칩 베팅 후 DEAL을 누르세요</div>
             </div>
             <div class="card-box">
-                <input type="number" id="pokerBetInput" value="1000" style="width:100%; padding:10px; background:var(--bg-input); border:1px solid var(--border-color); color:#fff; text-align:right; font-weight:bold; border-radius:8px; margin-bottom:8px;">
-                <button class="start-race-btn" onclick="startPokerGame()">3카드 포커 시작</button>
+                <div style="text-align:right; font-size:0.85rem; margin-bottom:6px; color:var(--text-sub);">현재 베팅액: <b id="pokerCurrentBet" style="color:var(--accent-gold-light);">1,000</b> G</div>
+                <div class="chip-bar" style="margin-bottom:10px;">
+                    <div class="chip-circle c-1k" onclick="addBetGeneric(1000)">1K</div>
+                    <div class="chip-circle c-5k" onclick="addBetGeneric(5000)">5K</div>
+                    <div class="chip-circle c-10k" onclick="addBetGeneric(10000)">10K</div>
+                    <div class="chip-circle c-50k" onclick="addBetGeneric(50000)">50K</div>
+                    <div class="chip-circle c-all" onclick="addBetGeneric('ALL')">ALL</div>
+                    <div class="chip-circle c-reset" onclick="resetBetGeneric()">초기화</div>
+                </div>
+                <button class="start-race-btn" onclick="startPokerGame()">DEAL (시작)</button>
             </div>
         </div>
 
@@ -350,11 +379,19 @@
             <div class="gen-game-screen" style="border-color:#2563eb;">
                 <div style="font-size:0.9rem; color:#93c5fd; font-weight:bold; margin-bottom:8px;">🤠 홀덤 하이-로우 미니</div>
                 <div id="holdemCards" style="display:flex; justify-content:center; gap:6px; min-height:50px; margin-bottom:10px;"></div>
-                <div id="holdemStatus" style="font-size:0.8rem; color:#e2e8f0;">커뮤니티 카드와의 조합 승부!</div>
+                <div id="holdemStatus" style="font-size:0.8rem; color:#e2e8f0;">칩 베팅 후 DEAL을 누르세요</div>
             </div>
             <div class="card-box">
-                <input type="number" id="holdemBetInput" value="1000" style="width:100%; padding:10px; background:var(--bg-input); border:1px solid var(--border-color); color:#fff; text-align:right; font-weight:bold; border-radius:8px; margin-bottom:8px;">
-                <button class="start-race-btn" onclick="startHoldemGame()">홀덤 미니 시작</button>
+                <div style="text-align:right; font-size:0.85rem; margin-bottom:6px; color:var(--text-sub);">현재 베팅액: <b id="holdemCurrentBet" style="color:var(--accent-gold-light);">1,000</b> G</div>
+                <div class="chip-bar" style="margin-bottom:10px;">
+                    <div class="chip-circle c-1k" onclick="addBetGeneric(1000)">1K</div>
+                    <div class="chip-circle c-5k" onclick="addBetGeneric(5000)">5K</div>
+                    <div class="chip-circle c-10k" onclick="addBetGeneric(10000)">10K</div>
+                    <div class="chip-circle c-50k" onclick="addBetGeneric(50000)">50K</div>
+                    <div class="chip-circle c-all" onclick="addBetGeneric('ALL')">ALL</div>
+                    <div class="chip-circle c-reset" onclick="resetBetGeneric()">초기화</div>
+                </div>
+                <button class="start-race-btn" onclick="startHoldemGame()">DEAL (시작)</button>
             </div>
         </div>
 
@@ -363,11 +400,19 @@
             <div class="gen-game-screen" style="border-color:#d97706;">
                 <div style="font-size:0.9rem; color:#f6e05e; font-weight:bold; margin-bottom:8px;">⚔️ 카지노 워 (Casino War)</div>
                 <div id="warCards" style="display:flex; justify-content:center; gap:16px; min-height:50px; margin-bottom:10px; align-items:center;"></div>
-                <div id="warStatus" style="font-size:0.8rem; color:#e2e8f0;">숫자가 높은 사람이 무조건 승리!</div>
+                <div id="warStatus" style="font-size:0.8rem; color:#e2e8f0;">칩 베팅 후 DEAL을 누르세요</div>
             </div>
             <div class="card-box">
-                <input type="number" id="warBetInput" value="1000" style="width:100%; padding:10px; background:var(--bg-input); border:1px solid var(--border-color); color:#fff; text-align:right; font-weight:bold; border-radius:8px; margin-bottom:8px;">
-                <button class="start-race-btn" onclick="startCasinoWar()">카지노 워 시작</button>
+                <div style="text-align:right; font-size:0.85rem; margin-bottom:6px; color:var(--text-sub);">현재 베팅액: <b id="warCurrentBet" style="color:var(--accent-gold-light);">1,000</b> G</div>
+                <div class="chip-bar" style="margin-bottom:10px;">
+                    <div class="chip-circle c-1k" onclick="addBetGeneric(1000)">1K</div>
+                    <div class="chip-circle c-5k" onclick="addBetGeneric(5000)">5K</div>
+                    <div class="chip-circle c-10k" onclick="addBetGeneric(10000)">10K</div>
+                    <div class="chip-circle c-50k" onclick="addBetGeneric(50000)">50K</div>
+                    <div class="chip-circle c-all" onclick="addBetGeneric('ALL')">ALL</div>
+                    <div class="chip-circle c-reset" onclick="resetBetGeneric()">초기화</div>
+                </div>
+                <button class="start-race-btn" onclick="startCasinoWar()">DEAL (시작)</button>
             </div>
         </div>
     </div>
@@ -411,13 +456,17 @@
     <script>
         let gameState = {
             username: '', gold: 10000,
+            activeGame: 'baccarat',
+            // 각 게임별 베팅액
+            bets: { baccarat: 1000, hilo: 1000, blackjack: 1000, reddog: 1000, poker: 1000, holdem: 1000, war: 1000 },
             bacBets: { player: 0, banker: 0, tie: 0, pPair: 0, bPair: 0, pBonus: 0, bBonus: 0, perfect: 0, either: 0 },
             selectedBacTarget: 'player', isBaccaratPlaying: false,
-            hiloBet: 1000, hiloCurrentCard: { val: 7, num: 7, symbol: '♠7', color: '#000' },
-            bjBet: 1000, bjPlayerCards: [], bjDealerCards: [], bjGameOver: false
+            // 하이로우 전용 상태
+            hiloCard: { val: 7, symbol: '♠7', color: '#000' },
+            // 블랙잭 전용 상태
+            bjPlayerCards: [], bjDealerCards: [], bjActiveBet: 1000, bjGameOver: false
         };
 
-        // 총 7개의 게임 (사진처럼 3개씩 정렬)
         const gamesList = [
             { id: 'baccarat', name: '한국 스피드 바카라', provider: 'EVO', thumbHtml: `<img src="https://images.unsplash.com/photo-1511193311914-0346f16efe90?auto=format&fit=crop&w=400&q=80" alt="바카라">`, badge: '인기' },
             { id: 'hilo', name: '높음 낮음 (HiLo)', provider: 'JDB', thumbHtml: `<div style="width:100%; height:100%; background:linear-gradient(135deg,#0d2b55,#1e3a8a); display:flex; flex-direction:column; align-items:center; justify-content:center;"><div style="font-weight:900; font-size:1.1rem; color:#fef08a;">HiLo</div></div>`, badge: 'HOT' },
@@ -474,6 +523,13 @@
                 const el = document.getElementById(`amt-${key}`);
                 if(el) el.innerText = `${(gameState.bacBets[key] || 0).toLocaleString()} G`;
             }
+
+            // 각 게임 현재 베팅액 표시 업데이트
+            ['hilo', 'bj', 'rd', 'poker', 'holdem', 'war'].forEach(k => {
+                const el = document.getElementById(`${k}CurrentBet`);
+                if(el) el.innerText = (gameState.bets[k === 'bj' ? 'blackjack' : (k === 'rd' ? 'reddog' : k)] || 1000).toLocaleString();
+            });
+
             saveRealRanking();
         }
 
@@ -487,6 +543,7 @@
         }
 
         function openGame(gameId) {
+            gameState.activeGame = gameId;
             document.getElementById('homeLobby').classList.remove('active');
             document.getElementById('gamePlayArea').classList.add('active');
             document.querySelectorAll('.sub-game-panel').forEach(p => p.style.display = 'none');
@@ -531,7 +588,33 @@
             `).join('');
         }
 
-        /* 바카라 로직 */
+        /* 공통 칩 베팅 함수 */
+        function addBetGeneric(amt) {
+            let curGame = gameState.activeGame;
+            if(amt === 'ALL') {
+                gameState.bets[curGame] = gameState.gold;
+            } else {
+                gameState.bets[curGame] = (gameState.bets[curGame] || 1000) + amt;
+            }
+            updateUI();
+        }
+
+        function resetBetGeneric() {
+            gameState.bets[gameState.activeGame] = 1000;
+            updateUI();
+        }
+
+        /* 카드 뽑기 유틸 */
+        function drawCard() {
+            const num = Math.floor(Math.random() * 13) + 1;
+            let val = num >= 10 ? 10 : (num === 1 ? 11 : num);
+            if(gameState.activeGame === 'baccarat') val = num >= 10 ? 0 : num;
+            let sym = num === 1 ? 'A' : (num === 11 ? 'J' : (num === 12 ? 'Q' : (num === 13 ? 'K' : num)));
+            const s = suits[Math.floor(Math.random() * suits.length)];
+            return { val, num, symbol: `${suitSymbols[s]}${sym}`, color: (s==='diamond'||s==='heart')?'#ef4444':'#000' };
+        }
+
+        /* 1. 바카라 로직 (천천히 딜링) */
         function selectBacBet(t) {
             if(gameState.isBaccaratPlaying) return;
             gameState.selectedBacTarget = t;
@@ -541,31 +624,14 @@
         }
         function addBacBet(amt) {
             if(gameState.isBaccaratPlaying) return;
-            gameState.bacBets[gameState.selectedBacTarget] = (gameState.bacBets[gameState.selectedBacTarget] || 0) + amt;
+            let chip = (amt === 'ALL') ? gameState.gold : amt;
+            gameState.bacBets[gameState.selectedBacTarget] = (gameState.bacBets[gameState.selectedBacTarget] || 0) + chip;
             updateUI();
-        }
-        function addBacBetAll() {
-            if(gameState.isBaccaratPlaying) return;
-            gameState.bacBets[gameState.selectedBacTarget] = (gameState.bacBets[gameState.selectedBacTarget] || 0) + gameState.gold;
-            updateUI();
-        }
-        function resetBacBets() {
-            if(gameState.isBaccaratPlaying) return;
-            for(let k in gameState.bacBets) gameState.bacBets[k] = 0;
-            updateUI();
-        }
-
-        function drawCard() {
-            const num = Math.floor(Math.random() * 13) + 1;
-            let val = num >= 10 ? 0 : num;
-            let sym = num === 1 ? 'A' : (num === 11 ? 'J' : (num === 12 ? 'Q' : (num === 13 ? 'K' : num)));
-            const s = suits[Math.floor(Math.random() * suits.length)];
-            return { val, num, symbol: `${suitSymbols[s]}${sym}`, color: (s==='diamond'||s==='heart')?'#ef4444':'#000' };
         }
 
         async function startBaccaratTimer() {
             let total = Object.values(gameState.bacBets).reduce((a,b)=>a+b, 0);
-            if(total <= 0) return alert('베팅 구역을 선택하세요!');
+            if(total <= 0) return alert('베팅 구역에 칩을 올려주세요!');
             if(total > gameState.gold) return alert('보유 골드가 부족합니다!');
 
             gameState.isBaccaratPlaying = true;
@@ -589,7 +655,7 @@
 
         async function executeBaccaratDeal() {
             document.getElementById('bacTimerCircle').innerText = '0';
-            document.getElementById('bacResultText').innerText = '🎴 딜링 중...';
+            document.getElementById('bacResultText').innerText = '🎴 카드를 오픈합니다...';
 
             let pCards = [drawCard(), drawCard()];
             let bCards = [drawCard(), drawCard()];
@@ -598,7 +664,7 @@
             let pScore = (pCards[0].val + pCards[1].val) % 10;
             let bScore = (bCards[0].val + bCards[1].val) % 10;
             updateBacScores(pScore, bScore);
-            await sleep(500);
+            await sleep(800);
 
             let payout = 0;
             let resultMsg = '';
@@ -635,91 +701,213 @@
             document.getElementById('bankerScore').innerText = `${b}점`;
         }
 
-        /* 기타 게임 간이 실행 로직 */
-        function startHiloGame() {
-            let bet = parseInt(document.getElementById('hiloBetInput').value) || 1000;
+        /* 2. 하이로우 로직 */
+        function playHiloGuess(type) {
+            let bet = gameState.bets.hilo;
             if(bet > gameState.gold) return alert('골드가 부족합니다!');
             gameState.gold -= bet;
-            let card = drawCard();
-            document.getElementById('hiloCardDisplay').innerText = card.symbol;
-            document.getElementById('hiloCardDisplay').style.color = card.color;
-            if(Math.random() > 0.5) {
-                gameState.gold += bet * 2;
-                alert(`🎉 [하이로우] 적중! +${(bet*2).toLocaleString()} G`);
+
+            let next = drawCard();
+            let currVal = gameState.hiloCard.num;
+            document.getElementById('hiloCardDisplay').innerText = next.symbol;
+            document.getElementById('hiloCardDisplay').style.color = next.color;
+            gameState.hiloCard = { val: next.val, symbol: next.symbol, color: next.color, num: next.num };
+
+            let win = (type === 'HIGH' && next.num > currVal) || (type === 'LOW' && next.num < currVal) || (next.num === currVal);
+            if(win) {
+                let winAmt = Math.floor(bet * 1.9);
+                gameState.gold += winAmt;
+                document.getElementById('hiloStatusText').innerText = `🎉 성공! +${winAmt.toLocaleString()} G 획득!`;
             } else {
-                alert('😢 아쉽게 틀렸습니다.');
+                document.getElementById('hiloStatusText').innerText = `😢 틀렸습니다! 아쉽네요.`;
             }
             updateUI();
         }
 
-        function guessHilo(type) { startHiloGame(); }
-
+        /* 3. 블랙잭 로직 (완전 수동 플레이) */
         function startBlackjackGame() {
-            let bet = parseInt(document.getElementById('bjBetInput').value) || 1000;
+            let bet = gameState.bets.blackjack;
             if(bet > gameState.gold) return alert('골드가 부족합니다!');
             gameState.gold -= bet;
-            let p1 = drawCard(), p2 = drawCard();
-            let d1 = drawCard(), d2 = drawCard();
-            document.getElementById('playerCardsArea').innerHTML = `<div class="card-item" style="color:${p1.color};">${p1.symbol}</div><div class="card-item" style="color:${p2.color};">${p2.symbol}</div>`;
-            document.getElementById('dealerCardsArea').innerHTML = `<div class="card-item" style="color:${d1.color};">${d1.symbol}</div><div class="card-item" style="background:#7f1d1d; color:#fff;">?</div>`;
-            let pScore = (p1.val === 0 ? 10 : p1.val) + (p2.val === 0 ? 10 : p2.val);
-            document.getElementById('playerScoreText').innerText = pScore;
-            document.getElementById('dealerScoreText').innerText = d1.val === 0 ? 10 : d1.val;
-            
-            if(pScore >= 21) {
-                gameState.gold += bet * 2;
-                alert('🃏 블랙잭! 승리했습니다!');
+            gameState.bjActiveBet = bet;
+            gameState.bjGameOver = false;
+
+            gameState.bjPlayerCards = [drawCard(), drawCard()];
+            gameState.bjDealerCards = [drawCard(), drawCard()];
+
+            document.getElementById('bjBetControls').style.display = 'none';
+            document.getElementById('bjActionControls').style.display = 'grid';
+
+            renderBjTable(false);
+            let pScore = calcBj(gameState.bjPlayerCards);
+            if(pScore === 21) {
+                endBjGame('블랙잭! 플레이어 승리!', 2.5);
             } else {
-                gameState.gold += bet * 1.5;
-                alert('라운드 승리! (기본 배당 지급)');
+                document.getElementById('bjStatusMessage').innerText = '히트(Hit) 또는 스탠드(Stand)를 선택하세요.';
             }
             updateUI();
         }
-        function bjHit() { alert('히트!'); }
-        function bjStand() { alert('스탠드!'); }
 
+        function calcBj(cards) {
+            let score = 0, aces = 0;
+            for(let c of cards) {
+                let v = c.num === 1 ? 11 : (c.num >= 10 ? 10 : c.num);
+                score += v;
+                if(c.num === 1) aces++;
+            }
+            while(score > 21 && aces > 0) { score -= 10; aces--; }
+            return score;
+        }
+
+        function renderBjTable(showAll) {
+            const dArea = document.getElementById('dealerCardsArea');
+            const pArea = document.getElementById('playerCardsArea');
+
+            dArea.innerHTML = gameState.bjDealerCards.map((c, idx) => {
+                if(idx === 1 && !showAll && !gameState.bjGameOver) return `<div class="card-item" style="background:#7f1d1d; color:#fff;">?</div>`;
+                return `<div class="card-item" style="color:${c.color};">${c.symbol}</div>`;
+            }).join('');
+
+            pArea.innerHTML = gameState.bjPlayerCards.map(c => `<div class="card-item" style="color:${c.color};">${c.symbol}</div>`).join('');
+
+            document.getElementById('playerScoreText').innerText = calcBj(gameState.bjPlayerCards);
+            document.getElementById('dealerScoreText').innerText = (showAll || gameState.bjGameOver) ? calcBj(gameState.bjDealerCards) : (gameState.bjDealerCards[0].num === 1 ? 11 : (gameState.bjDealerCards[0].num >= 10 ? 10 : gameState.bjDealerCards[0].num));
+        }
+
+        function bjHit() {
+            if(gameState.bjGameOver) return;
+            gameState.bjPlayerCards.push(drawCard());
+            renderBjTable(false);
+            let score = calcBj(gameState.bjPlayerCards);
+            if(score > 21) {
+                endBjGame('버스트(Bust)! 패배했습니다.', 0);
+            }
+        }
+
+        function bjStand() {
+            if(gameState.bjGameOver) return;
+            renderBjTable(true);
+            let dScore = calcBj(gameState.bjDealerCards);
+
+            let timer = setInterval(() => {
+                if(dScore < 17) {
+                    gameState.bjDealerCards.push(drawCard());
+                    dScore = calcBj(gameState.bjDealerCards);
+                    renderBjTable(true);
+                } else {
+                    clearInterval(timer);
+                    evalBjWinner();
+                }
+            }, 600);
+        }
+
+        function bjDouble() {
+            if(gameState.bjGameOver) return;
+            if(gameState.gold < gameState.bjActiveBet) return alert('더블다운할 골드가 부족합니다!');
+            gameState.gold -= gameState.bjActiveBet;
+            gameState.bjActiveBet *= 2;
+            updateUI();
+
+            gameState.bjPlayerCards.push(drawCard());
+            renderBjTable(false);
+            let score = calcBj(gameState.bjPlayerCards);
+            if(score > 21) {
+                endBjGame('더블다운 버스트! 패배했습니다.', 0);
+            } else {
+                bjStand();
+            }
+        }
+
+        function evalBjWinner() {
+            let p = calcBj(gameState.bjPlayerCards);
+            let d = calcBj(gameState.bjDealerCards);
+            if(d > 21 || p > d) endBjGame('플레이어 승리! (+배당 획득)', 2);
+            else if(p < d) endBjGame('딜러 승리! 패배했습니다.', 0);
+            else endBjGame('무승부 (베팅금 반환)', 1);
+        }
+
+        function endBjGame(msg, mult) {
+            gameState.bjGameOver = true;
+            renderBjTable(true);
+            let win = Math.floor(gameState.bjActiveBet * mult);
+            gameState.gold += win;
+            document.getElementById('bjStatusMessage').innerText = `${msg} (${win > 0 ? '+' + win.toLocaleString() + ' G' : '0 G'})`;
+            document.getElementById('bjBetControls').style.display = 'block';
+            document.getElementById('bjActionControls').style.display = 'none';
+            updateUI();
+        }
+
+        /* 4, 5, 6, 7 기타 카드게임들 천천히 오픈 연출 */
         function startRedDog() {
-            let bet = parseInt(document.getElementById('rdBetInput').value) || 1000;
+            let bet = gameState.bets.reddog;
             if(bet > gameState.gold) return alert('골드가 부족합니다!');
             gameState.gold -= bet;
-            let c1 = drawCard(), c2 = drawCard(), c3 = drawCard();
-            document.getElementById('reddogCards').innerHTML = `<div class="card-item">${c1.symbol}</div><div class="card-item">${c2.symbol}</div><div class="card-item">${c3.symbol}</div>`;
-            if(Math.random() > 0.4) { gameState.gold += bet * 3; alert('🔴 [레드 독] 적중 성공! 3배 획득!'); }
-            else { alert('🔴 [레드 독] 아쉽게 빗나갔습니다.'); }
-            updateUI();
+            document.getElementById('reddogStatus').innerText = '🎴 딜링 중...';
+            setTimeout(() => {
+                let c1 = drawCard(), c2 = drawCard(), c3 = drawCard();
+                document.getElementById('reddogCards').innerHTML = `<div class="card-item">${c1.symbol}</div><div class="card-item">${c2.symbol}</div><div class="card-item">${c3.symbol}</div>`;
+                if(Math.random() > 0.45) {
+                    gameState.gold += bet * 3;
+                    document.getElementById('reddogStatus').innerText = `🎉 레드 독 승리! (+${(bet*3).toLocaleString()} G)`;
+                } else {
+                    document.getElementById('reddogStatus').innerText = `😢 아쉽게 패배했습니다.`;
+                }
+                updateUI();
+            }, 600);
         }
 
         function startPokerGame() {
-            let bet = parseInt(document.getElementById('pokerBetInput').value) || 1000;
+            let bet = gameState.bets.poker;
             if(bet > gameState.gold) return alert('골드가 부족합니다!');
             gameState.gold -= bet;
-            let c1 = drawCard(), c2 = drawCard(), c3 = drawCard();
-            document.getElementById('pokerCards').innerHTML = `<div class="card-item">${c1.symbol}</div><div class="card-item">${c2.symbol}</div><div class="card-item">${c3.symbol}</div>`;
-            if(Math.random() > 0.5) { gameState.gold += bet * 4; alert('🃏 [3카드 포커] 스트레이트 승리! 4배 획득!'); }
-            else { alert('🃏 [3카드 포커] 딜러 승리.'); }
-            updateUI();
+            document.getElementById('pokerStatus').innerText = '🎴 딜링 중...';
+            setTimeout(() => {
+                let c1 = drawCard(), c2 = drawCard(), c3 = drawCard();
+                document.getElementById('pokerCards').innerHTML = `<div class="card-item">${c1.symbol}</div><div class="card-item">${c2.symbol}</div><div class="card-item">${c3.symbol}</div>`;
+                if(Math.random() > 0.5) {
+                    gameState.gold += bet * 4;
+                    document.getElementById('pokerStatus').innerText = `🃏 3카드 포커 승리! (+${(bet*4).toLocaleString()} G)`;
+                } else {
+                    document.getElementById('pokerStatus').innerText = `😢 딜러 승리.`;
+                }
+                updateUI();
+            }, 600);
         }
 
         function startHoldemGame() {
-            let bet = parseInt(document.getElementById('holdemBetInput').value) || 1000;
+            let bet = gameState.bets.holdem;
             if(bet > gameState.gold) return alert('골드가 부족합니다!');
             gameState.gold -= bet;
-            let c1 = drawCard(), c2 = drawCard();
-            document.getElementById('holdemCards').innerHTML = `<div class="card-item">${c1.symbol}</div><div class="card-item">${c2.symbol}</div>`;
-            if(Math.random() > 0.45) { gameState.gold += bet * 2.5; alert('🤠 [홀덤 미니] 투페어 승리!'); }
-            else { alert('🤠 [홀덤 미니] 패배.'); }
-            updateUI();
+            document.getElementById('holdemStatus').innerText = '🎴 딜링 중...';
+            setTimeout(() => {
+                let c1 = drawCard(), c2 = drawCard();
+                document.getElementById('holdemCards').innerHTML = `<div class="card-item">${c1.symbol}</div><div class="card-item">${c2.symbol}</div>`;
+                if(Math.random() > 0.45) {
+                    gameState.gold += bet * 2.5;
+                    document.getElementById('holdemStatus').innerText = `🤠 홀덤 미니 승리! (+${(bet*2.5).toLocaleString()} G)`;
+                } else {
+                    document.getElementById('holdemStatus').innerText = `😢 패배했습니다.`;
+                }
+                updateUI();
+            }, 600);
         }
 
         function startCasinoWar() {
-            let bet = parseInt(document.getElementById('warBetInput').value) || 1000;
+            let bet = gameState.bets.war;
             if(bet > gameState.gold) return alert('골드가 부족합니다!');
             gameState.gold -= bet;
-            let pc = drawCard(), dc = drawCard();
-            document.getElementById('warCards').innerHTML = `<div style="text-align:center;"><div style="font-size:0.7rem; color:#38bdf8;">플레이어</div><div class="card-item">${pc.symbol}</div></div><div style="font-weight:900; color:var(--accent-gold);">VS</div><div style="text-align:center;"><div style="font-size:0.7rem; color:#f87171;">딜러</div><div class="card-item">${dc.symbol}</div></div>`;
-            if(pc.num >= dc.num) { gameState.gold += bet * 2; alert('⚔️ [카지노 워] 승리!'); }
-            else { alert('⚔️ [카지노 워] 딜러의 숫자가 더 높아 패배했습니다.'); }
-            updateUI();
+            document.getElementById('warStatus').innerText = '⚔️ 전투 중...';
+            setTimeout(() => {
+                let pc = drawCard(), dc = drawCard();
+                document.getElementById('warCards').innerHTML = `<div style="text-align:center;"><div style="font-size:0.7rem; color:#38bdf8;">플레이어</div><div class="card-item">${pc.symbol}</div></div><div style="font-weight:900; color:var(--accent-gold);">VS</div><div style="text-align:center;"><div style="font-size:0.7rem; color:#f87171;">딜러</div><div class="card-item">${dc.symbol}</div></div>`;
+                if(pc.num >= dc.num) {
+                    gameState.gold += bet * 2;
+                    document.getElementById('warStatus').innerText = `⚔️ 카지노 워 승리! (+${(bet*2).toLocaleString()} G)`;
+                } else {
+                    document.getElementById('warStatus').innerText = `😢 딜러 승리!`;
+                }
+                updateUI();
+            }, 600);
         }
 
         function watchAd() {
