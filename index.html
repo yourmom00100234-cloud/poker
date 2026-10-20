@@ -100,10 +100,17 @@
         /* 베팅 영역 */
         .bet-container { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 14px; }
         .sub-header { font-size: 0.8rem; color: var(--accent-gold-light); margin-bottom: 8px; font-weight: bold; }
+        
+        .race-mode-select { display: flex; gap: 6px; margin-bottom: 12px; }
+        .mode-btn { flex: 1; padding: 8px 0; background: var(--bg-input); border: 1px solid var(--border-color); color: var(--text-sub); border-radius: 8px; font-size: 0.75rem; font-weight: bold; cursor: pointer; }
+        .mode-btn.active { background: rgba(245, 158, 11, 0.2); border-color: var(--accent-gold); color: var(--accent-gold-light); }
+
         .horse-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 12px; }
-        .horse-select-card { background: var(--bg-input); border: 2px solid transparent; border-radius: 12px; padding: 10px 4px; text-align: center; cursor: pointer; }
+        .horse-select-card { background: var(--bg-input); border: 2px solid transparent; border-radius: 12px; padding: 10px 4px; text-align: center; cursor: pointer; position: relative; }
         .horse-select-card.active { border-color: var(--accent-gold); background: rgba(245, 158, 11, 0.15); }
+        .horse-select-card.active-2nd { border-color: #38bdf8; background: rgba(56, 189, 248, 0.15); }
         .horse-select-card span { display: block; font-size: 0.75rem; color: var(--text-sub); margin-top: 2px; }
+        .select-badge { position: absolute; top: -6px; right: -6px; background: var(--accent-gold); color: #000; font-size: 0.65rem; font-weight: 800; padding: 2px 5px; border-radius: 6px; }
 
         .input-row { display: flex; align-items: center; background: var(--bg-input); border-radius: 10px; padding: 8px 14px; margin-bottom: 8px; border: 1px solid var(--border-color); }
         .input-row input { background: transparent; border: none; color: #fff; font-size: 1.1rem; font-weight: bold; width: 100%; text-align: right; outline: none; padding-right: 6px; }
@@ -131,7 +138,7 @@
         .side-banker { color: #f87171; text-shadow: 0 0 6px rgba(248, 113, 113, 0.5); }
         .cards-row { display: flex; justify-content: center; gap: 6px; min-height: 56px; perspective: 1000px; }
 
-        /* 3D 카드 플립 효과 (공통) */
+        /* 3D 카드 플립 효과 */
         .card-flip-container { width: 38px; height: 54px; perspective: 1000px; display: inline-block; }
         .card-flip-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; }
         .card-flip-container.flipped .card-flip-inner { transform: rotateY(180deg); }
@@ -139,7 +146,7 @@
         .card-back { background: linear-gradient(135deg, #7f1d1d 25%, #991b1b 50%, #7f1d1d 75%); border: 2px solid var(--accent-gold); color: var(--accent-gold); font-size: 0.8rem; }
         .card-front { background: #ffffff; color: #000; transform: rotateY(180deg); font-size: 0.95rem; border: 1px solid #ccc; }
 
-        /* 하이로우 전용 큰 카드 플립 */
+        /* 하이로우 큰 카드 */
         .hilo-card-flip-container { width: 90px; height: 130px; margin: 0 auto 12px auto; perspective: 1000px; }
         .hilo-card-flip-container .card-back { font-size: 2rem; border-width: 3px; }
         .hilo-card-flip-container .card-front { font-size: 2.2rem; border-radius: 12px; }
@@ -155,28 +162,9 @@
         .bac-bet-card .odds { font-size: 0.7rem; color: var(--accent-gold); margin-top: 2px; }
         .bac-bet-card .amount { font-size: 0.7rem; color: var(--accent-green); font-weight: bold; margin-top: 2px; }
 
-        /* 하이로우 게임 디자인 */
-        .hilo-board {
-            background: var(--bg-card);
-            border: 2px solid var(--accent-gold);
-            border-radius: 20px;
-            padding: 20px;
-            text-align: center;
-            margin-bottom: 12px;
-        }
-        .gold-badge {
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            background: #ef4444;
-            color: #fff;
-            font-size: 0.7rem;
-            padding: 2px 6px;
-            border-radius: 10px;
-            font-weight: bold;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.4);
-            z-index: 10;
-        }
+        /* 하이로우 디자인 */
+        .hilo-board { background: var(--bg-card); border: 2px solid var(--accent-gold); border-radius: 20px; padding: 20px; text-align: center; margin-bottom: 12px; }
+        .gold-badge { position: absolute; top: -10px; right: -10px; background: #ef4444; color: #fff; font-size: 0.7rem; padding: 2px 6px; border-radius: 10px; font-weight: bold; box-shadow: 0 2px 6px rgba(0,0,0,0.4); z-index: 10; }
         .hilo-btn-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 10px; }
         .hilo-btn { padding: 16px; border-radius: 12px; border: none; font-size: 1.1rem; font-weight: 800; cursor: pointer; color: white; }
         .btn-high { background: #38bdf8; }
@@ -208,7 +196,6 @@
         </div>
     </div>
 
-    <!-- 네비게이션 탭 -->
     <div class="nav-container">
         <button class="nav-btn active" onclick="switchTab('gameTab', this)">경마</button>
         <button class="nav-btn" onclick="switchTab('baccaratTab', this)">바카라</button>
@@ -258,21 +245,28 @@
         </div>
 
         <div class="bet-container">
-            <div class="sub-header">1. 우승 말 선택 (배당률 3배)</div>
+            <div class="sub-header">1. 베팅 방식 선택</div>
+            <div class="race-mode-select">
+                <button class="mode-btn active" id="mode-win" onclick="setRaceBetMode('win')">단승 (5배)</button>
+                <button class="mode-btn" id="mode-quinella" onclick="setRaceBetMode('quinella')">복승 (12배)</button>
+                <button class="mode-btn" id="mode-exacta" onclick="setRaceBetMode('exacta')">쌍승 (25배)</button>
+            </div>
+
+            <div class="sub-header" id="horseSelectGuide">말 선택 (1위 우승 말)</div>
             <div class="horse-grid">
-                <div class="horse-select-card" onclick="selectHorse('spade', this)">
+                <div class="horse-select-card" id="hcard-spade" onclick="selectHorse('spade')">
                     <div class="spade-color" style="font-size:1.3rem;">♠</div>
                     <span>스페이드</span>
                 </div>
-                <div class="horse-select-card" onclick="selectHorse('diamond', this)">
+                <div class="horse-select-card" id="hcard-diamond" onclick="selectHorse('diamond')">
                     <div class="diamond-color" style="font-size:1.3rem;">◆</div>
                     <span>다이아몬드</span>
                 </div>
-                <div class="horse-select-card" onclick="selectHorse('heart', this)">
+                <div class="horse-select-card" id="hcard-heart" onclick="selectHorse('heart')">
                     <div class="heart-color" style="font-size:1.3rem;">♥</div>
                     <span>하트</span>
                 </div>
-                <div class="horse-select-card" onclick="selectHorse('club', this)">
+                <div class="horse-select-card" id="hcard-club" onclick="selectHorse('club')">
                     <div class="club-color" style="font-size:1.3rem;">♣</div>
                     <span>클로버</span>
                 </div>
@@ -424,9 +418,11 @@
     <!-- 5. 규칙 탭 -->
     <div id="ruleTab" class="tab-panel">
         <div class="rule-card">
-            <h3 style="margin-top:0;">📖 포커 경마 규칙</h3>
+            <h3 style="margin-top:0;">📖 포커 경마 승식 & 배당</h3>
             <ul>
-                <li>카드를 뽑아 해당 문양의 말이 전진하며 우승을 겨룹니다. (3배 배당)</li>
+                <li><b>단승식 (5배):</b> 우승 1위 말 적중</li>
+                <li><b>복승식 (12배):</b> 순서 상관없이 1위와 2위 말 맞히기</li>
+                <li><b>쌍승식 (25배):</b> 1위와 2위 말을 정확한 순서로 적중!</li>
             </ul>
             <h3>🃏 바카라 규칙</h3>
             <ul>
@@ -434,9 +430,8 @@
             </ul>
             <h3>📈 하이로우 & 골드 카드 룰</h3>
             <ul>
-                <li>다음 카드가 현재 카드보다 높은지(HIGH) 낮은지(LOW) 예측합니다.</li>
-                <li>연속 맞힐 때마다 누적 배당금이 기하급수적으로 늘어납니다.</li>
-                <li><b>✨ 골드 카드 (Gold Card):</b> 3% 확률로 극적으로 등장하며, 맞힐 경우 **2배의 추가 보너스 배당**이 적용됩니다!</li>
+                <li>다음 카드가 높은지(HIGH) 낮은지(LOW) 연승 시 배당 스노우볼!</li>
+                <li><b>✨ 골드 카드 (3%):</b> 등판 시 **2배 추가 보너스 배당**!</li>
             </ul>
         </div>
     </div>
@@ -468,10 +463,13 @@
         let gameState = {
             username: '',
             gold: 1000,
-            selectedHorse: null,
+            raceMode: 'win', // win, quinella, exacta
+            selectedHorse1: null,
+            selectedHorse2: null,
             betAmount: 0,
             isRacing: false,
             horsePositions: { spade: 0, diamond: 0, heart: 0, club: 0 },
+            finishOrder: [],
             bacBets: { player: 0, banker: 0, tie: 0, pPair: 0, bPair: 0, pBonus: 0, bBonus: 0 },
             selectedBacTarget: 'player',
             isBaccaratPlaying: false,
@@ -484,6 +482,7 @@
 
         const suits = ['spade', 'diamond', 'heart', 'club'];
         const suitSymbols = { spade: '♠', diamond: '◆', heart: '♥', club: '♣' };
+        const suitNames = { spade: '스페이드', diamond: '다이아몬드', heart: '하트', club: '클로버' };
 
         function startGameWithNickname() {
             const val = document.getElementById('usernameInput').value.trim();
@@ -522,7 +521,7 @@
             if(gameState.username) saveRealRanking();
         }
 
-        /* ---------------- 실제 유저 랭킹 로직 ---------------- */
+        /* ---------------- 랭킹 로직 ---------------- */
         function saveRealRanking() {
             if(!gameState.username) return;
             let ranks = JSON.parse(localStorage.getItem('real_ranks') || '[]');
@@ -558,12 +557,61 @@
             `).join('');
         }
 
-        /* ---------------- 경마 로직 ---------------- */
-        function selectHorse(horse, el) {
+        /* ---------------- 경마 업그레이드 로직 ---------------- */
+        function setRaceBetMode(mode) {
             if(gameState.isRacing) return;
-            gameState.selectedHorse = horse;
-            document.querySelectorAll('.horse-select-card').forEach(card => card.classList.remove('active'));
-            el.classList.add('active');
+            gameState.raceMode = mode;
+            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(`mode-${mode}`).classList.add('active');
+            
+            gameState.selectedHorse1 = null;
+            gameState.selectedHorse2 = null;
+            renderHorseSelectionUI();
+
+            const guide = document.getElementById('horseSelectGuide');
+            if(mode === 'win') guide.innerText = '말 선택 (1위 우승 말)';
+            else if(mode === 'quinella') guide.innerText = '말 2개 선택 (순서 상관없이 1,2위)';
+            else if(mode === 'exacta') guide.innerText = '말 2개 선택 (1위 ➔ 2위 순서 지정)';
+        }
+
+        function selectHorse(horse) {
+            if(gameState.isRacing) return;
+            if(gameState.raceMode === 'win') {
+                gameState.selectedHorse1 = horse;
+            } else {
+                if(gameState.selectedHorse1 === horse) {
+                    gameState.selectedHorse1 = null;
+                } else if(gameState.selectedHorse2 === horse) {
+                    gameState.selectedHorse2 = null;
+                } else {
+                    if(!gameState.selectedHorse1) gameState.selectedHorse1 = horse;
+                    else if(!gameState.selectedHorse2) gameState.selectedHorse2 = horse;
+                    else {
+                        gameState.selectedHorse1 = horse;
+                        gameState.selectedHorse2 = null;
+                    }
+                }
+            }
+            renderHorseSelectionUI();
+        }
+
+        function renderHorseSelectionUI() {
+            suits.forEach(s => {
+                const card = document.getElementById(`hcard-${s}`);
+                card.classList.remove('active', 'active-2nd');
+                let badge = card.querySelector('.select-badge');
+                if(badge) badge.remove();
+
+                if(gameState.selectedHorse1 === s) {
+                    card.classList.add('active');
+                    if(gameState.raceMode !== 'win') {
+                        card.insertAdjacentHTML('beforeend', `<div class="select-badge">${gameState.raceMode === 'exacta' ? '1위' : '선택'}</div>`);
+                    }
+                } else if(gameState.selectedHorse2 === s) {
+                    card.classList.add('active-2nd');
+                    card.insertAdjacentHTML('beforeend', `<div class="select-badge" style="background:#38bdf8; color:#000;">${gameState.raceMode === 'exacta' ? '2위' : '선택'}</div>`);
+                }
+            });
         }
 
         function addBet(amt) {
@@ -594,7 +642,10 @@
         }
 
         function startRace() {
-            if (!gameState.selectedHorse) return alert('우승할 말을 선택하세요!');
+            if(gameState.raceMode === 'win' && !gameState.selectedHorse1) return alert('우승할 말을 선택하세요!');
+            if((gameState.raceMode === 'quinella' || gameState.raceMode === 'exacta') && (!gameState.selectedHorse1 || !gameState.selectedHorse2)) {
+                return alert('말 2개를 선택해야 합니다!');
+            }
             if (gameState.betAmount <= 0) return alert('베팅 금액을 입력하세요!');
             if (gameState.betAmount > gameState.gold) return alert('골드가 부족합니다!');
 
@@ -604,6 +655,7 @@
             document.getElementById('raceStartBtn').disabled = true;
 
             gameState.horsePositions = { spade: 0, diamond: 0, heart: 0, club: 0 };
+            gameState.finishOrder = [];
             suits.forEach(s => document.getElementById(`horse-${s}`).style.left = '0%');
 
             const interval = setInterval(() => {
@@ -612,7 +664,12 @@
                 const step = isAce ? 2 : 1;
 
                 gameState.horsePositions[randomSuit] += step;
-                if(gameState.horsePositions[randomSuit] > 10) gameState.horsePositions[randomSuit] = 10;
+                if(gameState.horsePositions[randomSuit] >= 10) {
+                    gameState.horsePositions[randomSuit] = 10;
+                    if(!gameState.finishOrder.includes(randomSuit)) {
+                        gameState.finishOrder.push(randomSuit);
+                    }
+                }
 
                 const pct = (gameState.horsePositions[randomSuit] / 10) * 88;
                 document.getElementById(`horse-${randomSuit}`).style.left = `${pct}%`;
@@ -622,23 +679,48 @@
                 cardDisplay.style.color = (randomSuit === 'diamond' || randomSuit === 'heart') ? '#ef4444' : '#000000';
                 document.getElementById('cardStatusText').innerText = `${suitSymbols[randomSuit]} 말 ${step}칸 전진!`;
 
-                if (gameState.horsePositions[randomSuit] >= 10) {
+                if (gameState.finishOrder.length === 4 || Object.values(gameState.horsePositions).every(p => p >= 10)) {
                     clearInterval(interval);
-                    setTimeout(() => finishRace(randomSuit), 300);
+                    // 들어오지 못한 말 위치 순 정렬
+                    suits.forEach(s => {
+                        if(!gameState.finishOrder.includes(s)) gameState.finishOrder.push(s);
+                    });
+                    setTimeout(() => finishRace(), 400);
                 }
-            }, 550);
+            }, 500);
         }
 
-        function finishRace(winner) {
+        function finishRace() {
             gameState.isRacing = false;
             document.getElementById('raceStartBtn').disabled = false;
-            if (gameState.selectedHorse === winner) {
-                const prize = gameState.betAmount * 3;
-                gameState.gold += prize;
-                alert(`🎉 축하합니다! ${suitSymbols[winner]} 말이 우승했습니다!\n+${prize.toLocaleString()} G 획득!`);
-            } else {
-                alert(`아쉽네요! ${suitSymbols[winner]} 말이 우승했습니다.`);
+
+            const first = gameState.finishOrder[0];
+            const second = gameState.finishOrder[1];
+
+            let isWin = false;
+            let multiplier = 0;
+
+            if(gameState.raceMode === 'win') {
+                if(gameState.selectedHorse1 === first) { isWin = true; multiplier = 5; }
+            } else if(gameState.raceMode === 'quinella') {
+                if((gameState.selectedHorse1 === first && gameState.selectedHorse2 === second) ||
+                   (gameState.selectedHorse1 === second && gameState.selectedHorse2 === first)) {
+                    isWin = true; multiplier = 12;
+                }
+            } else if(gameState.raceMode === 'exacta') {
+                if(gameState.selectedHorse1 === first && gameState.selectedHorse2 === second) {
+                    isWin = true; multiplier = 25;
+                }
             }
+
+            if (isWin) {
+                const prize = gameState.betAmount * multiplier;
+                gameState.gold += prize;
+                alert(`🎉 [적중 성공!] ${multiplier}배 배당 획득!\n\n🥇 1위: ${suitSymbols[first]} (${suitNames[first]})\n🥈 2위: ${suitSymbols[second]} (${suitNames[second]})\n\n+${prize.toLocaleString()} G 지급 완료!`);
+            } else {
+                alert(`아쉽게 실패했습니다!\n\n🥇 1위: ${suitSymbols[first]} (${suitNames[first]})\n🥈 2위: ${suitSymbols[second]} (${suitNames[second]})`);
+            }
+
             gameState.betAmount = 0;
             document.getElementById('betAmountInput').value = 0;
             updateUI();
@@ -694,7 +776,7 @@
             if(num === 13) symbol = 'K';
             const randomSuit = suits[Math.floor(Math.random() * suits.length)];
             const color = (randomSuit === 'diamond' || randomSuit === 'heart') ? '#ef4444' : '#000000';
-            const isGold = Math.random() < 0.03; // 3% 확률 골드카드
+            const isGold = Math.random() < 0.03;
             return { val, num, symbol: `${suitSymbols[randomSuit]}${symbol}`, color, isGold };
         }
 
@@ -856,7 +938,7 @@
             return 0;
         }
 
-        /* ---------------- 하이로우 (Hi-Lo) 스르륵 플립 로직 ---------------- */
+        /* ---------------- 하이로우 스르륵 플립 로직 ---------------- */
         function addHiloBet(amt) {
             if(gameState.isHiloPlaying) return;
             if(gameState.hiloBet + amt <= gameState.gold) gameState.hiloBet += amt;
