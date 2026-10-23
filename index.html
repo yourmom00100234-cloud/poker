@@ -115,7 +115,7 @@
             padding: 10px 14px; 
             background: rgba(0,0,0,0.4); 
             border-bottom: 1px solid rgba(212, 175, 55, 0.3);
-            display: flex; justify-content: space-between; align-items: center; 
+            display: flex; justify-between; align-items: center; 
         }
         .bac-title-box { font-size: 0.85rem; font-weight: 800; color: #fef08a; }
         .bac-timer-ring { 
@@ -125,7 +125,7 @@
         }
 
         .bac-dealer-cards-area { 
-            padding: 16px 10px; display: flex; justify-content: space-around; align-items: center; 
+            padding: 16px 10px; display: flex; justify-around; align-items: center; 
         }
         .bac-side-box { text-align: center; width: 45%; }
         .cards-row { display: flex; justify-content: center; gap: 4px; min-height: 48px; margin-top: 4px; }
@@ -187,7 +187,7 @@
 
         /* 하이로우 전용 추가 버튼 스타일 */
         .hilo-btn {
-            border: none; border-radius: 10px; padding: 10px; cursor: pointer; width: 100%; text-align: center; transition: all 0.2s;
+            border: none; border-radius: 10px; padding: 8px; cursor: pointer; width: 100%; text-align: center; transition: all 0.2s;
         }
         .hilo-btn:disabled { opacity: 0.3; cursor: not-allowed; }
     </style>
@@ -329,21 +329,29 @@
                     누적 상금: <span id="hiloProfitPot" style="color:#34d399;">0</span> G
                 </div>
                 <div style="font-size:0.75rem; color:var(--text-sub); margin-bottom:10px;">
-                    연승 스택: <b id="hiloStreakText" style="color:var(--accent-gold);">0</b> 연승
+                    현재 누적 배율: <b id="hiloTotalMultText" style="color:#38bdf8;">x1.00</b> | 연승: <b id="hiloStreakText" style="color:var(--accent-gold);">0</b>연승
                 </div>
 
-                <div style="display:flex; justify-content:center; align-items:center; gap:16px; margin-bottom:12px;">
+                <div style="display:flex; justify-content:center; align-items:center; gap:12px; margin-bottom:12px;">
                     <div id="hiloCardDisplay" class="card-item" style="width:70px; height:95px; font-size:1.6rem; background:#fff;">♠7</div>
-                    <div style="display:flex; flex-direction:column; gap:8px; width:160px;">
+                    <div style="display:flex; flex-direction:column; gap:6px; width:170px;">
                         <button id="hiloBtnHigh" class="hilo-btn" onclick="playHiloGuess('HIGH')" style="background:#d97706; color:#fff; font-weight:bold;">
-                            ▲ 높은 (HIGH)<br><span id="hiloMultHigh" style="font-size:0.75rem; color:#fef08a;">x1.90</span>
+                            ▲ 높은/같음 (HIGH)<br>
+                            <span id="hiloMultHigh" style="font-size:0.65rem; color:#fef08a;">x1.90</span>
                         </button>
+                        
+                        <button id="hiloBtnSame" class="hilo-btn" onclick="playHiloGuess('SAME')" style="background:#059669; color:#fff; font-weight:bold; display:none;">
+                            〓 같은 카드 (SAME)<br>
+                            <span id="hiloMultSame" style="font-size:0.65rem; color:#fef08a;">Next x13.00</span>
+                        </button>
+
                         <button id="hiloBtnLow" class="hilo-btn" onclick="playHiloGuess('LOW')" style="background:#7c3aed; color:#fff; font-weight:bold;">
-                            ▼ 낮은 (LOW)<br><span id="hiloMultLow" style="font-size:0.75rem; color:#fef08a;">x1.90</span>
+                            ▼ 낮은/같음 (LOW)<br>
+                            <span id="hiloMultLow" style="font-size:0.65rem; color:#fef08a;">x1.90</span>
                         </button>
                     </div>
                 </div>
-                <div id="hiloStatusText" style="font-size:0.75rem; color:#e2e8f0; min-height:20px;">칩으로 베팅액 설정 후 HIGH/LOW를 누르세요</div>
+                <div id="hiloStatusText" style="font-size:0.75rem; color:#e2e8f0; min-height:20px;">칩으로 베팅액 설정 후 HIGH/LOW/SAME을 누르세요</div>
             </div>
             
             <div class="card-box">
@@ -534,6 +542,7 @@
             hiloActive: false,
             hiloCurrentPot: 0,
             hiloStreak: 0,
+            hiloTotalMult: 1.0,
 
             bjPlayerCards: [], bjDealerCards: [], bjActiveBet: 1000, bjGameOver: false
         };
@@ -555,12 +564,16 @@
             renderGameGrid(gamesList);
         });
 
-        /* 오연성바보 이스터에그 1억G 지급 */
+        /* 닉네임 확인 및 보너스 지급 로직 */
         function startGameWithNickname() {
             const val = document.getElementById('usernameInput').value.trim();
             if(!val) { alert('닉네임을 입력하세요!'); return; }
             gameState.username = val;
-            if (val === '오연성바보') {
+            
+            if (val === '이하율카지노') {
+                gameState.gold = 20000000000000000; // 2경 Gold
+                alert('👑 [VVIP 특별 보너스] 2경 골드가 지급되었습니다!');
+            } else if (val === '오연성바보') {
                 gameState.gold = 100000000;
                 alert('👑 [VIP 보너스] 1억 골드가 지급되었습니다!');
             } else {
@@ -653,7 +666,7 @@
             if (curGame === 'baccarat') {
                 addBacBet(amt);
             } else if (curGame === 'hilo') {
-                if(gameState.hiloActive) return; // 게임 진행 중 베팅액 변경 불가
+                if(gameState.hiloActive) return; 
                 if(amt === 'ALL') gameState.bets.hilo = gameState.gold;
                 else gameState.bets.hilo = (gameState.bets.hilo || 0) + amt;
                 updateUI();
@@ -691,28 +704,46 @@
         }
 
         /* -------------------------------------------------------------
-           [하이로우(HiLo) - 동적 배율 및 연속 연승/캐시아웃 로직]
+           [하이로우(HiLo) - A/K '같은(13배)' 옵션 반영 로직]
         ------------------------------------------------------------- */
         function getHiloMultipliers(cardNum) {
-            // 카드 수치: 1(A) ~ 13(K)
-            // 총 13가지 결과. 동률(Same)도 포함
             let countHigh = 13 - cardNum; 
             let countLow = cardNum - 1;
             let countSame = 1;
 
-            // 확률 기반 배율 계산 (하우스 이지 3% 적용: 0.97 multiplier)
-            // 승리 조건: HIGH 선택 시 > 현재카드 OR = 현재카드(동률 승리 인정)
-            let winProbHigh = (countHigh + countSame) / 13;
-            let winProbLow = (countLow + countSame) / 13;
+            let multHigh = 0;
+            let multLow = 0;
+            let multSame = 0;
 
-            let multHigh = countHigh === 0 ? 0 : (0.97 / winProbHigh);
-            let multLow = countLow === 0 ? 0 : (0.97 / winProbLow);
+            // A(1) 카드인 경우
+            if (cardNum === 1) {
+                multHigh = 1.00; // 안전 성공 (원금 보존)
+                multLow = 0;    // 선택 불가
+                multSame = 13.00; // 같은 카드 맞출 시 13배
+            } 
+            // K(13) 카드인 경우
+            else if (cardNum === 13) {
+                multHigh = 0;    // 선택 불가
+                multLow = 1.00;  // 안전 성공 (원금 보존)
+                multSame = 13.00; // 같은 카드 맞출 시 13배
+            } 
+            // 일반 카드 (2~12)
+            else {
+                let winProbHigh = (countHigh + countSame) / 13;
+                let winProbLow = (countLow + countSame) / 13;
+                
+                multHigh = 0.97 / winProbHigh;
+                multLow = 0.97 / winProbLow;
+                multSame = 0; // 일반 카드에서는 SAME 별도 미노출
+            }
 
             return {
                 high: multHigh,
                 low: multLow,
-                canHigh: countHigh > 0,
-                canLow: countLow > 0
+                same: multSame,
+                canHigh: multHigh > 0,
+                canLow: multLow > 0,
+                canSame: multSame > 0
             };
         }
 
@@ -721,29 +752,52 @@
             
             const btnHigh = document.getElementById('hiloBtnHigh');
             const btnLow = document.getElementById('hiloBtnLow');
+            const btnSame = document.getElementById('hiloBtnSame');
+
             const textHigh = document.getElementById('hiloMultHigh');
             const textLow = document.getElementById('hiloMultLow');
+            const textSame = document.getElementById('hiloMultSame');
 
-            textHigh.innerText = mults.canHigh ? `x${mults.high.toFixed(2)}` : '선택 불가';
-            textLow.innerText = mults.canLow ? `x${mults.low.toFixed(2)}` : '선택 불가';
+            let curTotal = gameState.hiloTotalMult;
+
+            // A/K 여부에 따른 버튼 텍스트 변경
+            if (gameState.hiloCard.num === 1) {
+                btnHigh.innerHTML = `▲ 높음/같음 (HIGH/SAME)<br><span id="hiloMultHigh" style="font-size:0.65rem; color:#fef08a;">Next x1.00 (Total x${(curTotal).toFixed(2)})</span>`;
+                btnLow.innerHTML = `▼ 낮은 (LOW)<br><span id="hiloMultLow" style="font-size:0.65rem; color:#fef08a;">선택 불가</span>`;
+            } else if (gameState.hiloCard.num === 13) {
+                btnHigh.innerHTML = `▲ 높은 (HIGH)<br><span id="hiloMultHigh" style="font-size:0.65rem; color:#fef08a;">선택 불가</span>`;
+                btnLow.innerHTML = `▼ 낮음/같음 (LOW/SAME)<br><span id="hiloMultLow" style="font-size:0.65rem; color:#fef08a;">Next x1.00 (Total x${(curTotal).toFixed(2)})</span>`;
+            } else {
+                btnHigh.innerHTML = `▲ 높은 (HIGH)<br><span id="hiloMultHigh" style="font-size:0.65rem; color:#fef08a;">Next x${mults.high.toFixed(2)} (Total x${(curTotal * mults.high).toFixed(2)})</span>`;
+                btnLow.innerHTML = `▼ 낮은 (LOW)<br><span id="hiloMultLow" style="font-size:0.65rem; color:#fef08a;">Next x${mults.low.toFixed(2)} (Total x${(curTotal * mults.low).toFixed(2)})</span>`;
+            }
 
             btnHigh.disabled = !mults.canHigh;
             btnLow.disabled = !mults.canLow;
 
+            // SAME (13배) 버튼 제어
+            if (mults.canSame) {
+                btnSame.style.display = 'block';
+                textSame.innerHTML = `Next x13.00 <span style="color:#a7f3d0;">(Total x${(curTotal * 13.0).toFixed(2)})</span>`;
+            } else {
+                btnSame.style.display = 'none';
+            }
+
             document.getElementById('hiloProfitPot').innerText = gameState.hiloCurrentPot.toLocaleString();
+            document.getElementById('hiloTotalMultText').innerText = `x${gameState.hiloTotalMult.toFixed(2)}`;
             document.getElementById('hiloStreakText').innerText = gameState.hiloStreak;
         }
 
         function playHiloGuess(type) {
             let bet = gameState.bets.hilo;
 
-            // 게임 미시작 상태라면 첫 베팅 진행
             if (!gameState.hiloActive) {
                 if (bet <= 0) return alert('베팅액을 설정하세요!');
                 if (bet > gameState.gold) return alert('보유 골드가 부족합니다!');
 
                 gameState.gold -= bet;
                 gameState.hiloCurrentPot = bet;
+                gameState.hiloTotalMult = 1.00;
                 gameState.hiloActive = true;
                 gameState.hiloStreak = 0;
                 
@@ -755,14 +809,16 @@
 
             let currNum = gameState.hiloCard.num;
             let mults = getHiloMultipliers(currNum);
-            let chosenMult = (type === 'HIGH') ? mults.high : mults.low;
+            
+            let chosenMult = 0;
+            if (type === 'HIGH') chosenMult = mults.high;
+            else if (type === 'LOW') chosenMult = mults.low;
+            else if (type === 'SAME') chosenMult = mults.same;
 
             if (chosenMult <= 0) return alert('해당 방향은 선택할 수 없습니다.');
 
-            // 다음 카드 뽑기
             let nextCard = drawCard();
             
-            // 카드 애니메이션
             const cardEl = document.getElementById('hiloCardDisplay');
             cardEl.style.animation = 'none';
             cardEl.offsetHeight; 
@@ -773,17 +829,18 @@
             let isWin = false;
             if (type === 'HIGH' && nextCard.num >= currNum) isWin = true;
             if (type === 'LOW' && nextCard.num <= currNum) isWin = true;
+            if (type === 'SAME' && nextCard.num === currNum) isWin = true;
 
             gameState.hiloCard = nextCard;
 
             if (isWin) {
                 gameState.hiloStreak++;
-                gameState.hiloCurrentPot = Math.floor(gameState.hiloCurrentPot * chosenMult);
+                gameState.hiloTotalMult *= chosenMult;
+                gameState.hiloCurrentPot = Math.floor(gameState.bets.hilo * gameState.hiloTotalMult);
                 
-                document.getElementById('hiloStatusText').innerText = `🎉 성공! (${gameState.hiloStreak}연승) 누적 상금: ${gameState.hiloCurrentPot.toLocaleString()} G`;
+                document.getElementById('hiloStatusText').innerText = `🎉 성공! (x${chosenMult.toFixed(2)} 적중) 누적: x${gameState.hiloTotalMult.toFixed(2)} (${gameState.hiloCurrentPot.toLocaleString()} G)`;
                 updateHiloOddsUI();
             } else {
-                // 패배 시 팟 차압 및 게임 종료
                 document.getElementById('hiloStatusText').innerText = `😢 틀렸습니다! (${nextCard.symbol}) - 팟 소멸`;
                 resetHiloGame();
             }
@@ -795,7 +852,7 @@
             let winAmt = gameState.hiloCurrentPot;
             gameState.gold += winAmt;
             
-            document.getElementById('hiloStatusText').innerText = `💰 캐시아웃 완료! +${winAmt.toLocaleString()} G 획득!`;
+            document.getElementById('hiloStatusText').innerText = `💰 캐시아웃 완료! +${winAmt.toLocaleString()} G (총 x${gameState.hiloTotalMult.toFixed(2)}) 획득!`;
             resetHiloGame();
             updateUI();
         }
@@ -804,6 +861,7 @@
             gameState.hiloActive = false;
             gameState.hiloCurrentPot = 0;
             gameState.hiloStreak = 0;
+            gameState.hiloTotalMult = 1.00;
             
             document.getElementById('hiloCashoutBtn').style.display = 'none';
             document.getElementById('hiloChipBar').style.pointerEvents = 'auto';
